@@ -12,6 +12,7 @@
     "validate:edge-signals": "node packages/edge-scanner/src/validate-edge-signals.js",
     "test:edge-scanner": "node --test packages/edge-scanner/tests/*.test.js",
     "validate:risk-decisions": "node packages/risk-governor/src/validate-risk-decisions.js",
+    "validate:action-decisions": "node packages/risk-governor/src/validate-risk-decisions.js --actions",
     "test:risk-governor": "node --test packages/risk-governor/tests/*.test.js"
   }
 }

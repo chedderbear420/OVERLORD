@@ -35,6 +35,14 @@ test("rejected risk decision becomes rejected action with no exposure", async ()
   assert.equal(action.order_placement_allowed, false);
 });
 
+test("synthetic action decisions match generated actions", async () => {
+  const generated = (await loadRiskDecisions()).map((decision) => buildActionDecision(decision));
+  const fixturePath = path.join(repoRoot, "packages", "risk-governor", "fixtures", "synthetic_action_decisions.jsonl");
+  const fixture = (await readJsonl(fixturePath)).map((record) => record.value);
+
+  assert.deepEqual(generated, fixture);
+});
+
 async function loadRiskDecisions() {
   const policy = JSON.parse(await readFile(policyPath, "utf8"));
   const signalRecords = await readJsonl(edgeSignalPath);
