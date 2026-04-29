@@ -1,0 +1,16 @@
+{
+  "policy_id": "default_paper_only_v1",
+  "policy_version": "v1",
+  "mode": "paper_only",
+  "min_net_edge": 1,
+  "allowed_liquidity_statuses": ["liquid"],
+  "required_staleness_status": "fresh",
+  "fatal_quality_flags": ["crossed_book", "invalid_price", "invalid_quantity", "stale"],
+  "min_observed_price": 1,
+  "max_observed_price": 99,
+  "max_total_estimated_cost": 10,
+  "min_model_probability": 0.55,
+  "max_model_probability": 0.95,
+  "allowed_sides": ["YES", "NO"],
+  "max_paper_exposure_cents": 10000
+}

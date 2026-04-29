@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://overlord.local/schemas/risk-governor/action_decision.schema.json",
+  "title": "Overlord ActionDecision",
+  "type": "object",
+  "required": ["action_decision_id", "schema_version", "source_risk_decision_id", "source_signal_id", "source_state_id", "source_event_id", "source_payload_hash", "market_id", "captured_at", "received_at", "action_status", "paper_only", "live_execution_allowed", "order_placement_allowed", "max_paper_exposure_cents", "reason"],
+  "additionalProperties": false
+}

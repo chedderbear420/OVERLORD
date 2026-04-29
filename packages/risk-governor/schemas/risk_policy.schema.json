@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://overlord.local/schemas/risk-governor/risk_policy.schema.json",
+  "title": "Overlord Risk Policy",
+  "type": "object",
+  "required": ["policy_id", "policy_version", "mode", "min_net_edge", "allowed_liquidity_statuses", "required_staleness_status", "fatal_quality_flags", "min_observed_price", "max_observed_price", "max_total_estimated_cost", "min_model_probability", "max_model_probability", "allowed_sides", "max_paper_exposure_cents"],
+  "additionalProperties": false
+}
