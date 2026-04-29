@@ -17,7 +17,14 @@ It does not connect to Kalshi, poll APIs, open WebSockets, create credentials, p
 ## Commands
 
 ```powershell
+npm run validate:market-state
 npm run test:market-state-engine
 ```
 
-See `docs/PHASE_1G_MARKET_STATE_INTEGRATION.md`.
+## Validation
+
+Phase 1H adds a local MarketState validator and negative fixtures. The validator rejects malformed JSONL, missing provenance, missing normalized fields, bad cent price bounds, bad spread and midpoint math, invalid state ids, and non-monotonic replay clocks.
+
+After Phase 1H, MarketState validation should freeze unless a bug appears.
+
+See `docs/PHASE_1G_MARKET_STATE_INTEGRATION.md` and `docs/PHASE_1H_MARKET_STATE_VALIDATION.md`.

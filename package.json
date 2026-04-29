@@ -7,6 +7,7 @@
     "validate:event-store": "node packages/event-store/src/validate-fixtures.js",
     "test:event-store": "node --test packages/event-store/tests/*.test.js",
     "test:binary-book-normalizer": "node --test packages/binary-book-normalizer/tests/*.test.js",
+    "validate:market-state": "node packages/market-state-engine/src/validate-market-states.js",
     "test:market-state-engine": "node --test packages/market-state-engine/tests/*.test.js"
   }
 }
