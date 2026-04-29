@@ -49,6 +49,7 @@ export async function validateEdgeSignalFile(options = {}) {
 
 export function validateEdgeSignalRecords(records) {
   const errors = [];
+  let previousReceivedAt = null;
   for (const { lineNumber, value: signal } of records) {
     for (const field of requiredFields) {
       if (!Object.hasOwn(signal, field)) {
@@ -73,8 +74,10 @@ export function validateEdgeSignalRecords(records) {
     }
     validateProbability(errors, lineNumber, signal.model_probability);
     validateObservedPrice(errors, lineNumber, signal.observed_price);
+    validateCostFields(errors, lineNumber, signal);
     validateMath(errors, lineNumber, signal);
     validateStatuses(errors, lineNumber, signal);
+    previousReceivedAt = validateSignalOrder(errors, lineNumber, signal, previousReceivedAt);
   }
   return { ok: errors.length === 0, errors };
 }
@@ -129,6 +132,14 @@ function validateObservedPrice(errors, lineNumber, price) {
   }
 }
 
+function validateCostFields(errors, lineNumber, signal) {
+  for (const field of ["estimated_fee_cost", "estimated_spread_cost", "estimated_slippage_cost", "uncertainty_penalty"]) {
+    if (typeof signal[field] !== "number" || Number.isNaN(signal[field]) || signal[field] < 0) {
+      errors.push(issue(lineNumber, `${field} must be a non-negative number`));
+    }
+  }
+}
+
 function validateStatuses(errors, lineNumber, signal) {
   if (!["positive", "negative", "zero_or_insufficient", "rejected"].includes(signal.edge_status)) {
     errors.push(issue(lineNumber, "edge_status is invalid"));
@@ -142,6 +153,31 @@ function validateStatuses(errors, lineNumber, signal) {
   if (signal.action_eligibility === "paper_eligible_candidate") {
     errors.push(issue(lineNumber, "paper_eligible_candidate is reserved until paper trading phase"));
   }
+  if (signal.staleness_status !== "fresh" && signal.action_eligibility !== "rejected") {
+    errors.push(issue(lineNumber, "stale signals must be rejected"));
+  }
+  if (signal.liquidity_status !== "liquid" && signal.action_eligibility !== "rejected") {
+    errors.push(issue(lineNumber, "illiquid signals must be rejected"));
+  }
+  if (Array.isArray(signal.quality_flags) && signal.quality_flags.length > 0 && signal.action_eligibility !== "rejected") {
+    errors.push(issue(lineNumber, "signals with quality_flags must be rejected"));
+  }
+}
+
+function validateSignalOrder(errors, lineNumber, signal, previousReceivedAt) {
+  const receivedAt = Date.parse(signal.received_at);
+  const capturedAt = Date.parse(signal.captured_at);
+  if (Number.isNaN(capturedAt) || Number.isNaN(receivedAt)) {
+    errors.push(issue(lineNumber, "captured_at and received_at must be valid timestamps"));
+    return previousReceivedAt;
+  }
+  if (receivedAt < capturedAt) {
+    errors.push(issue(lineNumber, "received_at must be equal to or after captured_at"));
+  }
+  if (previousReceivedAt !== null && receivedAt < previousReceivedAt) {
+    errors.push(issue(lineNumber, "received_at must be monotonic for signal fixture order"));
+  }
+  return receivedAt;
 }
 
 function report(filePath, records, errors) {

@@ -25,4 +25,10 @@ npm run test:edge-scanner
 
 EdgeSignal records are descriptive candidate signals only. They answer whether a candidate has fee-aware net edge. They do not answer whether Overlord should trade.
 
-See `docs/PHASE_1I_EDGE_SIGNAL.md`.
+## Validation
+
+Phase 1J adds negative fixtures and stricter validation for provenance, model probability, observed price, raw edge math, net edge math, non-negative cost fields, deterministic signal ids, deterministic signal ordering, stale/illiquid eligibility, and reserved paper eligibility.
+
+After Phase 1J, EdgeSignal validation should freeze unless a bug appears.
+
+See `docs/PHASE_1I_EDGE_SIGNAL.md` and `docs/PHASE_1J_EDGE_SIGNAL_VALIDATION.md`.
