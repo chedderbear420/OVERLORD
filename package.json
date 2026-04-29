@@ -6,6 +6,7 @@
   "scripts": {
     "validate:event-store": "node packages/event-store/src/validate-fixtures.js",
     "test:event-store": "node --test packages/event-store/tests/*.test.js",
-    "test:binary-book-normalizer": "node --test packages/binary-book-normalizer/tests/*.test.js"
+    "test:binary-book-normalizer": "node --test packages/binary-book-normalizer/tests/*.test.js",
+    "test:market-state-engine": "node --test packages/market-state-engine/tests/*.test.js"
   }
 }
