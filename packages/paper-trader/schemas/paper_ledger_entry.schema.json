@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://overlord.local/schemas/paper-trader/paper_ledger_entry.schema.json",
+  "title": "Overlord PaperLedgerEntry",
+  "type": "object",
+  "required": [
+    "paper_ledger_entry_id",
+    "schema_version",
+    "source_action_decision_id",
+    "source_risk_decision_id",
+    "source_signal_id",
+    "source_state_id",
+    "source_event_id",
+    "source_payload_hash",
+    "market_id",
+    "captured_at",
+    "received_at",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "ledger_event_type",
+    "side",
+    "paper_entry_price",
+    "max_paper_exposure_cents",
+    "paper_quantity",
+    "notional_cents",
+    "status",
+    "reason",
+    "final_pnl_cents"
+  ],
+  "additionalProperties": false
+}
