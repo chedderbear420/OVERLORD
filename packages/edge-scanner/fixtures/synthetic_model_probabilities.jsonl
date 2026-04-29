@@ -1,0 +1,3 @@
+{"model_id":"synth_model_positive","model_version":"v0.fixture","source_state_id":"ms_evt_synth_000002","side":"YES","model_probability":0.62,"uncertainty":0.03}
+{"model_id":"synth_model_negative","model_version":"v0.fixture","source_state_id":"ms_evt_synth_000002","side":"NO","model_probability":0.5,"uncertainty":0.01}
+{"model_id":"synth_model_zero","model_version":"v0.fixture","source_state_id":"ms_evt_synth_000003","side":"YES","model_probability":0.5652,"uncertainty":0.01}
