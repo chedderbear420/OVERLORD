@@ -1,6 +1,6 @@
 import { sha256Payload } from "./hash.js";
 
-export function buildAppendAuditEnvelope({ subjectEnvelope, status, reason, capturedAt }) {
+export function buildAppendAuditEnvelope({ subjectEnvelope, status, reason, capturedAt, sequenceId }) {
   const auditAction = status === "accepted" ? "record_appended" : "record_rejected";
   const auditPayload = {
     event_id: auditEventId(auditAction, subjectEnvelope.event_id),
@@ -9,7 +9,7 @@ export function buildAppendAuditEnvelope({ subjectEnvelope, status, reason, capt
     source: subjectEnvelope.source,
     captured_at: capturedAt,
     received_at: capturedAt,
-    sequence_id: subjectEnvelope.sequence_id,
+    sequence_id: sequenceId ?? subjectEnvelope.sequence_id,
     subject_event_id: subjectEnvelope.event_id,
     audit_action: auditAction,
     audit_status: status,
