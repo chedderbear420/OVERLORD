@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://overlord.local/schemas/event-store/market_event.schema.json",
+  "title": "Overlord Raw Market Event",
+  "description": "Offline raw market evidence captured before normalization, feature generation, signals, or replay.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "schema_version",
+    "source",
+    "captured_at",
+    "received_at",
+    "sequence_id",
+    "market_id",
+    "event_kind",
+    "raw"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt_[A-Za-z0-9._:-]+$"
+    },
+    "correlation_id": {
+      "type": "string",
+      "pattern": "^corr_[A-Za-z0-9._:-]+$"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "market_event.v1"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "synthetic_fixture",
+        "manual_import",
+        "offline_recorder"
+      ]
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sequence_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "market_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "series_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_kind": {
+      "type": "string",
+      "enum": [
+        "market_created",
+        "market_status",
+        "orderbook_snapshot",
+        "orderbook_delta",
+        "ticker_update"
+      ]
+    },
+    "market_status": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "open",
+        "closed",
+        "settled",
+        "paused"
+      ]
+    },
+    "orderbook": {
+      "$ref": "#/$defs/orderbook"
+    },
+    "raw": {
+      "type": "object",
+      "description": "Synthetic or manually imported source-shaped payload. Preserve without mutation.",
+      "additionalProperties": true,
+      "minProperties": 1
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 1000
+    }
+  },
+  "$defs": {
+    "price_level": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "price_cents",
+        "quantity"
+      ],
+      "properties": {
+        "price_cents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "side_book": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/price_level"
+      }
+    },
+    "orderbook": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "yes_bids",
+        "yes_asks",
+        "no_bids",
+        "no_asks"
+      ],
+      "properties": {
+        "yes_bids": {
+          "$ref": "#/$defs/side_book"
+        },
+        "yes_asks": {
+          "$ref": "#/$defs/side_book"
+        },
+        "no_bids": {
+          "$ref": "#/$defs/side_book"
+        },
+        "no_asks": {
+          "$ref": "#/$defs/side_book"
+        }
+      }
+    }
+  }
+}
