@@ -32,10 +32,30 @@ export async function validateFixtureFile(options = {}) {
       warnings: []
     };
   }
+  const report = validateEnvelopeRecords(records, {
+    schemas,
+    expectedSource: expectedFixtureSource,
+    knownExternalAuditSubjectIds
+  });
+
+  return {
+    ok: report.ok,
+    fixturePath: path.relative(repoRoot, fixturePath).replaceAll("\\", "/"),
+    records: records.length,
+    errors: report.errors,
+    warnings: report.warnings
+  };
+}
+
+export function validateEnvelopeRecords(records, options = {}) {
+  const schemas = options.schemas;
+  const expectedSource = options.expectedSource ?? expectedFixtureSource;
+  const externalAuditSubjectIds = options.knownExternalAuditSubjectIds ?? knownExternalAuditSubjectIds;
   const errors = [];
   const warnings = [];
-  const seenEventIds = new Set();
-  const lastSequenceBySource = new Map();
+  const seenEventIds = new Set(options.existingEventIds ?? []);
+  const batchEventIds = new Set();
+  const lastSequenceBySource = new Map(options.lastSequenceBySource ?? []);
   const envelopeSchema = schemas["event_envelope.v1"];
 
   for (const { lineNumber, value: envelope } of records) {
@@ -49,10 +69,10 @@ export async function validateFixtureFile(options = {}) {
       errors.push(formatIssue(lineNumber, `fixture source must be ${expectedFixtureSource}`));
     }
 
-    if (seenEventIds.has(envelope.event_id)) {
+    if (seenEventIds.has(envelope.event_id) || batchEventIds.has(envelope.event_id)) {
       errors.push(formatIssue(lineNumber, `duplicate event_id ${envelope.event_id}`));
     } else {
-      seenEventIds.add(envelope.event_id);
+      batchEventIds.add(envelope.event_id);
     }
 
     const streamKey = envelope.source ?? "unknown";
@@ -86,11 +106,10 @@ export async function validateFixtureFile(options = {}) {
     validatePayloadHash(errors, lineNumber, envelope);
   }
 
-  validateAuditReferences(errors, records, seenEventIds);
+  validateAuditReferences(errors, records, unionSets(seenEventIds, batchEventIds), externalAuditSubjectIds);
 
   return {
     ok: errors.length === 0,
-    fixturePath: path.relative(repoRoot, fixturePath).replaceAll("\\", "/"),
     records: records.length,
     errors,
     warnings
@@ -142,7 +161,7 @@ function validatePayloadHash(errors, lineNumber, envelope) {
   }
 }
 
-function validateAuditReferences(errors, records, seenEventIds) {
+function validateAuditReferences(errors, records, seenEventIds, externalAuditSubjectIds) {
   for (const { lineNumber, value: envelope } of records) {
     if (envelope.payload_schema !== "audit_event.v1") {
       continue;
@@ -152,11 +171,15 @@ function validateAuditReferences(errors, records, seenEventIds) {
     if (
       subjectEventId &&
       !seenEventIds.has(subjectEventId) &&
-      !knownExternalAuditSubjectIds.has(subjectEventId)
+      !externalAuditSubjectIds.has(subjectEventId)
     ) {
       errors.push(formatIssue(lineNumber, `audit subject_event_id ${subjectEventId} is not known or intentionally external`));
     }
   }
+}
+
+function unionSets(left, right) {
+  return new Set([...left, ...right]);
 }
 
 function addSchemaErrors(errors, lineNumber, label, schemaErrors) {

@@ -10,6 +10,10 @@ This package defines local schemas and synthetic fixtures for raw market evidenc
 - `schemas/market_event.schema.json`: raw market event payload schema.
 - `schemas/audit_event.schema.json`: audit event payload schema.
 - `fixtures/synthetic_market_events.jsonl`: synthetic JSONL fixture records.
+- `src/segment-writer.js`: local append-only segment writer.
+- `src/segment-reader.js`: local JSONL segment reader.
+- `src/segment-paths.js`: deterministic segment filename helpers.
+- `src/audit-events.js`: accepted/rejected append audit event helpers.
 
 ## Design Contract
 
@@ -65,4 +69,10 @@ Minimum validation checks:
 
 Negative fixtures live in `fixtures/negative/` and prove deterministic rejection of malformed records.
 
-See `docs/PHASE_1A_EVENT_STORE_PLAN.md`, `docs/PHASE_1B_EVENT_VALIDATOR.md`, `docs/PHASE_1C_NEGATIVE_VALIDATION.md`, and `docs/AUDIT_EVENT_REQUIREMENTS.md`.
+## Append-Only Segments
+
+Phase 1D adds local append-only segment helpers. Segments are plain JSONL files named deterministically from source and date, such as `synthetic_fixture-2026-04-28.jsonl`.
+
+The writer validates before append, rejects invalid records before writing, and returns audit event envelopes for accepted and rejected append attempts. The reader returns envelopes in original file order and fails cleanly on malformed JSONL.
+
+See `docs/PHASE_1A_EVENT_STORE_PLAN.md`, `docs/PHASE_1B_EVENT_VALIDATOR.md`, `docs/PHASE_1C_NEGATIVE_VALIDATION.md`, `docs/PHASE_1D_APPEND_ONLY_SEGMENTS.md`, and `docs/AUDIT_EVENT_REQUIREMENTS.md`.
