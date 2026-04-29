@@ -38,7 +38,19 @@ Replay must use `received_at` as the data-availability boundary to avoid lookahe
 
 ## Validation Plan
 
-No package tooling or dependency manager is present in the repo yet. A future Phase 1B validator can use a JSON Schema implementation such as Ajv for local validation only.
+Phase 1B adds a dependency-free local Node validator and tests.
+
+Validate the synthetic fixture:
+
+```powershell
+npm run validate:event-store
+```
+
+Run tests:
+
+```powershell
+npm run test:event-store
+```
 
 Minimum validation checks:
 
@@ -49,5 +61,6 @@ Minimum validation checks:
 - Enforce unique `event_id` values.
 - Enforce source-stream `sequence_id` monotonicity.
 - Check audit `subject_event_id` references.
+- Compute canonical payload SHA-256 and compare it to `payload_hash`.
 
-See `docs/PHASE_1A_EVENT_STORE_PLAN.md` and `docs/AUDIT_EVENT_REQUIREMENTS.md`.
+See `docs/PHASE_1A_EVENT_STORE_PLAN.md`, `docs/PHASE_1B_EVENT_VALIDATOR.md`, and `docs/AUDIT_EVENT_REQUIREMENTS.md`.

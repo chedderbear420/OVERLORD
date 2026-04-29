@@ -1,0 +1,10 @@
+{
+  "name": "overlord",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "validate:event-store": "node packages/event-store/src/validate-fixtures.js",
+    "test:event-store": "node --test packages/event-store/tests/*.test.js"
+  }
+}
