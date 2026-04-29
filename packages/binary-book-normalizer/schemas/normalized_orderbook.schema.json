@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://overlord.local/schemas/binary-book-normalizer/normalized_orderbook.schema.json",
+  "title": "Overlord Normalized Binary Order Book",
+  "description": "Canonical offline market state derived from synthetic YES/NO bid books.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "market_id",
+    "source_event_id",
+    "captured_at",
+    "received_at",
+    "price_unit",
+    "best_yes_bid",
+    "best_yes_ask",
+    "best_no_bid",
+    "best_no_ask",
+    "yes_spread",
+    "no_spread",
+    "yes_mid",
+    "no_mid",
+    "yes_depth",
+    "no_depth",
+    "book_imbalance",
+    "liquidity_status",
+    "staleness_status",
+    "quality_flags"
+  ],
+  "properties": {
+    "market_id": { "type": "string" },
+    "source_event_id": { "type": "string" },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "received_at": { "type": "string", "format": "date-time" },
+    "price_unit": { "type": "string", "const": "cents" },
+    "best_yes_bid": { "type": ["integer", "null"] },
+    "best_yes_ask": { "type": ["integer", "null"] },
+    "best_no_bid": { "type": ["integer", "null"] },
+    "best_no_ask": { "type": ["integer", "null"] },
+    "yes_spread": { "type": ["integer", "null"] },
+    "no_spread": { "type": ["integer", "null"] },
+    "yes_mid": { "type": ["number", "null"] },
+    "no_mid": { "type": ["number", "null"] },
+    "yes_depth": { "type": "integer", "minimum": 0 },
+    "no_depth": { "type": "integer", "minimum": 0 },
+    "book_imbalance": { "type": ["number", "null"] },
+    "liquidity_status": {
+      "type": "string",
+      "enum": ["empty", "thin", "liquid", "invalid"]
+    },
+    "staleness_status": {
+      "type": "string",
+      "enum": ["fresh", "stale", "missing_timestamp", "future_timestamp", "invalid_timestamp"]
+    },
+    "quality_flags": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

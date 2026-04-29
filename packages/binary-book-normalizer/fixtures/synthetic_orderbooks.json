@@ -1,0 +1,60 @@
+[
+  {
+    "name": "balanced_liquid",
+    "book": {
+      "market_id": "SYNTH-NBA-EXAMPLE-001",
+      "source_event_id": "evt_synth_book_000001",
+      "captured_at": "2026-04-28T14:00:00Z",
+      "received_at": "2026-04-28T14:00:01Z",
+      "yes_bids": [
+        { "price_cents": 48, "quantity": 120 },
+        { "price_cents": 47, "quantity": 80 }
+      ],
+      "no_bids": [
+        { "price_cents": 49, "quantity": 90 },
+        { "price_cents": 48, "quantity": 110 }
+      ]
+    }
+  },
+  {
+    "name": "empty_sides",
+    "book": {
+      "market_id": "SYNTH-NBA-EXAMPLE-002",
+      "source_event_id": "evt_synth_book_000002",
+      "captured_at": "2026-04-28T14:00:00Z",
+      "received_at": "2026-04-28T14:00:01Z",
+      "yes_bids": [],
+      "no_bids": []
+    }
+  },
+  {
+    "name": "crossed_book",
+    "book": {
+      "market_id": "SYNTH-NBA-EXAMPLE-003",
+      "source_event_id": "evt_synth_book_000003",
+      "captured_at": "2026-04-28T14:00:00Z",
+      "received_at": "2026-04-28T14:00:01Z",
+      "yes_bids": [
+        { "price_cents": 62, "quantity": 10 }
+      ],
+      "no_bids": [
+        { "price_cents": 45, "quantity": 10 }
+      ]
+    }
+  },
+  {
+    "name": "stale_thin",
+    "book": {
+      "market_id": "SYNTH-NBA-EXAMPLE-004",
+      "source_event_id": "evt_synth_book_000004",
+      "captured_at": "2026-04-28T13:54:00Z",
+      "received_at": "2026-04-28T14:00:01Z",
+      "yes_bids": [
+        { "price_cents": 40, "quantity": 5 }
+      ],
+      "no_bids": [
+        { "price_cents": 58, "quantity": 4 }
+      ]
+    }
+  }
+]
