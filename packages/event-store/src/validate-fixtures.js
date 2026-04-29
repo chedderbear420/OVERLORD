@@ -20,7 +20,18 @@ const knownExternalAuditSubjectIds = new Set();
 export async function validateFixtureFile(options = {}) {
   const fixturePath = options.fixturePath ?? defaultFixturePath;
   const schemas = options.schemas ?? (await loadEventStoreSchemas(repoRoot));
-  const records = await readJsonl(fixturePath);
+  let records;
+  try {
+    records = await readJsonl(fixturePath);
+  } catch (error) {
+    return {
+      ok: false,
+      fixturePath: path.relative(repoRoot, fixturePath).replaceAll("\\", "/"),
+      records: 0,
+      errors: [error.message],
+      warnings: []
+    };
+  }
   const errors = [];
   const warnings = [];
   const seenEventIds = new Set();
@@ -159,7 +170,9 @@ function formatIssue(lineNumber, message) {
 }
 
 if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
-  const report = await validateFixtureFile();
+  const report = await validateFixtureFile({
+    fixturePath: process.argv[2] ? path.resolve(process.argv[2]) : defaultFixturePath
+  });
   console.log(formatValidationReport(report));
   process.exitCode = report.ok ? 0 : 1;
 }

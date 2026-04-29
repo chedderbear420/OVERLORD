@@ -63,4 +63,6 @@ Minimum validation checks:
 - Check audit `subject_event_id` references.
 - Compute canonical payload SHA-256 and compare it to `payload_hash`.
 
-See `docs/PHASE_1A_EVENT_STORE_PLAN.md`, `docs/PHASE_1B_EVENT_VALIDATOR.md`, and `docs/AUDIT_EVENT_REQUIREMENTS.md`.
+Negative fixtures live in `fixtures/negative/` and prove deterministic rejection of malformed records.
+
+See `docs/PHASE_1A_EVENT_STORE_PLAN.md`, `docs/PHASE_1B_EVENT_VALIDATOR.md`, `docs/PHASE_1C_NEGATIVE_VALIDATION.md`, and `docs/AUDIT_EVENT_REQUIREMENTS.md`.
