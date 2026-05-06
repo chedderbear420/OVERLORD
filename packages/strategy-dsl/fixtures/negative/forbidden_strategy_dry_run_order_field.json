@@ -1,0 +1,131 @@
+{
+  "strategy_dry_run_plan_id": "sdrp_d1f159eacc41c85aa462a28b9552809e",
+  "schema_version": "strategy_dry_run_plan.v1",
+  "generated_at": "2026-04-28T14:05:02Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "strategy_run_manifest_id": "srm_2026-04-28T14:05:01Z_packages_strategy-dsl_fixtures_synthetic_strategy_definition.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_intent.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_trace.jsonl__packages_strategy-dsl_fixtures_synthetic_strategy_noop_run_summary.json",
+  "strategy_run_evidence_bundle_id": "sreb_59c95d7a4449cbc04d7ecff3714f14c7",
+  "source_strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "source_strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "source_strategy_run_manifest_id": "srm_2026-04-28T14:05:01Z_packages_strategy-dsl_fixtures_synthetic_strategy_definition.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_intent.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_trace.jsonl__packages_strategy-dsl_fixtures_synthetic_strategy_noop_run_summary.json",
+  "source_strategy_run_evidence_bundle_id": "sreb_59c95d7a4449cbc04d7ecff3714f14c7",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "dry_run_planned",
+  "allowed_input_artifacts": [
+    {
+      "artifact_type": "strategy_definition",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_definition.json",
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_run_intent",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_run_intent.json",
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_run_trace",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_run_trace.jsonl",
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_noop_run_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_noop_run_summary.json",
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "replay_trace",
+      "artifact_path": "packages/replay-engine/fixtures/synthetic_replay_trace.jsonl",
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "replay_clock",
+      "artifact_path": "packages/replay-engine/fixtures/synthetic_replay_clock.json",
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "replay_read_plan",
+      "artifact_path": "packages/replay-engine/fixtures/synthetic_replay_read_plan.json",
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "market_state",
+      "artifact_path": "packages/market-state-engine/fixtures/synthetic_market_states.jsonl",
+      "access_mode": "read_only"
+    }
+  ],
+  "forbidden_outputs": [
+    "live_order",
+    "real_trade",
+    "credential",
+    "api_key",
+    "bankroll_allocation",
+    "recommendation",
+    "edge_signal",
+    "risk_decision",
+    "action_decision",
+    "paper_ledger_entry",
+    "paper_exit"
+  ],
+  "planned_observation_steps": [
+    {
+      "step_index": 0,
+      "step_type": "read_strategy_contract",
+      "reads": [
+        "strategy_definition"
+      ],
+      "metadata_only": true
+    },
+    {
+      "step_index": 1,
+      "step_type": "read_strategy_intent",
+      "reads": [
+        "strategy_run_intent"
+      ],
+      "metadata_only": true
+    },
+    {
+      "step_index": 2,
+      "step_type": "read_replay_trace",
+      "reads": [
+        "replay_trace",
+        "replay_clock",
+        "replay_read_plan"
+      ],
+      "metadata_only": true
+    },
+    {
+      "step_index": 3,
+      "step_type": "observe_market_state_metadata",
+      "reads": [
+        "market_state"
+      ],
+      "metadata_only": true
+    },
+    {
+      "step_index": 4,
+      "step_type": "emit_noop_observation_trace",
+      "reads": [
+        "strategy_run_trace",
+        "strategy_noop_run_summary"
+      ],
+      "metadata_only": true
+    }
+  ],
+  "safety_constraints": [
+    "no_network",
+    "no_credentials",
+    "no_live_execution",
+    "no_order_placement",
+    "no_strategy_recommendations",
+    "no_bankroll_management"
+  ],
+  "status": "strategy_dry_run_plan_ready",
+  "reason": "Offline dry-run plan contract only. It defines readable metadata and forbidden outputs without executing strategy logic.",
+  "order_request": {
+    "side": "YES"
+  }
+}

@@ -16,6 +16,8 @@ Phase 2F adds negative fixture hardening for StrategyRunManifest and StrategyRun
 
 Phase 2G adds the StrategyDryRunPlan contract. It defines what a future offline dry-run would be allowed to read and what it is forbidden to produce, but it does not execute strategy logic or create signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 2H adds negative fixture hardening for malformed, unsafe, invalid, non-read-only, executable, signal-like, decision-like, order-like, recommendation-like, and bankroll-like StrategyDryRunPlan records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -85,3 +87,5 @@ StrategyRunManifest and StrategyRunEvidenceBundle are inventory/proof metadata o
 StrategyRunManifest and StrategyRunEvidenceBundle negative fixtures must fail deterministically before any future strategy execution layer can consume them.
 
 StrategyDryRunPlan is dry-run planning metadata only. It may list read-only input artifacts, forbidden outputs, metadata-only observation steps, and safety constraints. It must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.
+
+StrategyDryRunPlan negative fixtures must fail deterministically before any future strategy execution layer can consume dry-run planning metadata.
