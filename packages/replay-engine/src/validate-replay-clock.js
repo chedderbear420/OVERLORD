@@ -22,6 +22,25 @@ const requiredFields = [
   "reason"
 ];
 const requiredEventFields = ["clock_index", "artifact_type", "artifact_path", "record_ref", "record_time"];
+const forbiddenReplayFields = new Set([
+  "execute",
+  "execution_plan",
+  "strategy_score",
+  "strategy_name",
+  "bankroll_growth",
+  "bankroll_allocation",
+  "roi",
+  "sharpe_ratio",
+  "kelly_fraction",
+  "model_score",
+  "recommendation",
+  "recommended_action",
+  "live_trade_recommendation",
+  "order",
+  "order_id",
+  "order_request",
+  "trade_request"
+]);
 
 export async function validateReplayClockFile(options = {}) {
   const filePath = options.filePath ?? defaultFixturePath;
@@ -41,6 +60,8 @@ export async function validateReplayClock(clock, options = {}) {
   if (!clock || typeof clock !== "object" || Array.isArray(clock)) {
     return { ok: false, errors: ["ReplayClock must be a JSON object"] };
   }
+
+  validateForbiddenFields(errors, clock);
 
   for (const field of requiredFields) {
     if (!Object.hasOwn(clock, field)) {
@@ -78,9 +99,10 @@ export async function validateReplayClock(clock, options = {}) {
   await validateSafePath(errors, root, clock.source_manifest_path, "source_manifest_path");
   const events = Array.isArray(clock.clock_events) ? clock.clock_events : [];
   const sortedEvents = [...events].sort(compareClockEvents);
+  const seenClockIndexes = new Set();
 
   for (const [index, event] of events.entries()) {
-    await validateClockEvent(errors, event, index, sortedEvents[index], root);
+    await validateClockEvent(errors, event, index, sortedEvents[index], root, seenClockIndexes);
   }
 
   return { ok: errors.length === 0, errors };
@@ -99,7 +121,7 @@ export function formatReplayClockValidationReport(report) {
   return lines.join("\n");
 }
 
-async function validateClockEvent(errors, event, index, sortedEvent, root) {
+async function validateClockEvent(errors, event, index, sortedEvent, root, seenClockIndexes) {
   if (!event || typeof event !== "object" || Array.isArray(event)) {
     errors.push("clock_event must be an object");
     return;
@@ -112,6 +134,10 @@ async function validateClockEvent(errors, event, index, sortedEvent, root) {
   if (event.clock_index !== index) {
     errors.push("clock_index must be deterministic and contiguous");
   }
+  if (seenClockIndexes.has(event.clock_index)) {
+    errors.push("clock_index values must be unique");
+  }
+  seenClockIndexes.add(event.clock_index);
   if (Number.isNaN(Date.parse(event.record_time))) {
     errors.push("record_time must be a valid timestamp");
   }
@@ -121,6 +147,23 @@ async function validateClockEvent(errors, event, index, sortedEvent, root) {
   await validateSafePath(errors, root, event.artifact_path, "artifact_path");
   if (sortedEvent && event !== sortedEvent) {
     errors.push("clock_events must be sorted by record_time, artifact_type, and record_id or record_ref");
+  }
+}
+
+function validateForbiddenFields(errors, value, pathParts = []) {
+  if (!value || typeof value !== "object") {
+    return;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((entry, index) => validateForbiddenFields(errors, entry, [...pathParts, String(index)]));
+    return;
+  }
+  for (const [key, nested] of Object.entries(value)) {
+    if (forbiddenReplayFields.has(key)) {
+      const fieldPath = [...pathParts, key].join(".");
+      errors.push(`forbidden execution, strategy, bankroll, model, or recommendation field is not allowed: ${fieldPath}`);
+    }
+    validateForbiddenFields(errors, nested, [...pathParts, key]);
   }
 }
 

@@ -44,3 +44,7 @@ ReplayClock and ReplayReadPlan are also metadata-only. They describe which local
 The manifest validator rejects malformed JSON, bad deterministic ids, unsafe paper/live/order flags, unknown artifact contracts, repo-escaping paths, credential or token paths, missing artifact files, duplicate artifact references, bad local record counts, unsafe validation commands, and forbidden strategy, bankroll, model-score, allocation, or recommendation fields.
 
 Validation commands must remain local `npm run` scripts. Manifest validation must not execute replay logic, run strategies, connect to external systems, write ledger entries, write paper exits, calculate bankroll metrics, or recommend actions.
+
+ReplayClock and ReplayReadPlan validators reject malformed JSON, bad deterministic ids, missing provenance, unsafe paper/live/order flags, invalid modes/statuses, empty event/read arrays, duplicate or non-contiguous indexes, unsafe artifact paths, invalid timestamps, invalid totals, non-local validation commands, and forbidden execution, strategy, bankroll, model-score, recommendation, order, or trade request fields.
+
+ReplayClock and ReplayReadPlan validation is intended to be frozen after Phase 1V unless a bug appears.

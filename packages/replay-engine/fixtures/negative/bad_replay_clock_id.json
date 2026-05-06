@@ -1,0 +1,159 @@
+{
+  "replay_clock_id": "bad",
+  "schema_version": "replay_clock.v1",
+  "source_replay_run_manifest_id": "rrm_2026-04-28T14:05:01Z_packages_event-store_fixtures_synthetic_market_events.jsonl__packages_market-state-engine_fixtures_synthetic_market_states.jsonl__packages_edge-scanner_fixtures_synthetic_edge_signals.jsonl__packages_risk-governor_fixtures_synthetic_risk_decisions.jsonl__packages_risk-governor_fixtures_synthetic_action_decisions.jsonl__packages_paper-trader_fixtures_synthetic_paper_ledger_entries.jsonl__packages_paper-trader_fixtures_synthetic_paper_exits.jsonl__packages_paper-trader_fixtures_synthetic_paper_performance_summary.json",
+  "source_manifest_path": "packages/replay-engine/fixtures/synthetic_replay_run_manifest.json",
+  "generated_at": "2026-04-28T14:05:01Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "replay_mode": "offline_fixture_replay",
+  "clock_events": [
+    {
+      "artifact_type": "event_store_market_events",
+      "artifact_path": "packages/event-store/fixtures/synthetic_market_events.jsonl",
+      "record_ref": "packages/event-store/fixtures/synthetic_market_events.jsonl#L1",
+      "record_time": "2026-04-28T14:00:01Z",
+      "record_id": "evt_synth_000001",
+      "clock_index": 0
+    },
+    {
+      "artifact_type": "action_decision",
+      "artifact_path": "packages/risk-governor/fixtures/synthetic_action_decisions.jsonl",
+      "record_ref": "packages/risk-governor/fixtures/synthetic_action_decisions.jsonl#L2",
+      "record_time": "2026-04-28T14:00:03Z",
+      "record_id": "action_risk_sig_ms_evt_synth_000002_NO_synth_model_negative_default_paper_only_v1",
+      "clock_index": 1
+    },
+    {
+      "artifact_type": "action_decision",
+      "artifact_path": "packages/risk-governor/fixtures/synthetic_action_decisions.jsonl",
+      "record_ref": "packages/risk-governor/fixtures/synthetic_action_decisions.jsonl#L1",
+      "record_time": "2026-04-28T14:00:03Z",
+      "record_id": "action_risk_sig_ms_evt_synth_000002_YES_synth_model_positive_default_paper_only_v1",
+      "clock_index": 2
+    },
+    {
+      "artifact_type": "edge_signal",
+      "artifact_path": "packages/edge-scanner/fixtures/synthetic_edge_signals.jsonl",
+      "record_ref": "packages/edge-scanner/fixtures/synthetic_edge_signals.jsonl#L2",
+      "record_time": "2026-04-28T14:00:03Z",
+      "record_id": "sig_ms_evt_synth_000002_NO_synth_model_negative",
+      "clock_index": 3
+    },
+    {
+      "artifact_type": "edge_signal",
+      "artifact_path": "packages/edge-scanner/fixtures/synthetic_edge_signals.jsonl",
+      "record_ref": "packages/edge-scanner/fixtures/synthetic_edge_signals.jsonl#L1",
+      "record_time": "2026-04-28T14:00:03Z",
+      "record_id": "sig_ms_evt_synth_000002_YES_synth_model_positive",
+      "clock_index": 4
+    },
+    {
+      "artifact_type": "event_store_market_events",
+      "artifact_path": "packages/event-store/fixtures/synthetic_market_events.jsonl",
+      "record_ref": "packages/event-store/fixtures/synthetic_market_events.jsonl#L2",
+      "record_time": "2026-04-28T14:00:03Z",
+      "record_id": "evt_synth_000002",
+      "clock_index": 5
+    },
+    {
+      "artifact_type": "market_state",
+      "artifact_path": "packages/market-state-engine/fixtures/synthetic_market_states.jsonl",
+      "record_ref": "packages/market-state-engine/fixtures/synthetic_market_states.jsonl#L1",
+      "record_time": "2026-04-28T14:00:03Z",
+      "record_id": "ms_evt_synth_000002",
+      "clock_index": 6
+    },
+    {
+      "artifact_type": "paper_ledger",
+      "artifact_path": "packages/paper-trader/fixtures/synthetic_paper_ledger_entries.jsonl",
+      "record_ref": "packages/paper-trader/fixtures/synthetic_paper_ledger_entries.jsonl#L1",
+      "record_time": "2026-04-28T14:00:03Z",
+      "record_id": "paper_action_risk_sig_ms_evt_synth_000002_YES_synth_model_positive_default_paper_only_v1",
+      "clock_index": 7
+    },
+    {
+      "artifact_type": "risk_decision",
+      "artifact_path": "packages/risk-governor/fixtures/synthetic_risk_decisions.jsonl",
+      "record_ref": "packages/risk-governor/fixtures/synthetic_risk_decisions.jsonl#L2",
+      "record_time": "2026-04-28T14:00:03Z",
+      "record_id": "risk_sig_ms_evt_synth_000002_NO_synth_model_negative_default_paper_only_v1",
+      "clock_index": 8
+    },
+    {
+      "artifact_type": "risk_decision",
+      "artifact_path": "packages/risk-governor/fixtures/synthetic_risk_decisions.jsonl",
+      "record_ref": "packages/risk-governor/fixtures/synthetic_risk_decisions.jsonl#L1",
+      "record_time": "2026-04-28T14:00:03Z",
+      "record_id": "risk_sig_ms_evt_synth_000002_YES_synth_model_positive_default_paper_only_v1",
+      "clock_index": 9
+    },
+    {
+      "artifact_type": "action_decision",
+      "artifact_path": "packages/risk-governor/fixtures/synthetic_action_decisions.jsonl",
+      "record_ref": "packages/risk-governor/fixtures/synthetic_action_decisions.jsonl#L3",
+      "record_time": "2026-04-28T14:00:06Z",
+      "record_id": "action_risk_sig_ms_evt_synth_000003_YES_synth_model_zero_default_paper_only_v1",
+      "clock_index": 10
+    },
+    {
+      "artifact_type": "edge_signal",
+      "artifact_path": "packages/edge-scanner/fixtures/synthetic_edge_signals.jsonl",
+      "record_ref": "packages/edge-scanner/fixtures/synthetic_edge_signals.jsonl#L3",
+      "record_time": "2026-04-28T14:00:06Z",
+      "record_id": "sig_ms_evt_synth_000003_YES_synth_model_zero",
+      "clock_index": 11
+    },
+    {
+      "artifact_type": "event_store_market_events",
+      "artifact_path": "packages/event-store/fixtures/synthetic_market_events.jsonl",
+      "record_ref": "packages/event-store/fixtures/synthetic_market_events.jsonl#L3",
+      "record_time": "2026-04-28T14:00:06Z",
+      "record_id": "evt_synth_000003",
+      "clock_index": 12
+    },
+    {
+      "artifact_type": "market_state",
+      "artifact_path": "packages/market-state-engine/fixtures/synthetic_market_states.jsonl",
+      "record_ref": "packages/market-state-engine/fixtures/synthetic_market_states.jsonl#L2",
+      "record_time": "2026-04-28T14:00:06Z",
+      "record_id": "ms_evt_synth_000003",
+      "clock_index": 13
+    },
+    {
+      "artifact_type": "risk_decision",
+      "artifact_path": "packages/risk-governor/fixtures/synthetic_risk_decisions.jsonl",
+      "record_ref": "packages/risk-governor/fixtures/synthetic_risk_decisions.jsonl#L3",
+      "record_time": "2026-04-28T14:00:06Z",
+      "record_id": "risk_sig_ms_evt_synth_000003_YES_synth_model_zero_default_paper_only_v1",
+      "clock_index": 14
+    },
+    {
+      "artifact_type": "event_store_market_events",
+      "artifact_path": "packages/event-store/fixtures/synthetic_market_events.jsonl",
+      "record_ref": "packages/event-store/fixtures/synthetic_market_events.jsonl#L4",
+      "record_time": "2026-04-28T14:00:07Z",
+      "record_id": "evt_synth_000004",
+      "clock_index": 15
+    },
+    {
+      "artifact_type": "paper_exit",
+      "artifact_path": "packages/paper-trader/fixtures/synthetic_paper_exits.jsonl",
+      "record_ref": "packages/paper-trader/fixtures/synthetic_paper_exits.jsonl#L1",
+      "record_time": "2026-04-28T14:05:01Z",
+      "record_id": "exit_paper_action_risk_sig_ms_evt_synth_000002_YES_synth_model_positive_default_paper_only_v1_2026-04-28T14:05:01Z",
+      "clock_index": 16
+    },
+    {
+      "artifact_type": "paper_performance_summary",
+      "artifact_path": "packages/paper-trader/fixtures/synthetic_paper_performance_summary.json",
+      "record_ref": "packages/paper-trader/fixtures/synthetic_paper_performance_summary.json#json",
+      "record_time": "2026-04-28T14:05:01Z",
+      "record_id": "pps_packages_paper-trader_fixtures_synthetic_paper_ledger_entries.jsonl_packages_paper-trader_fixtures_synthetic_paper_exits.jsonl_2026-04-28T14:05:01Z",
+      "clock_index": 17
+    }
+  ],
+  "status": "replay_clock_ready",
+  "reason": "Deterministic read-order clock for local fake-data artifacts only; no replay logic executed."
+}

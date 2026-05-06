@@ -23,6 +23,25 @@ const requiredFields = [
 ];
 const requiredReadFields = ["read_index", "artifact_type", "artifact_path", "record_count", "validation_command"];
 const forbiddenCommandPattern = /\b(curl|wget|fetch|powershell|pwsh|invoke-webrequest|invoke-restmethod|iwr|irm)\b|https?:\/\/|[|<>]/i;
+const forbiddenReplayFields = new Set([
+  "execute",
+  "execution_plan",
+  "strategy_score",
+  "strategy_name",
+  "bankroll_growth",
+  "bankroll_allocation",
+  "roi",
+  "sharpe_ratio",
+  "kelly_fraction",
+  "model_score",
+  "recommendation",
+  "recommended_action",
+  "live_trade_recommendation",
+  "order",
+  "order_id",
+  "order_request",
+  "trade_request"
+]);
 
 export async function validateReplayReadPlanFile(options = {}) {
   const filePath = options.filePath ?? defaultFixturePath;
@@ -42,6 +61,8 @@ export async function validateReplayReadPlan(readPlan, options = {}) {
   if (!readPlan || typeof readPlan !== "object" || Array.isArray(readPlan)) {
     return { ok: false, errors: ["ReplayReadPlan must be a JSON object"] };
   }
+
+  validateForbiddenFields(errors, readPlan);
 
   for (const field of requiredFields) {
     if (!Object.hasOwn(readPlan, field)) {
@@ -82,9 +103,10 @@ export async function validateReplayReadPlan(readPlan, options = {}) {
   await validateSafePath(errors, root, readPlan.source_manifest_path, "source_manifest_path");
   const artifactReads = Array.isArray(readPlan.artifact_reads) ? readPlan.artifact_reads : [];
   const seenPaths = new Set();
+  const seenReadIndexes = new Set();
   let plannedTotal = 0;
   for (const [index, artifactRead] of artifactReads.entries()) {
-    await validateArtifactRead(errors, root, artifactRead, index, seenPaths);
+    await validateArtifactRead(errors, root, artifactRead, index, seenPaths, seenReadIndexes);
     if (Number.isInteger(artifactRead.record_count) && artifactRead.record_count >= 0) {
       plannedTotal += artifactRead.record_count;
     }
@@ -109,7 +131,7 @@ export function formatReplayReadPlanValidationReport(report) {
   return lines.join("\n");
 }
 
-async function validateArtifactRead(errors, root, artifactRead, index, seenPaths) {
+async function validateArtifactRead(errors, root, artifactRead, index, seenPaths, seenReadIndexes) {
   if (!artifactRead || typeof artifactRead !== "object" || Array.isArray(artifactRead)) {
     errors.push("artifact_read must be an object");
     return;
@@ -122,6 +144,10 @@ async function validateArtifactRead(errors, root, artifactRead, index, seenPaths
   if (artifactRead.read_index !== index) {
     errors.push("read_index must be deterministic and contiguous");
   }
+  if (seenReadIndexes.has(artifactRead.read_index)) {
+    errors.push("read_index values must be unique");
+  }
+  seenReadIndexes.add(artifactRead.read_index);
   if (!Number.isInteger(artifactRead.record_count) || artifactRead.record_count < 0) {
     errors.push("artifact_read record_count must be a non-negative integer");
   }
@@ -135,6 +161,23 @@ async function validateArtifactRead(errors, root, artifactRead, index, seenPaths
     seenPaths.add(artifactRead.artifact_path);
   }
   await validateSafePath(errors, root, artifactRead.artifact_path, "artifact_path");
+}
+
+function validateForbiddenFields(errors, value, pathParts = []) {
+  if (!value || typeof value !== "object") {
+    return;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((entry, index) => validateForbiddenFields(errors, entry, [...pathParts, String(index)]));
+    return;
+  }
+  for (const [key, nested] of Object.entries(value)) {
+    if (forbiddenReplayFields.has(key)) {
+      const fieldPath = [...pathParts, key].join(".");
+      errors.push(`forbidden execution, strategy, bankroll, model, or recommendation field is not allowed: ${fieldPath}`);
+    }
+    validateForbiddenFields(errors, nested, [...pathParts, key]);
+  }
 }
 
 function isSafeLocalNpmCommand(command) {

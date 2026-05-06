@@ -1,0 +1,72 @@
+{
+  "replay_read_plan_id": "rrp_e65a27ab04e45aff20904830b1963023",
+  "schema_version": "replay_read_plan.v1",
+  "source_replay_run_manifest_id": "rrm_2026-04-28T14:05:01Z_packages_event-store_fixtures_synthetic_market_events.jsonl__packages_market-state-engine_fixtures_synthetic_market_states.jsonl__packages_edge-scanner_fixtures_synthetic_edge_signals.jsonl__packages_risk-governor_fixtures_synthetic_risk_decisions.jsonl__packages_risk-governor_fixtures_synthetic_action_decisions.jsonl__packages_paper-trader_fixtures_synthetic_paper_ledger_entries.jsonl__packages_paper-trader_fixtures_synthetic_paper_exits.jsonl__packages_paper-trader_fixtures_synthetic_paper_performance_summary.json",
+  "source_manifest_path": "packages/replay-engine/fixtures/synthetic_replay_run_manifest.json",
+  "generated_at": "2026-04-28T14:05:01Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "replay_mode": "offline_fixture_replay",
+  "artifact_reads": [
+    {
+      "read_index": 0,
+      "artifact_type": "event_store_market_events",
+      "artifact_path": "packages/event-store/fixtures/synthetic_market_events.jsonl",
+      "record_count": 4,
+      "validation_command": "npm run validate:event-store"
+    },
+    {
+      "read_index": 1,
+      "artifact_type": "market_state",
+      "artifact_path": "packages/market-state-engine/fixtures/synthetic_market_states.jsonl",
+      "record_count": 2,
+      "validation_command": "npm run validate:market-state"
+    },
+    {
+      "read_index": 2,
+      "artifact_type": "edge_signal",
+      "artifact_path": "packages/edge-scanner/fixtures/synthetic_edge_signals.jsonl",
+      "record_count": 3,
+      "validation_command": "npm run validate:edge-signals"
+    },
+    {
+      "read_index": 3,
+      "artifact_type": "risk_decision",
+      "artifact_path": "packages/risk-governor/fixtures/synthetic_risk_decisions.jsonl",
+      "record_count": 3,
+      "validation_command": "npm run validate:risk-decisions"
+    },
+    {
+      "read_index": 4,
+      "artifact_type": "action_decision",
+      "artifact_path": "packages/risk-governor/fixtures/synthetic_action_decisions.jsonl",
+      "record_count": 3,
+      "validation_command": "npm run validate:action-decisions"
+    },
+    {
+      "read_index": 5,
+      "artifact_type": "paper_ledger",
+      "artifact_path": "packages/paper-trader/fixtures/synthetic_paper_ledger_entries.jsonl",
+      "record_count": 1,
+      "validation_command": "npm run validate:paper-ledger"
+    },
+    {
+      "read_index": 6,
+      "artifact_type": "paper_exit",
+      "artifact_path": "packages/paper-trader/fixtures/synthetic_paper_exits.jsonl",
+      "record_count": 1,
+      "validation_command": "npm run validate:paper-exits"
+    },
+    {
+      "read_index": 7,
+      "artifact_type": "paper_performance_summary",
+      "artifact_path": "packages/paper-trader/fixtures/synthetic_paper_performance_summary.json",
+      "record_count": 1,
+      "validation_command": "npm run validate:paper-performance-summary"
+    }
+  ],
+  "total_records_planned": 18,
+  "status": "replay_executed",
+  "reason": "Deterministic local fixture read plan only; no replay logic executed."
+}
