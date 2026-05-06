@@ -1,0 +1,20 @@
+{
+  "strategy_noop_run_summary_id": "bad",
+  "schema_version": "strategy_noop_run_summary.v1",
+  "generated_at": "2026-04-28T14:05:01Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "source_replay_run_manifest_id": "rrm_2026-04-28T14:05:01Z_packages_event-store_fixtures_synthetic_market_events.jsonl__packages_market-state-engine_fixtures_synthetic_market_states.jsonl__packages_edge-scanner_fixtures_synthetic_edge_signals.jsonl__packages_risk-governor_fixtures_synthetic_risk_decisions.jsonl__packages_risk-governor_fixtures_synthetic_action_decisions.jsonl__packages_paper-trader_fixtures_synthetic_paper_ledger_entries.jsonl__packages_paper-trader_fixtures_synthetic_paper_exits.jsonl__packages_paper-trader_fixtures_synthetic_paper_performance_summary.json",
+  "source_replay_evidence_bundle_id": "reb_5bba44ee25195f5e9a6c0cf4353abd1d",
+  "source_replay_clock_id": "rclk_ab575234682ed01132a6b9243d35fb28",
+  "source_replay_read_plan_id": "rrp_e65a27ab04e45aff20904830b1963023",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "validation_only",
+  "total_trace_records": 20,
+  "total_inputs_observed": 18,
+  "status": "strategy_noop_summary_ready",
+  "reason": "No-op strategy summary only. No strategy logic, signals, decisions, trades, recommendations, or analytics produced."
+}

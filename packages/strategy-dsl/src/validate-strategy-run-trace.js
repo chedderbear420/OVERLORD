@@ -224,6 +224,28 @@ function validateTraceLifecycle(errors, traces) {
       }
     }
   }
+  validateObservedInputOrdering(errors, traces);
+}
+
+function validateObservedInputOrdering(errors, traces) {
+  const observedTraces = traces.filter((trace) => trace?.trace_event_type === "noop_strategy_input_observed");
+  for (let index = 1; index < observedTraces.length; index += 1) {
+    if (compareObservedTraceOrder(observedTraces[index - 1], observedTraces[index]) > 0) {
+      errors.push("noop_strategy_input_observed traces must be in deterministic record_time, artifact_type, and record identity order");
+      return;
+    }
+  }
+}
+
+function compareObservedTraceOrder(left, right) {
+  return compareStrings(left.record_time, right.record_time)
+    || compareStrings(left.artifact_type, right.artifact_type)
+    || compareStrings(left.record_id ?? left.record_ref, right.record_id ?? right.record_ref)
+    || compareStrings(left.record_ref, right.record_ref);
+}
+
+function compareStrings(left, right) {
+  return String(left ?? "").localeCompare(String(right ?? ""));
 }
 
 async function validateSafePath(errors, root, artifactPath, label) {

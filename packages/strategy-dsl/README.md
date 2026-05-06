@@ -8,6 +8,8 @@ Phase 2B adds negative fixture hardening for malformed, unsafe, executable, live
 
 Phase 2C adds an offline no-op StrategyRunTrace shell. It observes validated replay trace metadata and emits strategy-run trace metadata only; it does not execute strategy logic or create signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 2D adds negative fixture hardening for StrategyRunTrace and StrategyNoOpRunSummary malformed, unsafe, inconsistent, unordered, duplicated, executable, signal-like, decision-like, order-like, recommendation-like, and bankroll-like records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -18,7 +20,8 @@ Phase 2C adds an offline no-op StrategyRunTrace shell. It observes validated rep
 - `fixtures/synthetic_strategy_run_intent.json`: deterministic metadata-only replay attachment intent fixture.
 - `fixtures/synthetic_strategy_run_trace.jsonl`: deterministic no-op strategy observation trace fixture.
 - `fixtures/synthetic_strategy_noop_run_summary.json`: deterministic no-op strategy summary fixture.
-- `fixtures/negative/*.json`: deterministic negative fixtures for StrategyDefinition and StrategyRunIntent validation hardening.
+- `fixtures/negative/*.json`: deterministic negative fixtures for StrategyDefinition, StrategyRunIntent, and StrategyNoOpRunSummary validation hardening.
+- `fixtures/negative/*.jsonl`: deterministic negative fixtures for StrategyRunTrace validation hardening.
 - `src/strategy-definition-id.js`: deterministic StrategyDefinition id helper.
 - `src/strategy-run-intent-id.js`: deterministic StrategyRunIntent id helper.
 - `src/strategy-run-trace-id.js`: deterministic StrategyRunTrace id helper.
@@ -50,3 +53,5 @@ No strategy executable, handler, callback, network endpoint, order request, trad
 Negative fixtures must fail deterministically and exist only to prove the validators reject unsafe or invalid metadata before any future strategy execution shell can consume it.
 
 StrategyRunTrace is no-op observation metadata only. It may point to replay inputs that a future strategy would observe, but it must not include executable strategy runtime, signal requests, decision requests, order/trade requests, recommendations, analytics, bankroll allocation, credentials, polling, WebSockets, or live execution fields.
+
+StrategyRunTrace and StrategyNoOpRunSummary negative fixtures must fail deterministically before any future strategy execution layer can consume them.
