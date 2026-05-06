@@ -26,5 +26,5 @@ test("buildReplayRunReport is no-op metadata only", async () => {
   assert.equal(report.total_trace_records, 20);
   assert.equal(report.total_records_read, 18);
   assert.equal(report.total_artifacts_read, 8);
-  assert.equal(report.consistency_status, "consistent");
+  assert.equal(report.consistency_status, "consistency_passed");
 });

@@ -17,5 +17,6 @@
   "total_artifacts_read": 8,
   "consistency_status": "consistency_passed",
   "status": "replay_run_report_ready",
-  "reason": "Read-only no-op replay report metadata. No strategy logic, decisions, trades, recommendations, or analytics produced."
+  "reason": "Read-only no-op replay report metadata. No strategy logic, decisions, trades, recommendations, or analytics produced.",
+  "recommendation": "trade"
 }

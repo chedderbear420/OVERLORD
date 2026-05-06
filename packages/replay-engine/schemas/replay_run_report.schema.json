@@ -42,7 +42,7 @@
     "total_trace_records": { "type": "integer", "minimum": 0 },
     "total_records_read": { "type": "integer", "minimum": 0 },
     "total_artifacts_read": { "type": "integer", "minimum": 0 },
-    "consistency_status": { "enum": ["consistent", "inconsistent"] },
+    "consistency_status": { "enum": ["consistency_passed", "consistency_failed", "consistency_not_applicable"] },
     "status": { "enum": ["replay_run_report_ready", "replay_run_report_rejected"] },
     "reason": { "type": "string" }
   }

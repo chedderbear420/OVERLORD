@@ -15,7 +15,7 @@
   "total_trace_records": 20,
   "total_records_read": 18,
   "total_artifacts_read": 8,
-  "consistency_status": "consistency_passed",
+  "consistency_status": "consistency_failed",
   "status": "replay_run_report_ready",
   "reason": "Read-only no-op replay report metadata. No strategy logic, decisions, trades, recommendations, or analytics produced."
 }

@@ -3,7 +3,7 @@
   "schema_version": "replay_run_report.v1",
   "generated_at": "2026-04-28T14:05:01Z",
   "paper_only": true,
-  "live_execution_allowed": false,
+  "live_execution_allowed": true,
   "order_placement_allowed": false,
   "replay_mode": "offline_fixture_replay",
   "source_replay_evidence_bundle_id": "reb_5bba44ee25195f5e9a6c0cf4353abd1d",

@@ -13,7 +13,7 @@
   "source_replay_noop_run_summary_id": "rnrs_15179785b04b252be13a01df9acc82a1",
   "total_artifacts_verified": 5,
   "total_trace_records": 20,
-  "total_records_read": 18,
+  "total_records_read": -1,
   "total_artifacts_read": 8,
   "consistency_status": "consistency_passed",
   "status": "replay_run_report_ready",

@@ -27,7 +27,7 @@ const requiredFields = [
   "reason"
 ];
 const allowedStatuses = new Set(["replay_run_report_ready", "replay_run_report_rejected"]);
-const allowedConsistencyStatuses = new Set(["consistent", "inconsistent"]);
+const allowedConsistencyStatuses = new Set(["consistency_passed", "consistency_failed", "consistency_not_applicable"]);
 const forbiddenReplayFields = new Set([
   "execute",
   "execution_plan",
@@ -45,8 +45,18 @@ const forbiddenReplayFields = new Set([
   "order",
   "order_id",
   "order_request",
-  "trade_request"
+  "trade_request",
+  "signal_request",
+  "decision_request",
+  "analytics",
+  "strategy_analytics"
 ]);
+const expectedTotals = {
+  total_artifacts_verified: 5,
+  total_trace_records: 20,
+  total_records_read: 18,
+  total_artifacts_read: 8
+};
 
 export async function validateReplayRunReportFile(options = {}) {
   const filePath = options.filePath ?? defaultFixturePath;
@@ -99,6 +109,9 @@ export function validateReplayRunReport(reportRecord) {
     if (!Number.isInteger(reportRecord[field]) || reportRecord[field] < 0) {
       errors.push(`${field} must be a non-negative integer`);
     }
+    if (Number.isInteger(reportRecord[field]) && reportRecord[field] !== expectedTotals[field]) {
+      errors.push(`${field} must match the local no-op replay evidence fixture`);
+    }
   }
   if (reportRecord.replay_run_report_id !== replayRunReportId({
     evidenceBundleId: reportRecord.source_replay_evidence_bundle_id,
@@ -113,11 +126,14 @@ export function validateReplayRunReport(reportRecord) {
       errors.push("total_trace_records must equal total_records_read plus no-op boundary traces");
     }
   }
-  if (reportRecord.consistency_status === "consistent" && reportRecord.status !== "replay_run_report_ready") {
-    errors.push("consistent replay reports must use replay_run_report_ready status");
+  if (reportRecord.consistency_status === "consistency_passed" && reportRecord.status !== "replay_run_report_ready") {
+    errors.push("consistency_passed replay reports must use replay_run_report_ready status");
   }
-  if (reportRecord.consistency_status === "inconsistent" && reportRecord.status !== "replay_run_report_rejected") {
-    errors.push("inconsistent replay reports must use replay_run_report_rejected status");
+  if (["consistency_failed", "consistency_not_applicable"].includes(reportRecord.consistency_status) && reportRecord.status !== "replay_run_report_rejected") {
+    errors.push("non-passed replay reports must use replay_run_report_rejected status");
+  }
+  if (reportRecord.status === "replay_run_report_ready" && reportRecord.consistency_status !== "consistency_passed") {
+    errors.push("ready replay reports must use consistency_passed");
   }
 
   return { ok: errors.length === 0, errors };

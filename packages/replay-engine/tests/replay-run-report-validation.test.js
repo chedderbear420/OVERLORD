@@ -41,7 +41,7 @@ test("ReplayRunReport validator rejects status mismatches and forbidden recommen
   });
 
   assert.equal(report.ok, false);
-  assert.match(report.errors.join("\n"), /consistent replay reports must use replay_run_report_ready status/);
+  assert.match(report.errors.join("\n"), /consistency_passed replay reports must use replay_run_report_ready status/);
   assert.match(report.errors.join("\n"), /forbidden execution, strategy, bankroll, model, or recommendation field/);
 });
 

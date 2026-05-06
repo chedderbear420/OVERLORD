@@ -1,0 +1,124 @@
+{
+  "replay_evidence_bundle_id": "reb_5bba44ee25195f5e9a6c0cf4353abd1d",
+  "schema_version": "replay_evidence_bundle.v1",
+  "generated_at": "2026-04-28T14:05:01Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "replay_mode": "offline_fixture_replay",
+  "source_replay_run_manifest_id": "rrm_2026-04-28T14:05:01Z_packages_event-store_fixtures_synthetic_market_events.jsonl__packages_market-state-engine_fixtures_synthetic_market_states.jsonl__packages_edge-scanner_fixtures_synthetic_edge_signals.jsonl__packages_risk-governor_fixtures_synthetic_risk_decisions.jsonl__packages_risk-governor_fixtures_synthetic_action_decisions.jsonl__packages_paper-trader_fixtures_synthetic_paper_ledger_entries.jsonl__packages_paper-trader_fixtures_synthetic_paper_exits.jsonl__packages_paper-trader_fixtures_synthetic_paper_performance_summary.json",
+  "source_replay_clock_id": "rclk_ab575234682ed01132a6b9243d35fb28",
+  "source_replay_read_plan_id": "rrp_e65a27ab04e45aff20904830b1963023",
+  "source_replay_noop_run_summary_id": "rnrs_15179785b04b252be13a01df9acc82a1",
+  "source_manifest_path": "packages/replay-engine/fixtures/synthetic_replay_run_manifest.json",
+  "source_clock_path": "packages/replay-engine/fixtures/synthetic_replay_clock.json",
+  "source_read_plan_path": "packages/replay-engine/fixtures/synthetic_replay_read_plan.json",
+  "source_trace_path": "packages/replay-engine/fixtures/synthetic_replay_trace.jsonl",
+  "source_summary_path": "packages/replay-engine/fixtures/synthetic_replay_noop_run_summary.json",
+  "evidence_artifacts": [
+    {
+      "artifact_type": "replay_run_manifest",
+      "artifact_path": "packages/replay-engine/fixtures/synthetic_replay_run_manifest.json",
+      "schema_version": "replay_run_manifest.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:replay-run-manifest",
+      "artifact_id": "rrm_2026-04-28T14:05:01Z_packages_event-store_fixtures_synthetic_market_events.jsonl__packages_market-state-engine_fixtures_synthetic_market_states.jsonl__packages_edge-scanner_fixtures_synthetic_edge_signals.jsonl__packages_risk-governor_fixtures_synthetic_risk_decisions.jsonl__packages_risk-governor_fixtures_synthetic_action_decisions.jsonl__packages_paper-trader_fixtures_synthetic_paper_ledger_entries.jsonl__packages_paper-trader_fixtures_synthetic_paper_exits.jsonl__packages_paper-trader_fixtures_synthetic_paper_performance_summary.json"
+    },
+    {
+      "artifact_type": "replay_clock",
+      "artifact_path": "packages/replay-engine/fixtures/synthetic_replay_clock.json",
+      "schema_version": "replay_clock.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:replay-clock",
+      "artifact_id": "rclk_ab575234682ed01132a6b9243d35fb28"
+    },
+    {
+      "artifact_type": "replay_read_plan",
+      "artifact_path": "packages/replay-engine/fixtures/synthetic_replay_read_plan.json",
+      "schema_version": "replay_read_plan.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:replay-read-plan",
+      "artifact_id": "rrp_e65a27ab04e45aff20904830b1963023"
+    },
+    {
+      "artifact_type": "replay_trace",
+      "artifact_path": "packages/replay-engine/fixtures/synthetic_replay_trace.jsonl",
+      "schema_version": "replay_trace.v1",
+      "record_count": 20,
+      "validation_command": "npm run validate:replay-trace",
+      "artifact_id": null
+    },
+    {
+      "artifact_type": "replay_noop_run_summary",
+      "artifact_path": "packages/replay-engine/fixtures/synthetic_replay_noop_run_summary.json",
+      "schema_version": "replay_noop_run_summary.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:replay-noop-run-summary",
+      "artifact_id": "rnrs_15179785b04b252be13a01df9acc82a1"
+    }
+  ],
+  "noop_run_totals": {
+    "total_trace_records": 20,
+    "total_records_read": 18,
+    "total_artifacts_read": 8
+  },
+  "consistency_checks": [
+    {
+      "check_name": "manifest_matches_clock",
+      "status": "check_passed",
+      "reason": "manifest_matches_clock passed."
+    },
+    {
+      "check_name": "manifest_matches_read_plan",
+      "status": "check_passed",
+      "reason": "manifest_matches_read_plan passed."
+    },
+    {
+      "check_name": "manifest_matches_trace",
+      "status": "check_passed",
+      "reason": "manifest_matches_trace passed."
+    },
+    {
+      "check_name": "manifest_matches_summary",
+      "status": "check_passed",
+      "reason": "manifest_matches_summary passed."
+    },
+    {
+      "check_name": "clock_matches_trace",
+      "status": "check_passed",
+      "reason": "clock_matches_trace passed."
+    },
+    {
+      "check_name": "read_plan_matches_trace",
+      "status": "check_passed",
+      "reason": "read_plan_matches_trace passed."
+    },
+    {
+      "check_name": "summary_matches_clock",
+      "status": "check_passed",
+      "reason": "summary_matches_clock passed."
+    },
+    {
+      "check_name": "summary_matches_read_plan",
+      "status": "check_passed",
+      "reason": "summary_matches_read_plan passed."
+    },
+    {
+      "check_name": "records_read_matches_trace",
+      "status": "check_passed",
+      "reason": "records_read_matches_trace passed."
+    },
+    {
+      "check_name": "artifacts_read_matches_read_plan",
+      "status": "check_passed",
+      "reason": "artifacts_read_matches_read_plan passed."
+    },
+    {
+      "check_name": "evidence_artifact_count_matches_contract",
+      "status": "check_passed",
+      "reason": "evidence_artifact_count_matches_contract passed."
+    }
+  ],
+  "status": "evidence_bundle_ready",
+  "reason": "Replay evidence bundle for a local no-op replay run only. No strategy logic, decisions, trades, or analytics produced."
+}

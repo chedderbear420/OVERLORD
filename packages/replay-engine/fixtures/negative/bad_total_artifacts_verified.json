@@ -11,7 +11,7 @@
   "source_replay_clock_id": "rclk_ab575234682ed01132a6b9243d35fb28",
   "source_replay_read_plan_id": "rrp_e65a27ab04e45aff20904830b1963023",
   "source_replay_noop_run_summary_id": "rnrs_15179785b04b252be13a01df9acc82a1",
-  "total_artifacts_verified": 5,
+  "total_artifacts_verified": 4,
   "total_trace_records": 20,
   "total_records_read": 18,
   "total_artifacts_read": 8,

@@ -34,6 +34,52 @@ const requiredCheckFields = ["check_name", "status", "reason"];
 const allowedArtifactTypes = new Set(["replay_run_manifest", "replay_clock", "replay_read_plan", "replay_trace", "replay_noop_run_summary"]);
 const allowedCheckStatuses = new Set(["check_passed", "check_failed", "check_not_applicable"]);
 const allowedStatuses = new Set(["evidence_bundle_ready", "evidence_bundle_rejected"]);
+const evidenceArtifactContracts = new Map([
+  ["replay_run_manifest", {
+    artifact_path: "packages/replay-engine/fixtures/synthetic_replay_run_manifest.json",
+    schema_version: "replay_run_manifest.v1",
+    record_count: 1,
+    validation_command: "npm run validate:replay-run-manifest"
+  }],
+  ["replay_clock", {
+    artifact_path: "packages/replay-engine/fixtures/synthetic_replay_clock.json",
+    schema_version: "replay_clock.v1",
+    record_count: 1,
+    validation_command: "npm run validate:replay-clock"
+  }],
+  ["replay_read_plan", {
+    artifact_path: "packages/replay-engine/fixtures/synthetic_replay_read_plan.json",
+    schema_version: "replay_read_plan.v1",
+    record_count: 1,
+    validation_command: "npm run validate:replay-read-plan"
+  }],
+  ["replay_trace", {
+    artifact_path: "packages/replay-engine/fixtures/synthetic_replay_trace.jsonl",
+    schema_version: "replay_trace.v1",
+    record_count: 20,
+    validation_command: "npm run validate:replay-trace"
+  }],
+  ["replay_noop_run_summary", {
+    artifact_path: "packages/replay-engine/fixtures/synthetic_replay_noop_run_summary.json",
+    schema_version: "replay_noop_run_summary.v1",
+    record_count: 1,
+    validation_command: "npm run validate:replay-noop-run-summary"
+  }]
+]);
+const requiredConsistencyChecks = new Set([
+  "manifest_matches_clock",
+  "manifest_matches_read_plan",
+  "manifest_matches_trace",
+  "manifest_matches_summary",
+  "clock_matches_trace",
+  "read_plan_matches_trace",
+  "summary_matches_clock",
+  "summary_matches_read_plan",
+  "trace_count_matches_summary",
+  "records_read_matches_trace",
+  "artifacts_read_matches_read_plan",
+  "evidence_artifact_count_matches_contract"
+]);
 const forbiddenCommandPattern = /\b(curl|wget|fetch|powershell|pwsh|invoke-webrequest|invoke-restmethod|iwr|irm)\b|https?:\/\/|[|<>]/i;
 const forbiddenReplayFields = new Set([
   "execute",
@@ -52,7 +98,11 @@ const forbiddenReplayFields = new Set([
   "order",
   "order_id",
   "order_request",
-  "trade_request"
+  "trade_request",
+  "signal_request",
+  "decision_request",
+  "analytics",
+  "strategy_analytics"
 ]);
 
 export async function validateReplayEvidenceBundleFile(options = {}) {
@@ -163,6 +213,20 @@ async function validateEvidenceArtifacts(errors, root, evidenceArtifacts) {
     }
     if (!allowedArtifactTypes.has(artifact.artifact_type)) {
       errors.push("evidence artifact_type is invalid");
+    } else {
+      const contract = evidenceArtifactContracts.get(artifact.artifact_type);
+      if (artifact.artifact_path !== contract.artifact_path) {
+        errors.push("evidence artifact_path must match the known replay evidence contract");
+      }
+      if (artifact.schema_version !== contract.schema_version) {
+        errors.push("evidence artifact schema_version must match the known replay evidence contract");
+      }
+      if (artifact.validation_command !== contract.validation_command) {
+        errors.push("evidence artifact validation_command must match the known replay evidence contract");
+      }
+      if (artifact.record_count !== contract.record_count) {
+        errors.push("evidence artifact record_count must match the known replay evidence contract");
+      }
     }
     if (seenTypes.has(artifact.artifact_type)) {
       errors.push("duplicate evidence artifact_type is not allowed");
@@ -182,6 +246,11 @@ async function validateEvidenceArtifacts(errors, root, evidenceArtifacts) {
     const actualRecordCount = await countArtifactRecords(errors, root, artifact.artifact_path);
     if (actualRecordCount !== null && Number.isInteger(artifact.record_count) && artifact.record_count !== actualRecordCount) {
       errors.push("evidence artifact record_count must match local fixture count");
+    }
+  }
+  for (const artifactType of allowedArtifactTypes) {
+    if (!seenTypes.has(artifactType)) {
+      errors.push(`missing required evidence artifact_type: ${artifactType}`);
     }
   }
 }
@@ -231,6 +300,11 @@ function validateConsistencyChecks(errors, checks, status) {
     seenNames.add(check.check_name);
     if (!allowedCheckStatuses.has(check.status)) {
       errors.push("consistency_check status is invalid");
+    }
+  }
+  for (const checkName of requiredConsistencyChecks) {
+    if (!seenNames.has(checkName)) {
+      errors.push(`missing required consistency_check: ${checkName}`);
     }
   }
   if (status === "evidence_bundle_ready" && checks.some((check) => check.status === "check_failed")) {

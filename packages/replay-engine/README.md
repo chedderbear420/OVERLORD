@@ -79,6 +79,10 @@ ReplayTrace and ReplayNoOpRunSummary validators reject malformed fixtures, bad d
 
 ReplayEvidenceBundle and ReplayRunReport validators reject malformed JSON, bad deterministic ids, missing provenance, unsafe paper/live/order flags, invalid modes/statuses, unsafe artifact paths, unsafe validation commands, inconsistent no-op totals, failed ready consistency checks, and forbidden execution, strategy, bankroll, model-score, recommendation, order, or trade request fields.
 
+Phase 1Z hardens ReplayEvidenceBundle and ReplayRunReport validation with dedicated negative fixtures. Evidence bundles must include exactly the known replay artifact types and required consistency checks. Run reports must use `consistency_passed`, `consistency_failed`, or `consistency_not_applicable`, and ready reports must use `consistency_passed`.
+
 ReplayClock and ReplayReadPlan validation is intended to be frozen after Phase 1V unless a bug appears.
 
 ReplayTrace and ReplayNoOpRunSummary validation is intended to be frozen after Phase 1X unless a bug appears.
+
+ReplayEvidenceBundle and ReplayRunReport validation is intended to be frozen after Phase 1Z unless a bug appears.

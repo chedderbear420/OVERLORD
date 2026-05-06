@@ -2,7 +2,7 @@
   "replay_run_report_id": "rrr_a8cdc6077af3900e41c1f0df2538127c",
   "schema_version": "replay_run_report.v1",
   "generated_at": "2026-04-28T14:05:01Z",
-  "paper_only": true,
+  "paper_only": false,
   "live_execution_allowed": false,
   "order_placement_allowed": false,
   "replay_mode": "offline_fixture_replay",

@@ -11,8 +11,8 @@ export async function buildReplayRunReport(options = {}) {
   const bundle = options.bundle ?? await readBundle(repoRoot, options.bundlePath ?? defaultBundlePath, generatedAt);
   const traceArtifact = bundle.evidence_artifacts.find((artifact) => artifact.artifact_type === "replay_trace");
   const consistencyStatus = bundle.consistency_checks.every((check) => check.status === "check_passed")
-    ? "consistent"
-    : "inconsistent";
+    ? "consistency_passed"
+    : "consistency_failed";
   const totalTraceRecords = bundle.noop_run_totals?.total_trace_records ?? traceArtifact?.record_count ?? 0;
   const totalRecordsRead = bundle.noop_run_totals?.total_records_read ?? 0;
   const totalArtifactsRead = bundle.noop_run_totals?.total_artifacts_read ?? 0;
@@ -40,7 +40,7 @@ export async function buildReplayRunReport(options = {}) {
     total_records_read: totalRecordsRead,
     total_artifacts_read: totalArtifactsRead,
     consistency_status: consistencyStatus,
-    status: consistencyStatus === "consistent" ? "replay_run_report_ready" : "replay_run_report_rejected",
+    status: consistencyStatus === "consistency_passed" ? "replay_run_report_ready" : "replay_run_report_rejected",
     reason: "Read-only no-op replay report metadata. No strategy logic, decisions, trades, recommendations, or analytics produced."
   };
 }
