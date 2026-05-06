@@ -17,6 +17,8 @@
     "validate:paper-ledger": "node packages/paper-trader/src/validate-paper-ledger.js",
     "validate:paper-exits": "node packages/paper-trader/src/validate-paper-exits.js",
     "validate:paper-performance-summary": "node packages/paper-trader/src/validate-paper-performance-summary.js",
-    "test:paper-trader": "node --test packages/paper-trader/tests/*.test.js"
+    "test:paper-trader": "node --test packages/paper-trader/tests/*.test.js",
+    "validate:replay-run-manifest": "node packages/replay-engine/src/validate-replay-run-manifest.js",
+    "test:replay-engine": "node --test packages/replay-engine/tests/*.test.js"
   }
 }

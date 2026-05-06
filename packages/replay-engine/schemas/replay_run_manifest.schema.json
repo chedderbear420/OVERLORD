@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://overlord.local/schemas/replay-engine/replay_run_manifest.schema.json",
+  "title": "Overlord ReplayRunManifest",
+  "type": "object",
+  "required": [
+    "replay_run_manifest_id",
+    "schema_version",
+    "generated_at",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "replay_mode",
+    "artifacts",
+    "validation_commands",
+    "status",
+    "reason"
+  ],
+  "additionalProperties": false
+}

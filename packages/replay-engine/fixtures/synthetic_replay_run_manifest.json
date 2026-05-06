@@ -1,0 +1,79 @@
+{
+  "replay_run_manifest_id": "rrm_2026-04-28T14:05:01Z_packages_event-store_fixtures_synthetic_market_events.jsonl__packages_market-state-engine_fixtures_synthetic_market_states.jsonl__packages_edge-scanner_fixtures_synthetic_edge_signals.jsonl__packages_risk-governor_fixtures_synthetic_risk_decisions.jsonl__packages_risk-governor_fixtures_synthetic_action_decisions.jsonl__packages_paper-trader_fixtures_synthetic_paper_ledger_entries.jsonl__packages_paper-trader_fixtures_synthetic_paper_exits.jsonl__packages_paper-trader_fixtures_synthetic_paper_performance_summary.json",
+  "schema_version": "replay_run_manifest.v1",
+  "generated_at": "2026-04-28T14:05:01Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "replay_mode": "offline_fixture_replay",
+  "artifacts": [
+    {
+      "artifact_type": "event_store_market_events",
+      "artifact_path": "packages/event-store/fixtures/synthetic_market_events.jsonl",
+      "schema_version": "event_envelope.v1",
+      "validation_command": "npm run validate:event-store",
+      "record_count": 4
+    },
+    {
+      "artifact_type": "market_state",
+      "artifact_path": "packages/market-state-engine/fixtures/synthetic_market_states.jsonl",
+      "schema_version": "market_state.v1",
+      "validation_command": "npm run validate:market-state",
+      "record_count": 2
+    },
+    {
+      "artifact_type": "edge_signal",
+      "artifact_path": "packages/edge-scanner/fixtures/synthetic_edge_signals.jsonl",
+      "schema_version": "edge_signal.v1",
+      "validation_command": "npm run validate:edge-signals",
+      "record_count": 3
+    },
+    {
+      "artifact_type": "risk_decision",
+      "artifact_path": "packages/risk-governor/fixtures/synthetic_risk_decisions.jsonl",
+      "schema_version": "risk_decision.v1",
+      "validation_command": "npm run validate:risk-decisions",
+      "record_count": 3
+    },
+    {
+      "artifact_type": "action_decision",
+      "artifact_path": "packages/risk-governor/fixtures/synthetic_action_decisions.jsonl",
+      "schema_version": "action_decision.v1",
+      "validation_command": "npm run validate:action-decisions",
+      "record_count": 3
+    },
+    {
+      "artifact_type": "paper_ledger",
+      "artifact_path": "packages/paper-trader/fixtures/synthetic_paper_ledger_entries.jsonl",
+      "schema_version": "paper_ledger_entry.v1",
+      "validation_command": "npm run validate:paper-ledger",
+      "record_count": 1
+    },
+    {
+      "artifact_type": "paper_exit",
+      "artifact_path": "packages/paper-trader/fixtures/synthetic_paper_exits.jsonl",
+      "schema_version": "paper_exit.v1",
+      "validation_command": "npm run validate:paper-exits",
+      "record_count": 1
+    },
+    {
+      "artifact_type": "paper_performance_summary",
+      "artifact_path": "packages/paper-trader/fixtures/synthetic_paper_performance_summary.json",
+      "schema_version": "paper_performance_summary.v1",
+      "validation_command": "npm run validate:paper-performance-summary",
+      "record_count": 1
+    }
+  ],
+  "validation_commands": [
+    "npm run validate:event-store",
+    "npm run validate:market-state",
+    "npm run validate:edge-signals",
+    "npm run validate:risk-decisions",
+    "npm run validate:action-decisions",
+    "npm run validate:paper-ledger",
+    "npm run validate:paper-exits",
+    "npm run validate:paper-performance-summary"
+  ],
+  "status": "manifest_ready",
+  "reason": "Read-only manifest of local validated fake-data artifacts for offline fixture replay."
+}
