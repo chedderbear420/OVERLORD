@@ -30,6 +30,8 @@
     "validate:strategy-run-intent": "node packages/strategy-dsl/src/validate-strategy-run-intent.js",
     "validate:strategy-run-trace": "node packages/strategy-dsl/src/validate-strategy-run-trace.js",
     "validate:strategy-noop-run-summary": "node packages/strategy-dsl/src/validate-strategy-noop-run-summary.js",
+    "validate:strategy-run-manifest": "node packages/strategy-dsl/src/validate-strategy-run-manifest.js",
+    "validate:strategy-run-evidence-bundle": "node packages/strategy-dsl/src/validate-strategy-run-evidence-bundle.js",
     "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js"
   }
 }

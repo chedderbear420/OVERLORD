@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://overlord.local/schemas/strategy-dsl/strategy_run_evidence_bundle.schema.json",
+  "title": "Overlord StrategyRunEvidenceBundle",
+  "type": "object",
+  "required": [
+    "strategy_run_evidence_bundle_id",
+    "schema_version",
+    "generated_at",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "strategy_definition_id",
+    "strategy_run_intent_id",
+    "strategy_run_manifest_id",
+    "source_strategy_noop_run_summary_id",
+    "source_strategy_definition_path",
+    "source_strategy_run_intent_path",
+    "source_strategy_run_trace_path",
+    "source_strategy_noop_run_summary_path",
+    "replay_mode",
+    "run_mode",
+    "evidence_artifacts",
+    "strategy_noop_totals",
+    "consistency_checks",
+    "status",
+    "reason"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "strategy_run_evidence_bundle_id": { "type": "string", "pattern": "^sreb_" },
+    "schema_version": { "const": "strategy_run_evidence_bundle.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "paper_only": { "const": true },
+    "live_execution_allowed": { "const": false },
+    "order_placement_allowed": { "const": false },
+    "strategy_definition_id": { "type": "string", "pattern": "^sdef_" },
+    "strategy_run_intent_id": { "type": "string", "pattern": "^sri_" },
+    "strategy_run_manifest_id": { "type": "string", "pattern": "^srm_" },
+    "source_strategy_noop_run_summary_id": { "type": "string", "pattern": "^sns_" },
+    "source_strategy_definition_path": { "type": "string" },
+    "source_strategy_run_intent_path": { "type": "string" },
+    "source_strategy_run_trace_path": { "type": "string" },
+    "source_strategy_noop_run_summary_path": { "type": "string" },
+    "replay_mode": { "enum": ["offline_fixture_replay"] },
+    "run_mode": { "enum": ["validation_only", "dry_run_planned"] },
+    "evidence_artifacts": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "strategy_noop_totals": { "type": "object" },
+    "consistency_checks": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "status": { "enum": ["strategy_run_evidence_bundle_ready", "strategy_run_evidence_bundle_rejected"] },
+    "reason": { "type": "string" }
+  }
+}
