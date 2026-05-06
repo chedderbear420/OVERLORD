@@ -1,0 +1,35 @@
+{
+  "strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "schema_version": "strategy_definition.v1",
+  "created_at": "2026-04-28T14:05:01Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_name": "noop_replay_contract",
+  "strategy_version": "0.1.0",
+  "strategy_type": "noop_strategy_contract",
+  "description": "Metadata-only strategy contract used to validate Strategy DSL shape before execution exists.",
+  "allowed_inputs": [
+    "market_state",
+    "edge_signal",
+    "replay_trace",
+    "replay_clock",
+    "replay_read_plan"
+  ],
+  "forbidden_outputs": [
+    "live_order",
+    "real_trade",
+    "credential",
+    "api_key",
+    "bankroll_allocation",
+    "recommendation"
+  ],
+  "parameters": {
+    "min_net_edge_cents": null,
+    "max_staleness_status": null,
+    "notes": "No executable strategy logic is present in Phase 2A.",
+    "bankroll_allocation": 1000
+  },
+  "status": "strategy_definition_ready",
+  "reason": "Strategy definition contract only. No execution, signals, decisions, orders, recommendations, or bankroll actions."
+}

@@ -1,0 +1,15 @@
+{
+  "strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "schema_version": "strategy_run_intent.v1",
+  "created_at": "2026-04-28T14:05:01Z",
+  "paper_only": false,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "replay_mode": "offline_fixture_replay",
+  "source_replay_evidence_bundle_id": "reb_5bba44ee25195f5e9a6c0cf4353abd1d",
+  "source_replay_run_manifest_id": "rrm_2026-04-28T14:05:01Z_packages_event-store_fixtures_synthetic_market_events.jsonl__packages_market-state-engine_fixtures_synthetic_market_states.jsonl__packages_edge-scanner_fixtures_synthetic_edge_signals.jsonl__packages_risk-governor_fixtures_synthetic_risk_decisions.jsonl__packages_risk-governor_fixtures_synthetic_action_decisions.jsonl__packages_paper-trader_fixtures_synthetic_paper_ledger_entries.jsonl__packages_paper-trader_fixtures_synthetic_paper_exits.jsonl__packages_paper-trader_fixtures_synthetic_paper_performance_summary.json",
+  "run_mode": "validation_only",
+  "status": "strategy_run_intent_ready",
+  "reason": "Strategy run intent is metadata only. It validates the intended replay attachment without executing strategy logic."
+}
