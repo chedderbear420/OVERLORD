@@ -44,7 +44,9 @@ export const forbiddenMetadataFields = new Set([
   "kelly_fraction",
   "recommendation",
   "recommended_action",
-  "live_trade_recommendation"
+  "live_trade_recommendation",
+  "analytics",
+  "strategy_analytics"
 ]);
 
 export function validateForbiddenFields(errors, value, pathParts = []) {

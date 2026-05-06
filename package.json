@@ -28,6 +28,8 @@
     "test:replay-engine": "node --test packages/replay-engine/tests/*.test.js",
     "validate:strategy-definition": "node packages/strategy-dsl/src/validate-strategy-definition.js",
     "validate:strategy-run-intent": "node packages/strategy-dsl/src/validate-strategy-run-intent.js",
+    "validate:strategy-run-trace": "node packages/strategy-dsl/src/validate-strategy-run-trace.js",
+    "validate:strategy-noop-run-summary": "node packages/strategy-dsl/src/validate-strategy-noop-run-summary.js",
     "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js"
   }
 }
