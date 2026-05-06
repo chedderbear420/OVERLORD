@@ -12,6 +12,8 @@ Phase 2D adds negative fixture hardening for StrategyRunTrace and StrategyNoOpRu
 
 Phase 2E adds StrategyRunManifest and StrategyRunEvidenceBundle metadata for the no-op strategy run. These records inventory and prove local strategy-run artifacts only; they do not execute strategy logic or create signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 2F adds negative fixture hardening for StrategyRunManifest and StrategyRunEvidenceBundle malformed, unsafe, inconsistent, duplicated, missing, executable, signal-like, decision-like, order-like, recommendation-like, and bankroll-like records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -71,3 +73,5 @@ StrategyRunTrace is no-op observation metadata only. It may point to replay inpu
 StrategyRunTrace and StrategyNoOpRunSummary negative fixtures must fail deterministically before any future strategy execution layer can consume them.
 
 StrategyRunManifest and StrategyRunEvidenceBundle are inventory/proof metadata only. They may reference local Strategy DSL fixtures and validation commands, but they must not include executable strategy runtime, signal requests, decision requests, order/trade requests, recommendations, analytics, bankroll allocation, credentials, polling, WebSockets, or live execution fields.
+
+StrategyRunManifest and StrategyRunEvidenceBundle negative fixtures must fail deterministically before any future strategy execution layer can consume them.

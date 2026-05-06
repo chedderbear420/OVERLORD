@@ -1,0 +1,51 @@
+{
+  "strategy_run_manifest_id": "srm_2026-04-28T14:05:01Z_packages_strategy-dsl_fixtures_synthetic_strategy_definition.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_intent.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_trace.jsonl__packages_strategy-dsl_fixtures_synthetic_strategy_noop_run_summary.json",
+  "schema_version": "strategy_run_manifest.v1",
+  "generated_at": "2026-04-28T14:05:01Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "validation_only",
+  "artifacts": [
+    {
+      "artifact_type": "strategy_definition",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_definition.json",
+      "schema_version": "strategy_definition.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-definition"
+    },
+    {
+      "artifact_type": "strategy_run_intent",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_run_intent.json",
+      "schema_version": "strategy_run_intent.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-run-intent"
+    },
+    {
+      "artifact_type": "strategy_run_trace",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_run_trace.jsonl",
+      "schema_version": "strategy_run_trace.v1",
+      "record_count": 20,
+      "validation_command": "npm run validate:strategy-run-trace"
+    },
+    {
+      "artifact_type": "strategy_noop_run_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_noop_run_summary.json",
+      "schema_version": "strategy_noop_run_summary.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-noop-run-summary"
+    }
+  ],
+  "validation_commands": [
+    "npm run validate:strategy-definition",
+    "npm run validate:strategy-run-intent",
+    "npm run validate:strategy-run-trace",
+    "npm run validate:strategy-noop-run-summary"
+  ],
+  "status": "strategy_run_manifest_ready",
+  "reason": "Read-only manifest of local no-op strategy run artifacts. No strategy logic executed.",
+  "recommendation": "trade"
+}

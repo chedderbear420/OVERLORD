@@ -1,0 +1,85 @@
+{
+  "strategy_run_evidence_bundle_id": "sreb_59c95d7a4449cbc04d7ecff3714f14c7",
+  "schema_version": "strategy_run_evidence_bundle.v1",
+  "generated_at": "2026-04-28T14:05:01Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "strategy_run_manifest_id": "srm_2026-04-28T14:05:01Z_packages_strategy-dsl_fixtures_synthetic_strategy_definition.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_intent.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_trace.jsonl__packages_strategy-dsl_fixtures_synthetic_strategy_noop_run_summary.json",
+  "source_strategy_noop_run_summary_id": "sns_5e78f86c633eb098a31c3a088272e1a3",
+  "source_strategy_definition_path": "packages/strategy-dsl/fixtures/synthetic_strategy_definition.json",
+  "source_strategy_run_intent_path": "packages/strategy-dsl/fixtures/synthetic_strategy_run_intent.json",
+  "source_strategy_run_trace_path": "packages/strategy-dsl/fixtures/synthetic_strategy_run_trace.jsonl",
+  "source_strategy_noop_run_summary_path": "packages/strategy-dsl/fixtures/synthetic_strategy_noop_run_summary.json",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "validation_only",
+  "evidence_artifacts": [
+    {
+      "artifact_type": "strategy_definition",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_definition.json",
+      "schema_version": "strategy_definition.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-definition",
+      "artifact_id": "sdef_465b3a781e17ac699a505ad3724dcfee"
+    },
+    {
+      "artifact_type": "strategy_run_intent",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_run_intent.json",
+      "schema_version": "strategy_run_intent.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-run-intent",
+      "artifact_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f"
+    },
+    {
+      "artifact_type": "strategy_run_trace",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_run_trace.jsonl",
+      "schema_version": "strategy_run_trace.v1",
+      "record_count": 20,
+      "validation_command": "npm run validate:strategy-run-trace",
+      "artifact_id": null
+    },
+    {
+      "artifact_type": "strategy_noop_run_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_noop_run_summary.json",
+      "schema_version": "strategy_noop_run_summary.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-noop-run-summary",
+      "artifact_id": "sns_5e78f86c633eb098a31c3a088272e1a3"
+    }
+  ],
+  "strategy_noop_totals": {
+    "total_trace_records": 20,
+    "total_inputs_observed": 18
+  },
+  "consistency_checks": [
+    {
+      "check_name": "strategy_definition_id_alignment",
+      "status": "check_failed",
+      "reason": "strategy_definition_id_alignment passed."
+    },
+    {
+      "check_name": "strategy_run_intent_id_alignment",
+      "status": "check_passed",
+      "reason": "strategy_run_intent_id_alignment passed."
+    },
+    {
+      "check_name": "trace_totals",
+      "status": "check_passed",
+      "reason": "trace_totals passed."
+    },
+    {
+      "check_name": "input_observation_totals",
+      "status": "check_passed",
+      "reason": "input_observation_totals passed."
+    },
+    {
+      "check_name": "evidence_artifact_contract_count",
+      "status": "check_passed",
+      "reason": "evidence_artifact_contract_count passed."
+    }
+  ],
+  "status": "strategy_run_evidence_bundle_ready",
+  "reason": "Strategy run evidence bundle for local no-op strategy observation only. No strategy logic, signals, decisions, trades, or analytics produced."
+}
