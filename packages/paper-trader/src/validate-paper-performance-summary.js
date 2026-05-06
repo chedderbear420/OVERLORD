@@ -36,6 +36,20 @@ const requiredFields = [
   "reason"
 ];
 
+const forbiddenFields = [
+  "roi",
+  "roi_percent",
+  "sharpe_ratio",
+  "bankroll_growth",
+  "kelly_fraction",
+  "strategy_score",
+  "model_score",
+  "recommendation",
+  "recommended_action",
+  "allocation_cents",
+  "live_trade_recommendation"
+];
+
 export async function validatePaperPerformanceSummaryFile(options = {}) {
   const filePath = options.filePath ?? defaultFixturePath;
   let summary;
@@ -53,6 +67,11 @@ export function validatePaperPerformanceSummary(summary) {
   for (const field of requiredFields) {
     if (!Object.hasOwn(summary, field)) {
       errors.push(`${field} is required`);
+    }
+  }
+  for (const field of forbiddenFields) {
+    if (Object.hasOwn(summary, field)) {
+      errors.push(`${field} is forbidden in PaperPerformanceSummary`);
     }
   }
   if (summary.schema_version !== "paper_performance_summary.v1") {
@@ -91,6 +110,18 @@ export function validatePaperPerformanceSummary(summary) {
   }
   if (Number.isInteger(summary.total_paper_entries) && Number.isInteger(summary.closed_paper_entries) && Number.isInteger(summary.open_paper_entries) && summary.open_paper_entries !== summary.total_paper_entries - summary.closed_paper_entries) {
     errors.push("open_paper_entries must equal total_paper_entries - closed_paper_entries");
+  }
+  if (Number.isInteger(summary.total_paper_entries) && Number.isInteger(summary.closed_paper_entries) && summary.closed_paper_entries > summary.total_paper_entries) {
+    errors.push("closed_paper_entries must not exceed total_paper_entries");
+  }
+  if (Number.isInteger(summary.ledger_record_count) && Number.isInteger(summary.total_paper_entries) && Number.isInteger(summary.rejected_paper_entries) && summary.total_paper_entries + summary.rejected_paper_entries > summary.ledger_record_count) {
+    errors.push("paper entry counts must not exceed ledger_record_count");
+  }
+  if (Number.isInteger(summary.exit_record_count) && Number.isInteger(summary.total_paper_exits) && Number.isInteger(summary.rejected_paper_exits) && summary.total_paper_exits + summary.rejected_paper_exits > summary.exit_record_count) {
+    errors.push("paper exit counts must not exceed exit_record_count");
+  }
+  if (Number.isInteger(summary.total_gross_pnl_cents) && Number.isInteger(summary.total_estimated_fees_cents) && Number.isInteger(summary.total_net_pnl_cents) && summary.total_net_pnl_cents !== summary.total_gross_pnl_cents - summary.total_estimated_fees_cents) {
+    errors.push("total_net_pnl_cents must equal total_gross_pnl_cents - total_estimated_fees_cents");
   }
   if (Number.isInteger(summary.total_paper_exits) && Number.isInteger(summary.winning_paper_exits) && Number.isInteger(summary.losing_paper_exits) && Number.isInteger(summary.flat_paper_exits) && summary.total_paper_exits !== summary.winning_paper_exits + summary.losing_paper_exits + summary.flat_paper_exits) {
     errors.push("exit outcome counts must sum to total_paper_exits");

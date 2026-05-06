@@ -46,4 +46,6 @@ Phase 1P adds negative fixture validation for malformed PaperExit JSONL, bad det
 
 Phase 1Q adds a read-only fake-accounting summary. It aggregates valid paper ledger and paper exit records only. It does not calculate ROI, Sharpe ratio, bankroll growth, Kelly sizing, model ranking, strategy score, or recommendations.
 
-See `docs/PHASE_1M_PAPER_TRADING_LEDGER.md`, `docs/PHASE_1N_PAPER_LEDGER_VALIDATION.md`, `docs/PHASE_1O_PAPER_EXIT_PNL.md`, `docs/PHASE_1P_PAPER_EXIT_VALIDATION.md`, and `docs/PHASE_1Q_PAPER_PERFORMANCE_SUMMARY.md`.
+Phase 1R adds negative fixture validation for malformed summaries, bad ids, missing provenance, unsafe flags, invalid type/status, inconsistent counts, bad accounting totals, and forbidden strategy/bankroll/model/recommendation fields.
+
+See `docs/PHASE_1M_PAPER_TRADING_LEDGER.md`, `docs/PHASE_1N_PAPER_LEDGER_VALIDATION.md`, `docs/PHASE_1O_PAPER_EXIT_PNL.md`, `docs/PHASE_1P_PAPER_EXIT_VALIDATION.md`, `docs/PHASE_1Q_PAPER_PERFORMANCE_SUMMARY.md`, and `docs/PHASE_1R_PAPER_PERFORMANCE_SUMMARY_VALIDATION.md`.
