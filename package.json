@@ -15,6 +15,7 @@
     "validate:action-decisions": "node packages/risk-governor/src/validate-risk-decisions.js --actions",
     "test:risk-governor": "node --test packages/risk-governor/tests/*.test.js",
     "validate:paper-ledger": "node packages/paper-trader/src/validate-paper-ledger.js",
+    "validate:paper-exits": "node packages/paper-trader/src/validate-paper-exits.js",
     "test:paper-trader": "node --test packages/paper-trader/tests/*.test.js"
   }
 }

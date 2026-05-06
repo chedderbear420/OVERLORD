@@ -7,16 +7,24 @@ This package records replayable PaperLedgerEntry JSONL records from approved pap
 ## Files
 
 - `schemas/paper_ledger_entry.schema.json`: PaperLedgerEntry schema.
+- `schemas/paper_exit.schema.json`: PaperExit schema.
 - `fixtures/synthetic_paper_ledger_entries.jsonl`: deterministic positive paper ledger fixture.
+- `fixtures/synthetic_exit_prices.jsonl`: deterministic local exit price fixture.
+- `fixtures/synthetic_paper_exits.jsonl`: deterministic positive PaperExit fixture.
 - `src/build-paper-ledger-entry.js`: pure builder from ActionDecision plus RiskDecision.
+- `src/build-paper-exit.js`: pure builder from PaperLedgerEntry plus synthetic exit price.
 - `src/paper-ledger-reader.js`: JSONL reader preserving line order.
 - `src/paper-ledger-writer.js`: append-only validated writer.
+- `src/paper-exit-reader.js`: PaperExit JSONL reader preserving line order.
+- `src/paper-exit-writer.js`: append-only validated PaperExit writer.
 - `src/validate-paper-ledger.js`: local fixture validator.
+- `src/validate-paper-exits.js`: local PaperExit fixture validator.
 
 ## Commands
 
 ```powershell
 npm run validate:paper-ledger
+npm run validate:paper-exits
 npm run test:paper-trader
 ```
 
@@ -24,8 +32,8 @@ npm run test:paper-trader
 
 PaperLedgerEntry records are simulated only. A paper ledger entry is not a real trade, not a real order, and not a real exchange position.
 
-Phase 1M does not implement exits, settlement, final P/L, strategy performance, bankroll management, or live execution.
+Phase 1O adds simulated paper exits and fake P/L accounting. It does not implement real settlement, strategy performance, bankroll management, or live execution.
 
 Phase 1N adds negative fixture validation for malformed JSONL, missing provenance, bad deterministic ids, duplicate ids, non-monotonic ordering, unsafe live/order flags, non-paper-only records, invalid price/quantity/notional math, invalid event/status values, and non-null final P/L.
 
-See `docs/PHASE_1M_PAPER_TRADING_LEDGER.md` and `docs/PHASE_1N_PAPER_LEDGER_VALIDATION.md`.
+See `docs/PHASE_1M_PAPER_TRADING_LEDGER.md`, `docs/PHASE_1N_PAPER_LEDGER_VALIDATION.md`, and `docs/PHASE_1O_PAPER_EXIT_PNL.md`.
