@@ -87,6 +87,9 @@ export function validatePaperLedgerRecords(records) {
     if (value.ledger_event_type === "paper_entry_rejected" && value.status !== "paper_rejected") {
       errors.push(issue(lineNumber, "paper_entry_rejected entries must have paper_rejected status"));
     }
+    if (value.status === "paper_open" && (!Number.isInteger(value.paper_quantity) || value.paper_quantity <= 0)) {
+      errors.push(issue(lineNumber, "paper_quantity must be a positive integer for paper_open entries"));
+    }
     if (!["YES", "NO"].includes(value.side)) {
       errors.push(issue(lineNumber, "side must be YES or NO"));
     }

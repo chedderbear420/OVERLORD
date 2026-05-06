@@ -26,4 +26,6 @@ PaperLedgerEntry records are simulated only. A paper ledger entry is not a real 
 
 Phase 1M does not implement exits, settlement, final P/L, strategy performance, bankroll management, or live execution.
 
-See `docs/PHASE_1M_PAPER_TRADING_LEDGER.md`.
+Phase 1N adds negative fixture validation for malformed JSONL, missing provenance, bad deterministic ids, duplicate ids, non-monotonic ordering, unsafe live/order flags, non-paper-only records, invalid price/quantity/notional math, invalid event/status values, and non-null final P/L.
+
+See `docs/PHASE_1M_PAPER_TRADING_LEDGER.md` and `docs/PHASE_1N_PAPER_LEDGER_VALIDATION.md`.
