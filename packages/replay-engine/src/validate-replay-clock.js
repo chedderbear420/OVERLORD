@@ -183,7 +183,7 @@ function makeReport(filePath, errors) {
   };
 }
 
-if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
   const explicitPath = process.argv.find((arg) => arg.endsWith(".json"));
   const report = await validateReplayClockFile({
     filePath: explicitPath ? path.resolve(explicitPath) : defaultFixturePath

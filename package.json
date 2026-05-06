@@ -21,6 +21,8 @@
     "validate:replay-run-manifest": "node packages/replay-engine/src/validate-replay-run-manifest.js",
     "validate:replay-clock": "node packages/replay-engine/src/validate-replay-clock.js",
     "validate:replay-read-plan": "node packages/replay-engine/src/validate-replay-read-plan.js",
+    "validate:replay-trace": "node packages/replay-engine/src/validate-replay-trace.js",
+    "validate:replay-noop-run-summary": "node packages/replay-engine/src/validate-replay-noop-run-summary.js",
     "test:replay-engine": "node --test packages/replay-engine/tests/*.test.js"
   }
 }

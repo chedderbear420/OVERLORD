@@ -9,19 +9,29 @@ Phase 1S defines a ReplayRunManifest that references local validated fixture art
 - `schemas/replay_run_manifest.schema.json`: ReplayRunManifest schema.
 - `schemas/replay_clock.schema.json`: ReplayClock schema.
 - `schemas/replay_read_plan.schema.json`: ReplayReadPlan schema.
+- `schemas/replay_trace.schema.json`: ReplayTrace schema.
+- `schemas/replay_noop_run_summary.schema.json`: ReplayNoOpRunSummary schema.
 - `fixtures/synthetic_replay_run_manifest.json`: deterministic synthetic manifest.
 - `fixtures/synthetic_replay_clock.json`: deterministic replay clock generated from local fixtures.
 - `fixtures/synthetic_replay_read_plan.json`: deterministic read plan generated from the manifest.
+- `fixtures/synthetic_replay_trace.jsonl`: deterministic no-op trace fixture.
+- `fixtures/synthetic_replay_noop_run_summary.json`: deterministic no-op summary fixture.
 - `src/build-replay-run-manifest.js`: read-only manifest builder.
 - `src/build-replay-clock.js`: read-only replay clock builder.
 - `src/build-replay-read-plan.js`: read-only replay read-plan builder.
+- `src/build-replay-trace.js`: deterministic no-op trace and summary builder.
+- `src/run-noop-replay.js`: validates and walks local replay metadata without executing strategies.
 - `src/replay-run-manifest-id.js`: deterministic manifest id helper.
 - `src/replay-clock-id.js`: deterministic replay clock id helper.
 - `src/replay-read-plan-id.js`: deterministic replay read-plan id helper.
+- `src/replay-trace-id.js`: deterministic ReplayTrace id helper.
+- `src/replay-noop-run-summary-id.js`: deterministic ReplayNoOpRunSummary id helper.
 - `src/replay-artifact-reader.js`: local JSON/JSONL artifact reader.
 - `src/validate-replay-run-manifest.js`: local manifest validator.
 - `src/validate-replay-clock.js`: local ReplayClock validator.
 - `src/validate-replay-read-plan.js`: local ReplayReadPlan validator.
+- `src/validate-replay-trace.js`: local ReplayTrace validator.
+- `src/validate-replay-noop-run-summary.js`: local ReplayNoOpRunSummary validator.
 - `fixtures/negative/`: deterministic negative validation fixtures.
 
 ## Commands
@@ -30,6 +40,8 @@ Phase 1S defines a ReplayRunManifest that references local validated fixture art
 npm run validate:replay-run-manifest
 npm run validate:replay-clock
 npm run validate:replay-read-plan
+npm run validate:replay-trace
+npm run validate:replay-noop-run-summary
 npm run test:replay-engine
 ```
 
@@ -38,6 +50,8 @@ npm run test:replay-engine
 ReplayRunManifest is inventory and traceability only. It answers which local fake-data artifacts belong to a replay/accounting run.
 
 ReplayClock and ReplayReadPlan are also metadata-only. They describe which local fixture records would be read and in what deterministic order. They do not execute replay logic, run strategies, generate EdgeSignals, create RiskDecisions, write paper ledger entries, write paper exits, calculate analytics, or recommend actions.
+
+ReplayTrace and ReplayNoOpRunSummary are no-op replay outputs. They prove the shell can walk local fake-data read order, but they do not execute strategies, generate decisions, create trades, calculate edge, calculate bankroll metrics, or recommend actions.
 
 ## Validation
 

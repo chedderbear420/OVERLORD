@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://overlord.local/schemas/replay-engine/replay_trace.schema.json",
+  "title": "Overlord ReplayTrace",
+  "type": "object",
+  "required": [
+    "replay_trace_id",
+    "schema_version",
+    "generated_at",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "replay_mode",
+    "trace_event_type",
+    "trace_index",
+    "source_replay_run_manifest_id",
+    "source_replay_clock_id",
+    "source_replay_read_plan_id",
+    "source_manifest_path",
+    "artifact_type",
+    "artifact_path",
+    "record_ref",
+    "record_time",
+    "record_id",
+    "status",
+    "reason"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "replay_trace_id": {
+      "type": "string",
+      "pattern": "^rtrace_"
+    },
+    "schema_version": {
+      "const": "replay_trace.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "paper_only": {
+      "const": true
+    },
+    "live_execution_allowed": {
+      "const": false
+    },
+    "order_placement_allowed": {
+      "const": false
+    },
+    "replay_mode": {
+      "enum": ["offline_fixture_replay"]
+    },
+    "trace_event_type": {
+      "enum": ["noop_record_read", "noop_replay_started", "noop_replay_completed", "noop_replay_rejected"]
+    },
+    "trace_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "source_replay_run_manifest_id": {
+      "type": "string",
+      "pattern": "^rrm_"
+    },
+    "source_replay_clock_id": {
+      "type": "string",
+      "pattern": "^rclk_"
+    },
+    "source_replay_read_plan_id": {
+      "type": "string",
+      "pattern": "^rrp_"
+    },
+    "source_manifest_path": {
+      "type": "string"
+    },
+    "artifact_type": {
+      "type": "string"
+    },
+    "artifact_path": {
+      "type": "string"
+    },
+    "record_ref": {
+      "type": "string"
+    },
+    "record_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_id": {
+      "type": ["string", "null"]
+    },
+    "status": {
+      "enum": ["trace_recorded", "trace_rejected"]
+    },
+    "reason": {
+      "type": "string"
+    }
+  }
+}

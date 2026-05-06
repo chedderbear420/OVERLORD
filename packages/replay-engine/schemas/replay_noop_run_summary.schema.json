@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://overlord.local/schemas/replay-engine/replay_noop_run_summary.schema.json",
+  "title": "Overlord ReplayNoOpRunSummary",
+  "type": "object",
+  "required": [
+    "replay_noop_run_summary_id",
+    "schema_version",
+    "generated_at",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "replay_mode",
+    "source_replay_run_manifest_id",
+    "source_replay_clock_id",
+    "source_replay_read_plan_id",
+    "total_trace_records",
+    "total_records_read",
+    "total_artifacts_read",
+    "status",
+    "reason"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "replay_noop_run_summary_id": {
+      "type": "string",
+      "pattern": "^rnrs_"
+    },
+    "schema_version": {
+      "const": "replay_noop_run_summary.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "paper_only": {
+      "const": true
+    },
+    "live_execution_allowed": {
+      "const": false
+    },
+    "order_placement_allowed": {
+      "const": false
+    },
+    "replay_mode": {
+      "enum": ["offline_fixture_replay"]
+    },
+    "source_replay_run_manifest_id": {
+      "type": "string",
+      "pattern": "^rrm_"
+    },
+    "source_replay_clock_id": {
+      "type": "string",
+      "pattern": "^rclk_"
+    },
+    "source_replay_read_plan_id": {
+      "type": "string",
+      "pattern": "^rrp_"
+    },
+    "total_trace_records": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_records_read": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_artifacts_read": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "enum": ["noop_replay_summary_ready", "noop_replay_summary_rejected"]
+    },
+    "reason": {
+      "type": "string"
+    }
+  }
+}
