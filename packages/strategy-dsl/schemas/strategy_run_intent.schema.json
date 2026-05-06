@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://overlord.local/schemas/strategy-dsl/strategy_run_intent.schema.json",
+  "title": "Overlord StrategyRunIntent",
+  "type": "object",
+  "required": [
+    "strategy_run_intent_id",
+    "schema_version",
+    "created_at",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "strategy_definition_id",
+    "replay_mode",
+    "source_replay_evidence_bundle_id",
+    "source_replay_run_manifest_id",
+    "run_mode",
+    "status",
+    "reason"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "strategy_run_intent_id": { "type": "string", "pattern": "^sri_" },
+    "schema_version": { "const": "strategy_run_intent.v1" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "paper_only": { "const": true },
+    "live_execution_allowed": { "const": false },
+    "order_placement_allowed": { "const": false },
+    "strategy_definition_id": { "type": "string", "pattern": "^sdef_" },
+    "replay_mode": { "enum": ["offline_fixture_replay"] },
+    "source_replay_evidence_bundle_id": { "type": "string", "pattern": "^reb_" },
+    "source_replay_run_manifest_id": { "type": "string", "pattern": "^rrm_" },
+    "run_mode": { "enum": ["validation_only", "dry_run_planned"] },
+    "status": { "enum": ["strategy_run_intent_ready", "strategy_run_intent_rejected"] },
+    "reason": { "type": "string" }
+  }
+}

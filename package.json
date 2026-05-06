@@ -25,6 +25,9 @@
     "validate:replay-noop-run-summary": "node packages/replay-engine/src/validate-replay-noop-run-summary.js",
     "validate:replay-evidence-bundle": "node packages/replay-engine/src/validate-replay-evidence-bundle.js",
     "validate:replay-run-report": "node packages/replay-engine/src/validate-replay-run-report.js",
-    "test:replay-engine": "node --test packages/replay-engine/tests/*.test.js"
+    "test:replay-engine": "node --test packages/replay-engine/tests/*.test.js",
+    "validate:strategy-definition": "node packages/strategy-dsl/src/validate-strategy-definition.js",
+    "validate:strategy-run-intent": "node packages/strategy-dsl/src/validate-strategy-run-intent.js",
+    "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js"
   }
 }
