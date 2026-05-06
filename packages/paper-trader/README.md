@@ -36,4 +36,6 @@ Phase 1O adds simulated paper exits and fake P/L accounting. It does not impleme
 
 Phase 1N adds negative fixture validation for malformed JSONL, missing provenance, bad deterministic ids, duplicate ids, non-monotonic ordering, unsafe live/order flags, non-paper-only records, invalid price/quantity/notional math, invalid event/status values, and non-null final P/L.
 
-See `docs/PHASE_1M_PAPER_TRADING_LEDGER.md`, `docs/PHASE_1N_PAPER_LEDGER_VALIDATION.md`, and `docs/PHASE_1O_PAPER_EXIT_PNL.md`.
+Phase 1P adds negative fixture validation for malformed PaperExit JSONL, bad deterministic ids, missing provenance, unsafe live/order flags, non-paper-only exits, invalid price bounds, invalid quantity, notional/P/L math errors, duplicate exits, non-monotonic ordering, invalid event/status values, and inconsistent status/event mappings.
+
+See `docs/PHASE_1M_PAPER_TRADING_LEDGER.md`, `docs/PHASE_1N_PAPER_LEDGER_VALIDATION.md`, `docs/PHASE_1O_PAPER_EXIT_PNL.md`, and `docs/PHASE_1P_PAPER_EXIT_VALIDATION.md`.

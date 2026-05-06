@@ -99,8 +99,8 @@ export function validatePaperExitRecords(records) {
         errors.push(issue(lineNumber, `${field} must be integer cents from 0 to 100`));
       }
     }
-    if (value.status === "paper_closed" && (!Number.isInteger(value.paper_quantity) || value.paper_quantity <= 0)) {
-      errors.push(issue(lineNumber, "paper_quantity must be a positive integer for paper_closed exits"));
+    if (!Number.isInteger(value.paper_quantity) || value.paper_quantity <= 0) {
+      errors.push(issue(lineNumber, "paper_quantity must be a positive integer"));
     }
     for (const field of ["paper_quantity", "entry_notional_cents", "exit_notional_cents", "estimated_fee_cents"]) {
       if (!Number.isInteger(value[field]) || value[field] < 0) {
