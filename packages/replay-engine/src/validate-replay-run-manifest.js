@@ -20,7 +20,63 @@ const requiredFields = [
   "reason"
 ];
 const requiredArtifactFields = ["artifact_type", "artifact_path", "schema_version", "record_count", "validation_command"];
-const forbiddenPathPattern = /(^|[\\/])(\.env|env|credentials?|secrets?|api[_-]?keys?|live[_-]?config)([\\/]|\.|$)/i;
+const forbiddenPathPattern = /(^|[\\/])(\.env|env|credentials?|secrets?|api[_-]?keys?|live[_-]?config|tokens?|bearer|private[_-]?keys?)([\\/]|\.|$)/i;
+const forbiddenCommandPattern = /\b(curl|wget|fetch|powershell|pwsh|invoke-webrequest|invoke-restmethod|iwr|irm)\b|https?:\/\/|[|<>]/i;
+const forbiddenManifestFields = new Set([
+  "strategy_score",
+  "strategy_name",
+  "bankroll_growth",
+  "bankroll_allocation",
+  "roi",
+  "sharpe_ratio",
+  "kelly_fraction",
+  "model_score",
+  "recommendation",
+  "recommended_action",
+  "live_trade_recommendation"
+]);
+const artifactContracts = new Map([
+  ["event_store_market_events", {
+    artifact_path: "packages/event-store/fixtures/synthetic_market_events.jsonl",
+    schema_version: "event_envelope.v1",
+    validation_command: "npm run validate:event-store"
+  }],
+  ["market_state", {
+    artifact_path: "packages/market-state-engine/fixtures/synthetic_market_states.jsonl",
+    schema_version: "market_state.v1",
+    validation_command: "npm run validate:market-state"
+  }],
+  ["edge_signal", {
+    artifact_path: "packages/edge-scanner/fixtures/synthetic_edge_signals.jsonl",
+    schema_version: "edge_signal.v1",
+    validation_command: "npm run validate:edge-signals"
+  }],
+  ["risk_decision", {
+    artifact_path: "packages/risk-governor/fixtures/synthetic_risk_decisions.jsonl",
+    schema_version: "risk_decision.v1",
+    validation_command: "npm run validate:risk-decisions"
+  }],
+  ["action_decision", {
+    artifact_path: "packages/risk-governor/fixtures/synthetic_action_decisions.jsonl",
+    schema_version: "action_decision.v1",
+    validation_command: "npm run validate:action-decisions"
+  }],
+  ["paper_ledger", {
+    artifact_path: "packages/paper-trader/fixtures/synthetic_paper_ledger_entries.jsonl",
+    schema_version: "paper_ledger_entry.v1",
+    validation_command: "npm run validate:paper-ledger"
+  }],
+  ["paper_exit", {
+    artifact_path: "packages/paper-trader/fixtures/synthetic_paper_exits.jsonl",
+    schema_version: "paper_exit.v1",
+    validation_command: "npm run validate:paper-exits"
+  }],
+  ["paper_performance_summary", {
+    artifact_path: "packages/paper-trader/fixtures/synthetic_paper_performance_summary.json",
+    schema_version: "paper_performance_summary.v1",
+    validation_command: "npm run validate:paper-performance-summary"
+  }]
+]);
 
 export async function validateReplayRunManifestFile(options = {}) {
   const filePath = options.filePath ?? defaultFixturePath;
@@ -36,6 +92,12 @@ export async function validateReplayRunManifestFile(options = {}) {
 export async function validateReplayRunManifest(manifest, options = {}) {
   const errors = [];
   const root = options.repoRoot ?? repoRoot;
+
+  if (!manifest || typeof manifest !== "object" || Array.isArray(manifest)) {
+    return { ok: false, errors: ["manifest must be a JSON object"] };
+  }
+
+  validateForbiddenFields(errors, manifest);
 
   for (const field of requiredFields) {
     if (!Object.hasOwn(manifest, field)) {
@@ -75,8 +137,13 @@ export async function validateReplayRunManifest(manifest, options = {}) {
     errors.push("replay_run_manifest_id must be deterministic from generated_at and artifact paths");
   }
 
+  const seenArtifactPaths = new Set();
   for (const artifact of artifacts) {
-    await validateArtifact(errors, root, artifact);
+    await validateArtifact(errors, root, artifact, seenArtifactPaths);
+  }
+
+  if (Array.isArray(manifest.validation_commands)) {
+    validateManifestValidationCommands(errors, manifest.validation_commands, artifacts);
   }
 
   return { ok: errors.length === 0, errors };
@@ -95,19 +162,49 @@ export function formatReplayRunManifestValidationReport(report) {
   return lines.join("\n");
 }
 
-async function validateArtifact(errors, root, artifact) {
+async function validateArtifact(errors, root, artifact, seenArtifactPaths) {
+  if (!artifact || typeof artifact !== "object" || Array.isArray(artifact)) {
+    errors.push("artifact must be an object");
+    return;
+  }
   for (const field of requiredArtifactFields) {
     if (!Object.hasOwn(artifact, field)) {
       errors.push(`artifact ${field} is required`);
     }
   }
+  if (!artifactContracts.has(artifact.artifact_type)) {
+    errors.push("artifact_type is invalid");
+  } else {
+    const contract = artifactContracts.get(artifact.artifact_type);
+    if (artifact.artifact_path !== contract.artifact_path) {
+      errors.push("artifact_path must match the known artifact contract");
+    }
+    if (artifact.schema_version !== contract.schema_version) {
+      errors.push("artifact schema_version must match the known artifact contract");
+    }
+    if (artifact.validation_command !== contract.validation_command) {
+      errors.push("artifact validation_command must match the known artifact contract");
+    }
+  }
+  if (typeof artifact.artifact_path === "string") {
+    if (seenArtifactPaths.has(artifact.artifact_path)) {
+      errors.push("duplicate artifact reference is not allowed");
+    }
+    seenArtifactPaths.add(artifact.artifact_path);
+  }
   if (!Number.isInteger(artifact.record_count) || artifact.record_count < 0) {
     errors.push("artifact record_count must be a non-negative integer");
   }
-  if (typeof artifact.validation_command !== "string" || !artifact.validation_command.startsWith("npm run ")) {
+  if (!isSafeLocalNpmCommand(artifact.validation_command)) {
     errors.push("artifact validation_command must be a local npm script");
   }
-  await validateArtifactPath(errors, root, artifact.artifact_path);
+  const resolved = await validateArtifactPath(errors, root, artifact.artifact_path);
+  if (resolved && Number.isInteger(artifact.record_count) && artifact.record_count >= 0) {
+    const actualRecordCount = await countArtifactRecords(errors, resolved, artifact.artifact_path);
+    if (actualRecordCount !== null && artifact.record_count !== actualRecordCount) {
+      errors.push(`artifact record_count must match local file count for ${artifact.artifact_path}`);
+    }
+  }
 }
 
 async function validateArtifactPath(errors, root, artifactPath) {
@@ -122,7 +219,7 @@ async function validateArtifactPath(errors, root, artifactPath) {
     errors.push("artifact_path must not escape the repo");
   }
   if (forbiddenPathPattern.test(artifactPath)) {
-    errors.push("artifact_path must not reference credentials, env files, secrets, live configs, or API keys");
+    errors.push("artifact_path must not reference credentials, env files, secrets, live configs, API keys, or tokens");
   }
   const resolved = path.resolve(root, artifactPath);
   if (!resolved.startsWith(root + path.sep) && resolved !== root) {
@@ -133,6 +230,62 @@ async function validateArtifactPath(errors, root, artifactPath) {
     await stat(resolved);
   } catch {
     errors.push(`artifact_path does not exist locally: ${artifactPath}`);
+    return null;
+  }
+  return resolved;
+}
+
+async function countArtifactRecords(errors, resolved, artifactPath) {
+  try {
+    const content = await readFile(resolved, "utf8");
+    if (artifactPath.endsWith(".jsonl")) {
+      return content.split(/\r?\n/u).filter((line) => line.trim().length > 0).length;
+    }
+    if (artifactPath.endsWith(".json")) {
+      JSON.parse(content);
+      return 1;
+    }
+    errors.push(`artifact_path must reference a JSON or JSONL fixture: ${artifactPath}`);
+    return null;
+  } catch (error) {
+    errors.push(`artifact record_count could not be verified for ${artifactPath}: ${error.message}`);
+    return null;
+  }
+}
+
+function validateManifestValidationCommands(errors, validationCommands, artifacts) {
+  const expectedCommands = [...new Set(artifacts.map((artifact) => artifact.validation_command))];
+  if (validationCommands.length !== expectedCommands.length) {
+    errors.push("validation_commands must match artifact validation commands in deterministic order");
+  }
+  validationCommands.forEach((command, index) => {
+    if (!isSafeLocalNpmCommand(command)) {
+      errors.push("validation_commands must contain local npm scripts only");
+    }
+    if (command !== expectedCommands[index]) {
+      errors.push("validation_commands must match artifact validation commands in deterministic order");
+    }
+  });
+}
+
+function isSafeLocalNpmCommand(command) {
+  return typeof command === "string" && command.startsWith("npm run ") && !forbiddenCommandPattern.test(command);
+}
+
+function validateForbiddenFields(errors, value, pathParts = []) {
+  if (!value || typeof value !== "object") {
+    return;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((entry, index) => validateForbiddenFields(errors, entry, [...pathParts, String(index)]));
+    return;
+  }
+  for (const [key, nested] of Object.entries(value)) {
+    if (forbiddenManifestFields.has(key)) {
+      const fieldPath = [...pathParts, key].join(".");
+      errors.push(`forbidden strategy, bankroll, model, or recommendation field is not allowed: ${fieldPath}`);
+    }
+    validateForbiddenFields(errors, nested, [...pathParts, key]);
   }
 }
 
