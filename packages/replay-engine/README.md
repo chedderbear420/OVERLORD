@@ -61,4 +61,8 @@ Validation commands must remain local `npm run` scripts. Manifest validation mus
 
 ReplayClock and ReplayReadPlan validators reject malformed JSON, bad deterministic ids, missing provenance, unsafe paper/live/order flags, invalid modes/statuses, empty event/read arrays, duplicate or non-contiguous indexes, unsafe artifact paths, invalid timestamps, invalid totals, non-local validation commands, and forbidden execution, strategy, bankroll, model-score, recommendation, order, or trade request fields.
 
+ReplayTrace and ReplayNoOpRunSummary validators reject malformed fixtures, bad deterministic ids, missing provenance, unsafe paper/live/order flags, invalid modes/statuses, duplicate or non-contiguous trace indexes, unsafe artifact paths, invalid record references, inconsistent trace lifecycle records, inconsistent summary totals, and forbidden execution, strategy, bankroll, model-score, recommendation, order, or trade request fields.
+
 ReplayClock and ReplayReadPlan validation is intended to be frozen after Phase 1V unless a bug appears.
+
+ReplayTrace and ReplayNoOpRunSummary validation is intended to be frozen after Phase 1X unless a bug appears.

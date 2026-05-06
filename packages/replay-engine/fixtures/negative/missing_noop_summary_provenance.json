@@ -1,0 +1,16 @@
+{
+  "replay_noop_run_summary_id": "rnrs_15179785b04b252be13a01df9acc82a1",
+  "schema_version": "replay_noop_run_summary.v1",
+  "generated_at": "2026-04-28T14:05:01Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "replay_mode": "offline_fixture_replay",
+  "source_replay_run_manifest_id": "rrm_2026-04-28T14:05:01Z_packages_event-store_fixtures_synthetic_market_events.jsonl__packages_market-state-engine_fixtures_synthetic_market_states.jsonl__packages_edge-scanner_fixtures_synthetic_edge_signals.jsonl__packages_risk-governor_fixtures_synthetic_risk_decisions.jsonl__packages_risk-governor_fixtures_synthetic_action_decisions.jsonl__packages_paper-trader_fixtures_synthetic_paper_ledger_entries.jsonl__packages_paper-trader_fixtures_synthetic_paper_exits.jsonl__packages_paper-trader_fixtures_synthetic_paper_performance_summary.json",
+  "source_replay_read_plan_id": "rrp_e65a27ab04e45aff20904830b1963023",
+  "total_trace_records": 20,
+  "total_records_read": 18,
+  "total_artifacts_read": 8,
+  "status": "noop_replay_summary_ready",
+  "reason": "No-op replay summary only. No strategy logic, decisions, trades, or analytics produced."
+}

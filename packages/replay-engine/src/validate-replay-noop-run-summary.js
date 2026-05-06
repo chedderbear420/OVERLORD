@@ -22,6 +22,7 @@ const requiredFields = [
   "status",
   "reason"
 ];
+const allowedStatuses = new Set(["noop_replay_summary_ready", "noop_replay_summary_rejected"]);
 const forbiddenReplayFields = new Set([
   "execute",
   "execution_plan",
@@ -84,7 +85,7 @@ export function validateReplayNoopRunSummary(summary) {
   if (summary.replay_mode !== "offline_fixture_replay") {
     errors.push("replay_mode is invalid");
   }
-  if (!["noop_replay_summary_ready", "noop_replay_summary_rejected"].includes(summary.status)) {
+  if (!allowedStatuses.has(summary.status)) {
     errors.push("status is invalid");
   }
   for (const field of ["total_trace_records", "total_records_read", "total_artifacts_read"]) {
@@ -99,9 +100,25 @@ export function validateReplayNoopRunSummary(summary) {
   )) {
     errors.push("replay_noop_run_summary_id must be deterministic from source clock, read plan, and trace count");
   }
+  for (const field of ["source_replay_run_manifest_id", "source_replay_clock_id", "source_replay_read_plan_id"]) {
+    if (typeof summary[field] !== "string" || summary[field].length === 0) {
+      errors.push(`${field} must be a non-empty string`);
+    }
+  }
+  if (summary.status === "noop_replay_summary_ready" && summary.total_trace_records < 2) {
+    errors.push("ready no-op replay summaries must include start and completed trace records");
+  }
+  if (summary.status === "noop_replay_summary_rejected" && summary.total_records_read > 0) {
+    errors.push("rejected no-op replay summaries must not report records read");
+  }
   if (Number.isInteger(summary.total_trace_records) && Number.isInteger(summary.total_records_read)) {
     if (summary.total_trace_records !== summary.total_records_read + 2) {
       errors.push("total_trace_records must equal total_records_read plus start and completed trace records");
+    }
+  }
+  if (Number.isInteger(summary.total_records_read) && Number.isInteger(summary.total_artifacts_read)) {
+    if (summary.total_artifacts_read > summary.total_records_read) {
+      errors.push("total_artifacts_read must not exceed total_records_read");
     }
   }
 

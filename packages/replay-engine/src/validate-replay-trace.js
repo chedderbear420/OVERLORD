@@ -74,6 +74,7 @@ export async function validateReplayTraces(traces, options = {}) {
   for (const [index, trace] of traces.entries()) {
     await validateTrace(errors, root, trace, index, seenIndexes, seenIds);
   }
+  validateTraceLifecycle(errors, traces);
 
   return { ok: errors.length === 0, errors };
 }
@@ -127,6 +128,12 @@ async function validateTrace(errors, root, trace, index, seenIndexes, seenIds) {
   if (!allowedStatuses.has(trace.status)) {
     errors.push("status is invalid");
   }
+  if (trace.trace_event_type === "noop_replay_rejected" && trace.status !== "trace_rejected") {
+    errors.push("noop_replay_rejected traces must use trace_rejected status");
+  }
+  if (trace.trace_event_type !== "noop_replay_rejected" && trace.status !== "trace_recorded") {
+    errors.push("non-rejected trace events must use trace_recorded status");
+  }
   if (trace.trace_index !== index) {
     errors.push("trace_index must be deterministic and contiguous");
   }
@@ -144,11 +151,62 @@ async function validateTrace(errors, root, trace, index, seenIndexes, seenIds) {
   if (Number.isNaN(Date.parse(trace.record_time))) {
     errors.push("record_time must be a valid timestamp");
   }
+  if (typeof trace.record_ref !== "string" || trace.record_ref.length === 0) {
+    errors.push("record_ref must be a non-empty string");
+  }
+  if (typeof trace.artifact_type !== "string" || trace.artifact_type.length === 0) {
+    errors.push("artifact_type must be a non-empty string");
+  }
   if (trace.record_id !== null && typeof trace.record_id !== "string") {
     errors.push("record_id must be a string or null");
   }
+  if (trace.trace_event_type === "noop_record_read") {
+    if (typeof trace.record_id !== "string" || trace.record_id.length === 0) {
+      errors.push("noop_record_read traces must include a record_id");
+    }
+    if (typeof trace.artifact_path === "string" && typeof trace.record_ref === "string" && !trace.record_ref.startsWith(`${trace.artifact_path}#`)) {
+      errors.push("noop_record_read record_ref must reference artifact_path");
+    }
+  }
+  if (["noop_replay_started", "noop_replay_completed"].includes(trace.trace_event_type)) {
+    if (trace.artifact_type !== "replay_control") {
+      errors.push("no-op replay boundary traces must use replay_control artifact_type");
+    }
+    if (trace.record_id !== null) {
+      errors.push("no-op replay boundary traces must use null record_id");
+    }
+  }
   await validateSafePath(errors, root, trace.source_manifest_path, "source_manifest_path");
   await validateSafePath(errors, root, trace.artifact_path, "artifact_path");
+}
+
+function validateTraceLifecycle(errors, traces) {
+  const firstTrace = traces[0];
+  const lastTrace = traces[traces.length - 1];
+  if (firstTrace?.trace_event_type !== "noop_replay_started") {
+    errors.push("ReplayTrace must start with noop_replay_started");
+  }
+  if (lastTrace?.trace_event_type !== "noop_replay_completed" && lastTrace?.trace_event_type !== "noop_replay_rejected") {
+    errors.push("ReplayTrace must end with noop_replay_completed or noop_replay_rejected");
+  }
+  for (let index = 1; index < traces.length - 1; index += 1) {
+    if (traces[index]?.trace_event_type !== "noop_record_read") {
+      errors.push("ReplayTrace middle records must be noop_record_read events");
+    }
+  }
+  for (let index = 1; index < traces.length; index += 1) {
+    const previous = traces[index - 1];
+    const current = traces[index];
+    if (previous?.source_replay_run_manifest_id !== current?.source_replay_run_manifest_id) {
+      errors.push("ReplayTrace records must share source_replay_run_manifest_id");
+    }
+    if (previous?.source_replay_clock_id !== current?.source_replay_clock_id) {
+      errors.push("ReplayTrace records must share source_replay_clock_id");
+    }
+    if (previous?.source_replay_read_plan_id !== current?.source_replay_read_plan_id) {
+      errors.push("ReplayTrace records must share source_replay_read_plan_id");
+    }
+  }
 }
 
 async function validateSafePath(errors, root, artifactPath, label) {
