@@ -18,6 +18,8 @@ Phase 2G adds the StrategyDryRunPlan contract. It defines what a future offline 
 
 Phase 2H adds negative fixture hardening for malformed, unsafe, invalid, non-read-only, executable, signal-like, decision-like, order-like, recommendation-like, and bankroll-like StrategyDryRunPlan records.
 
+Phase 2I adds StrategyDryRunPlanEvidenceSummary metadata. It inventories the validated StrategyDryRunPlan and its count/safety outcome without executing strategy logic or producing signals, decisions, trades, recommendations, analytics, or bankroll actions.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -27,6 +29,7 @@ Phase 2H adds negative fixture hardening for malformed, unsafe, invalid, non-rea
 - `schemas/strategy_run_manifest.schema.json`: StrategyRunManifest schema.
 - `schemas/strategy_run_evidence_bundle.schema.json`: StrategyRunEvidenceBundle schema.
 - `schemas/strategy_dry_run_plan.schema.json`: StrategyDryRunPlan schema.
+- `schemas/strategy_dry_run_plan_evidence_summary.schema.json`: StrategyDryRunPlanEvidenceSummary schema.
 - `fixtures/synthetic_strategy_definition.json`: deterministic metadata-only strategy definition fixture.
 - `fixtures/synthetic_strategy_run_intent.json`: deterministic metadata-only replay attachment intent fixture.
 - `fixtures/synthetic_strategy_run_trace.jsonl`: deterministic no-op strategy observation trace fixture.
@@ -34,6 +37,7 @@ Phase 2H adds negative fixture hardening for malformed, unsafe, invalid, non-rea
 - `fixtures/synthetic_strategy_run_manifest.json`: deterministic no-op strategy run artifact manifest fixture.
 - `fixtures/synthetic_strategy_run_evidence_bundle.json`: deterministic no-op strategy run evidence bundle fixture.
 - `fixtures/synthetic_strategy_dry_run_plan.json`: deterministic offline dry-run plan contract fixture.
+- `fixtures/synthetic_strategy_dry_run_plan_evidence_summary.json`: deterministic StrategyDryRunPlan evidence summary fixture.
 - `fixtures/negative/*.json`: deterministic negative fixtures for StrategyDefinition, StrategyRunIntent, and StrategyNoOpRunSummary validation hardening.
 - `fixtures/negative/*.jsonl`: deterministic negative fixtures for StrategyRunTrace validation hardening.
 - `src/strategy-definition-id.js`: deterministic StrategyDefinition id helper.
@@ -43,10 +47,12 @@ Phase 2H adds negative fixture hardening for malformed, unsafe, invalid, non-rea
 - `src/strategy-run-manifest-id.js`: deterministic StrategyRunManifest id helper.
 - `src/strategy-run-evidence-bundle-id.js`: deterministic StrategyRunEvidenceBundle id helper.
 - `src/strategy-dry-run-plan-id.js`: deterministic StrategyDryRunPlan id helper.
+- `src/strategy-dry-run-plan-evidence-summary-id.js`: deterministic StrategyDryRunPlanEvidenceSummary id helper.
 - `src/run-noop-strategy.js`: local no-op strategy trace shell.
 - `src/build-strategy-run-manifest.js`: local no-op strategy run manifest builder.
 - `src/build-strategy-run-evidence-bundle.js`: local no-op strategy run evidence bundle builder.
 - `src/build-strategy-dry-run-plan.js`: local StrategyDryRunPlan builder.
+- `src/build-strategy-dry-run-plan-evidence-summary.js`: local StrategyDryRunPlanEvidenceSummary builder.
 - `src/validate-strategy-definition.js`: local StrategyDefinition validator.
 - `src/validate-strategy-run-intent.js`: local StrategyRunIntent validator.
 - `src/validate-strategy-run-trace.js`: local StrategyRunTrace validator.
@@ -54,6 +60,7 @@ Phase 2H adds negative fixture hardening for malformed, unsafe, invalid, non-rea
 - `src/validate-strategy-run-manifest.js`: local StrategyRunManifest validator.
 - `src/validate-strategy-run-evidence-bundle.js`: local StrategyRunEvidenceBundle validator.
 - `src/validate-strategy-dry-run-plan.js`: local StrategyDryRunPlan validator.
+- `src/validate-strategy-dry-run-plan-evidence-summary.js`: local StrategyDryRunPlanEvidenceSummary validator.
 
 ## Commands
 
@@ -65,6 +72,7 @@ npm run validate:strategy-noop-run-summary
 npm run validate:strategy-run-manifest
 npm run validate:strategy-run-evidence-bundle
 npm run validate:strategy-dry-run-plan
+npm run validate:strategy-dry-run-plan-evidence-summary
 npm run test:strategy-dsl
 ```
 
@@ -89,3 +97,5 @@ StrategyRunManifest and StrategyRunEvidenceBundle negative fixtures must fail de
 StrategyDryRunPlan is dry-run planning metadata only. It may list read-only input artifacts, forbidden outputs, metadata-only observation steps, and safety constraints. It must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.
 
 StrategyDryRunPlan negative fixtures must fail deterministically before any future strategy execution layer can consume dry-run planning metadata.
+
+StrategyDryRunPlanEvidenceSummary is validation/inventory metadata only. It may count and reference a validated dry-run plan, but it must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.

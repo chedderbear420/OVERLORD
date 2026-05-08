@@ -33,6 +33,7 @@
     "validate:strategy-run-manifest": "node packages/strategy-dsl/src/validate-strategy-run-manifest.js",
     "validate:strategy-run-evidence-bundle": "node packages/strategy-dsl/src/validate-strategy-run-evidence-bundle.js",
     "validate:strategy-dry-run-plan": "node packages/strategy-dsl/src/validate-strategy-dry-run-plan.js",
+    "validate:strategy-dry-run-plan-evidence-summary": "node packages/strategy-dsl/src/validate-strategy-dry-run-plan-evidence-summary.js",
     "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js"
   }
 }
