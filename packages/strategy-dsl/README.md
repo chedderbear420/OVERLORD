@@ -38,6 +38,8 @@ Phase 2Q adds StrategyDryRunStackCloseoutCheckpoint metadata. It inventories the
 
 Phase 2R adds negative fixture hardening for malformed, unsafe, inconsistent, incomplete, duplicated, executable, signal-like, decision-like, order-like, recommendation-like, credential-like, analytics-like, and bankroll-like StrategyDryRunStackCloseoutCheckpoint records.
 
+Phase 3A adds StrategyObservationContract and StrategyObservationInputSet metadata. These records consume the frozen Phase 2 dry-run metadata stack as immutable input and define what a future offline observation pass may inspect, but they do not execute strategy logic or produce signals, decisions, trades, recommendations, analytics, or bankroll actions.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -54,6 +56,8 @@ Phase 2R adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `schemas/strategy_dry_run_evidence_bundle.schema.json`: StrategyDryRunEvidenceBundle schema.
 - `schemas/strategy_dry_run_case_file_summary.schema.json`: StrategyDryRunCaseFileSummary schema.
 - `schemas/strategy_dry_run_stack_closeout_checkpoint.schema.json`: StrategyDryRunStackCloseoutCheckpoint schema.
+- `schemas/strategy_observation_contract.schema.json`: StrategyObservationContract schema.
+- `schemas/strategy_observation_input_set.schema.json`: StrategyObservationInputSet schema.
 - `fixtures/synthetic_strategy_definition.json`: deterministic metadata-only strategy definition fixture.
 - `fixtures/synthetic_strategy_run_intent.json`: deterministic metadata-only replay attachment intent fixture.
 - `fixtures/synthetic_strategy_run_trace.jsonl`: deterministic no-op strategy observation trace fixture.
@@ -68,6 +72,8 @@ Phase 2R adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `fixtures/synthetic_strategy_dry_run_evidence_bundle.json`: deterministic no-op dry-run evidence bundle fixture.
 - `fixtures/synthetic_strategy_dry_run_case_file_summary.json`: deterministic no-op dry-run case-file summary fixture.
 - `fixtures/synthetic_strategy_dry_run_stack_closeout_checkpoint.json`: deterministic Phase 2 dry-run metadata stack closeout fixture.
+- `fixtures/synthetic_strategy_observation_contract.json`: deterministic offline observation contract fixture.
+- `fixtures/synthetic_strategy_observation_input_set.json`: deterministic offline observation input inventory fixture.
 - `fixtures/negative/*.json`: deterministic negative fixtures for StrategyDefinition, StrategyRunIntent, and StrategyNoOpRunSummary validation hardening.
 - `fixtures/negative/*.jsonl`: deterministic negative fixtures for StrategyRunTrace validation hardening.
 - `src/strategy-definition-id.js`: deterministic StrategyDefinition id helper.
@@ -84,6 +90,8 @@ Phase 2R adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `src/strategy-dry-run-evidence-bundle-id.js`: deterministic StrategyDryRunEvidenceBundle id helper.
 - `src/strategy-dry-run-case-file-summary-id.js`: deterministic StrategyDryRunCaseFileSummary id helper.
 - `src/strategy-dry-run-stack-closeout-checkpoint-id.js`: deterministic StrategyDryRunStackCloseoutCheckpoint id helper.
+- `src/strategy-observation-contract-id.js`: deterministic StrategyObservationContract id helper.
+- `src/strategy-observation-input-set-id.js`: deterministic StrategyObservationInputSet id helper.
 - `src/strategy-dry-run-artifacts.js`: local StrategyDryRun artifact contracts and readers.
 - `src/run-noop-strategy.js`: local no-op strategy trace shell.
 - `src/run-strategy-dry-run-noop.js`: local no-op strategy dry-run shell.
@@ -96,6 +104,8 @@ Phase 2R adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `src/build-strategy-dry-run-evidence-bundle.js`: local StrategyDryRunEvidenceBundle builder.
 - `src/build-strategy-dry-run-case-file-summary.js`: local StrategyDryRunCaseFileSummary builder.
 - `src/build-strategy-dry-run-stack-closeout-checkpoint.js`: local StrategyDryRunStackCloseoutCheckpoint builder.
+- `src/build-strategy-observation-contract.js`: local StrategyObservationContract builder.
+- `src/build-strategy-observation-input-set.js`: local StrategyObservationInputSet builder.
 - `src/validate-strategy-definition.js`: local StrategyDefinition validator.
 - `src/validate-strategy-run-intent.js`: local StrategyRunIntent validator.
 - `src/validate-strategy-run-trace.js`: local StrategyRunTrace validator.
@@ -110,6 +120,8 @@ Phase 2R adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `src/validate-strategy-dry-run-evidence-bundle.js`: local StrategyDryRunEvidenceBundle validator.
 - `src/validate-strategy-dry-run-case-file-summary.js`: local StrategyDryRunCaseFileSummary validator.
 - `src/validate-strategy-dry-run-stack-closeout-checkpoint.js`: local StrategyDryRunStackCloseoutCheckpoint validator.
+- `src/validate-strategy-observation-contract.js`: local StrategyObservationContract validator.
+- `src/validate-strategy-observation-input-set.js`: local StrategyObservationInputSet validator.
 
 ## Commands
 
@@ -128,6 +140,8 @@ npm run validate:strategy-dry-run-noop-summary
 npm run validate:strategy-dry-run-evidence-bundle
 npm run validate:strategy-dry-run-case-file-summary
 npm run validate:strategy-dry-run-stack-closeout-checkpoint
+npm run validate:strategy-observation-contract
+npm run validate:strategy-observation-input-set
 npm run test:strategy-dsl
 ```
 
@@ -172,3 +186,5 @@ StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary negative fixtures
 StrategyDryRunStackCloseoutCheckpoint is closeout/readiness metadata only. Its `freeze_recommendation` applies only to freezing the offline metadata stack and must not be interpreted as a trading, deployment, recommendation, analytics, or bankroll signal.
 
 StrategyDryRunStackCloseoutCheckpoint negative fixtures must fail deterministically before the Phase 2 dry-run metadata stack is frozen.
+
+StrategyObservationContract and StrategyObservationInputSet are Phase 3 offline observation metadata only. They may identify immutable read-only inputs from the frozen Phase 2 dry-run stack and state metadata-only observation rules, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, place orders, or produce analytics.

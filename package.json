@@ -40,6 +40,8 @@
     "validate:strategy-dry-run-evidence-bundle": "node packages/strategy-dsl/src/validate-strategy-dry-run-evidence-bundle.js",
     "validate:strategy-dry-run-case-file-summary": "node packages/strategy-dsl/src/validate-strategy-dry-run-case-file-summary.js",
     "validate:strategy-dry-run-stack-closeout-checkpoint": "node packages/strategy-dsl/src/validate-strategy-dry-run-stack-closeout-checkpoint.js",
+    "validate:strategy-observation-contract": "node packages/strategy-dsl/src/validate-strategy-observation-contract.js",
+    "validate:strategy-observation-input-set": "node packages/strategy-dsl/src/validate-strategy-observation-input-set.js",
     "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js"
   }
 }

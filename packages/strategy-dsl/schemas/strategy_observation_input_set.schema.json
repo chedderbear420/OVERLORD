@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "overlord.strategy_observation_input_set.schema.json",
+  "title": "StrategyObservationInputSet",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "strategy_observation_input_set_id",
+    "schema_version",
+    "generated_at",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "strategy_observation_contract_id",
+    "strategy_dry_run_stack_closeout_checkpoint_id",
+    "source_strategy_dry_run_stack_closeout_checkpoint_id",
+    "source_strategy_dry_run_case_file_summary_id",
+    "source_strategy_dry_run_evidence_bundle_id",
+    "source_strategy_definition_id",
+    "source_strategy_run_intent_id",
+    "replay_mode",
+    "run_mode",
+    "input_artifacts",
+    "status",
+    "reason"
+  ],
+  "properties": {
+    "strategy_observation_input_set_id": { "type": "string", "pattern": "^sois_[a-f0-9]{32}$" },
+    "schema_version": { "const": "strategy_observation_input_set.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "paper_only": { "const": true },
+    "live_execution_allowed": { "const": false },
+    "order_placement_allowed": { "const": false },
+    "strategy_observation_contract_id": { "type": "string", "pattern": "^soc_" },
+    "strategy_dry_run_stack_closeout_checkpoint_id": { "type": "string", "pattern": "^sdrscc_" },
+    "replay_mode": { "const": "offline_fixture_replay" },
+    "run_mode": { "enum": ["validation_only", "dry_run_planned"] },
+    "input_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["artifact_type", "artifact_path", "artifact_id", "record_count", "access_mode"],
+        "properties": {
+          "artifact_type": {
+            "enum": [
+              "strategy_definition",
+              "strategy_run_intent",
+              "strategy_dry_run_trace",
+              "strategy_dry_run_noop_summary",
+              "strategy_dry_run_case_file_summary",
+              "replay_trace",
+              "replay_clock",
+              "replay_read_plan",
+              "market_state_metadata"
+            ]
+          },
+          "artifact_path": { "type": "string" },
+          "artifact_id": { "type": ["string", "null"] },
+          "record_count": { "type": "integer", "minimum": 0 },
+          "access_mode": { "const": "read_only" }
+        }
+      }
+    },
+    "status": { "enum": ["strategy_observation_input_set_ready", "strategy_observation_input_set_rejected"] },
+    "reason": { "type": "string" }
+  }
+}
