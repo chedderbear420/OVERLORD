@@ -37,6 +37,8 @@
     "validate:strategy-dry-run-readiness-checkpoint": "node packages/strategy-dsl/src/validate-strategy-dry-run-readiness-checkpoint.js",
     "validate:strategy-dry-run-trace": "node packages/strategy-dsl/src/validate-strategy-dry-run-trace.js",
     "validate:strategy-dry-run-noop-summary": "node packages/strategy-dsl/src/validate-strategy-dry-run-noop-summary.js",
+    "validate:strategy-dry-run-evidence-bundle": "node packages/strategy-dsl/src/validate-strategy-dry-run-evidence-bundle.js",
+    "validate:strategy-dry-run-case-file-summary": "node packages/strategy-dsl/src/validate-strategy-dry-run-case-file-summary.js",
     "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js"
   }
 }

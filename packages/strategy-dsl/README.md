@@ -30,6 +30,8 @@ Phase 2M adds an offline StrategyDryRunTrace no-op shell. It consumes the valida
 
 Phase 2N adds negative fixture hardening for malformed, unsafe, inconsistent, unordered, duplicated, lifecycle-invalid, executable, signal-like, decision-like, order-like, recommendation-like, credential-like, live-capable, and bankroll-like StrategyDryRunTrace and StrategyDryRunNoOpSummary records.
 
+Phase 2O adds StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary metadata. These records inventory the validated no-op dry-run artifacts and final case-file totals without executing strategy logic or producing signals, decisions, trades, recommendations, analytics, or bankroll actions.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -43,6 +45,8 @@ Phase 2N adds negative fixture hardening for malformed, unsafe, inconsistent, un
 - `schemas/strategy_dry_run_readiness_checkpoint.schema.json`: StrategyDryRunReadinessCheckpoint schema.
 - `schemas/strategy_dry_run_trace.schema.json`: StrategyDryRunTrace schema.
 - `schemas/strategy_dry_run_noop_summary.schema.json`: StrategyDryRunNoOpSummary schema.
+- `schemas/strategy_dry_run_evidence_bundle.schema.json`: StrategyDryRunEvidenceBundle schema.
+- `schemas/strategy_dry_run_case_file_summary.schema.json`: StrategyDryRunCaseFileSummary schema.
 - `fixtures/synthetic_strategy_definition.json`: deterministic metadata-only strategy definition fixture.
 - `fixtures/synthetic_strategy_run_intent.json`: deterministic metadata-only replay attachment intent fixture.
 - `fixtures/synthetic_strategy_run_trace.jsonl`: deterministic no-op strategy observation trace fixture.
@@ -54,6 +58,8 @@ Phase 2N adds negative fixture hardening for malformed, unsafe, inconsistent, un
 - `fixtures/synthetic_strategy_dry_run_readiness_checkpoint.json`: deterministic StrategyDryRunReadinessCheckpoint fixture.
 - `fixtures/synthetic_strategy_dry_run_trace.jsonl`: deterministic no-op dry-run trace fixture.
 - `fixtures/synthetic_strategy_dry_run_noop_summary.json`: deterministic no-op dry-run summary fixture.
+- `fixtures/synthetic_strategy_dry_run_evidence_bundle.json`: deterministic no-op dry-run evidence bundle fixture.
+- `fixtures/synthetic_strategy_dry_run_case_file_summary.json`: deterministic no-op dry-run case-file summary fixture.
 - `fixtures/negative/*.json`: deterministic negative fixtures for StrategyDefinition, StrategyRunIntent, and StrategyNoOpRunSummary validation hardening.
 - `fixtures/negative/*.jsonl`: deterministic negative fixtures for StrategyRunTrace validation hardening.
 - `src/strategy-definition-id.js`: deterministic StrategyDefinition id helper.
@@ -67,6 +73,9 @@ Phase 2N adds negative fixture hardening for malformed, unsafe, inconsistent, un
 - `src/strategy-dry-run-readiness-checkpoint-id.js`: deterministic StrategyDryRunReadinessCheckpoint id helper.
 - `src/strategy-dry-run-trace-id.js`: deterministic StrategyDryRunTrace id helper.
 - `src/strategy-dry-run-noop-summary-id.js`: deterministic StrategyDryRunNoOpSummary id helper.
+- `src/strategy-dry-run-evidence-bundle-id.js`: deterministic StrategyDryRunEvidenceBundle id helper.
+- `src/strategy-dry-run-case-file-summary-id.js`: deterministic StrategyDryRunCaseFileSummary id helper.
+- `src/strategy-dry-run-artifacts.js`: local StrategyDryRun artifact contracts and readers.
 - `src/run-noop-strategy.js`: local no-op strategy trace shell.
 - `src/run-strategy-dry-run-noop.js`: local no-op strategy dry-run shell.
 - `src/build-strategy-run-manifest.js`: local no-op strategy run manifest builder.
@@ -75,6 +84,8 @@ Phase 2N adds negative fixture hardening for malformed, unsafe, inconsistent, un
 - `src/build-strategy-dry-run-plan-evidence-summary.js`: local StrategyDryRunPlanEvidenceSummary builder.
 - `src/build-strategy-dry-run-readiness-checkpoint.js`: local StrategyDryRunReadinessCheckpoint builder.
 - `src/build-strategy-dry-run-trace.js`: local StrategyDryRunTrace and StrategyDryRunNoOpSummary builder.
+- `src/build-strategy-dry-run-evidence-bundle.js`: local StrategyDryRunEvidenceBundle builder.
+- `src/build-strategy-dry-run-case-file-summary.js`: local StrategyDryRunCaseFileSummary builder.
 - `src/validate-strategy-definition.js`: local StrategyDefinition validator.
 - `src/validate-strategy-run-intent.js`: local StrategyRunIntent validator.
 - `src/validate-strategy-run-trace.js`: local StrategyRunTrace validator.
@@ -86,6 +97,8 @@ Phase 2N adds negative fixture hardening for malformed, unsafe, inconsistent, un
 - `src/validate-strategy-dry-run-readiness-checkpoint.js`: local StrategyDryRunReadinessCheckpoint validator.
 - `src/validate-strategy-dry-run-trace.js`: local StrategyDryRunTrace validator.
 - `src/validate-strategy-dry-run-noop-summary.js`: local StrategyDryRunNoOpSummary validator.
+- `src/validate-strategy-dry-run-evidence-bundle.js`: local StrategyDryRunEvidenceBundle validator.
+- `src/validate-strategy-dry-run-case-file-summary.js`: local StrategyDryRunCaseFileSummary validator.
 
 ## Commands
 
@@ -101,6 +114,8 @@ npm run validate:strategy-dry-run-plan-evidence-summary
 npm run validate:strategy-dry-run-readiness-checkpoint
 npm run validate:strategy-dry-run-trace
 npm run validate:strategy-dry-run-noop-summary
+npm run validate:strategy-dry-run-evidence-bundle
+npm run validate:strategy-dry-run-case-file-summary
 npm run test:strategy-dsl
 ```
 
@@ -137,3 +152,5 @@ StrategyDryRunReadinessCheckpoint negative fixtures must fail deterministically 
 StrategyDryRunTrace and StrategyDryRunNoOpSummary are no-op dry-run metadata only. They may record that a validated dry-run plan's metadata-only observation steps were walked, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.
 
 StrategyDryRunTrace and StrategyDryRunNoOpSummary negative fixtures must fail deterministically before any future strategy execution layer can consume dry-run trace metadata.
+
+StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary are dry-run evidence and case-file metadata only. They may inventory validated local no-op dry-run artifacts and consistency totals, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.
