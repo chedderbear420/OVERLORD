@@ -20,6 +20,8 @@ Phase 2H adds negative fixture hardening for malformed, unsafe, invalid, non-rea
 
 Phase 2I adds StrategyDryRunPlanEvidenceSummary metadata. It inventories the validated StrategyDryRunPlan and its count/safety outcome without executing strategy logic or producing signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 2J adds negative fixture hardening for malformed, unsafe, inconsistent, mismatched, executable, signal-like, decision-like, order-like, recommendation-like, credential-like, and bankroll-like StrategyDryRunPlanEvidenceSummary records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -99,3 +101,5 @@ StrategyDryRunPlan is dry-run planning metadata only. It may list read-only inpu
 StrategyDryRunPlan negative fixtures must fail deterministically before any future strategy execution layer can consume dry-run planning metadata.
 
 StrategyDryRunPlanEvidenceSummary is validation/inventory metadata only. It may count and reference a validated dry-run plan, but it must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.
+
+StrategyDryRunPlanEvidenceSummary negative fixtures must fail deterministically before any future strategy execution or analytics layer can consume dry-run plan summary metadata.

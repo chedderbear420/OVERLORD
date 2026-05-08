@@ -95,6 +95,9 @@ function validateCoreFields(errors, summary) {
   if (summary.status === "dry_run_plan_evidence_summary_ready" && summary.validation_status !== "validation_passed") {
     errors.push("ready StrategyDryRunPlanEvidenceSummary requires validation_passed");
   }
+  if (summary.validation_status === "validation_failed" && summary.status !== "dry_run_plan_evidence_summary_rejected") {
+    errors.push("validation_failed StrategyDryRunPlanEvidenceSummary requires rejected status");
+  }
 }
 
 function validateIdShapes(errors, summary) {
