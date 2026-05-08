@@ -28,6 +28,8 @@ Phase 2L adds negative fixture hardening for malformed, unsafe, inconsistent, in
 
 Phase 2M adds an offline StrategyDryRunTrace no-op shell. It consumes the validated dry-run readiness checkpoint and dry-run plan, walks metadata-only observation steps, and emits dry-run trace and summary metadata only without executing strategy logic or producing signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 2N adds negative fixture hardening for malformed, unsafe, inconsistent, unordered, duplicated, lifecycle-invalid, executable, signal-like, decision-like, order-like, recommendation-like, credential-like, live-capable, and bankroll-like StrategyDryRunTrace and StrategyDryRunNoOpSummary records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -133,3 +135,5 @@ StrategyDryRunReadinessCheckpoint is readiness metadata only. It may inventory v
 StrategyDryRunReadinessCheckpoint negative fixtures must fail deterministically before any future strategy dry-run shell can consume readiness metadata.
 
 StrategyDryRunTrace and StrategyDryRunNoOpSummary are no-op dry-run metadata only. They may record that a validated dry-run plan's metadata-only observation steps were walked, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.
+
+StrategyDryRunTrace and StrategyDryRunNoOpSummary negative fixtures must fail deterministically before any future strategy execution layer can consume dry-run trace metadata.

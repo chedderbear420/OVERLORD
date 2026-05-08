@@ -1,0 +1,22 @@
+{
+  "strategy_dry_run_noop_summary_id": "sdrns_377bdc7d85199ba752b727643b04ec90",
+  "schema_version": "strategy_dry_run_noop_summary.v1",
+  "generated_at": "2026-04-28T14:05:04Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_dry_run_readiness_checkpoint_id": "sdrpc_908d562249ea4816e1ad40091020c928",
+  "strategy_dry_run_plan_id": "sdrp_d1f159eacc41c85aa462a28b9552809e",
+  "strategy_dry_run_plan_evidence_summary_id": "sdrpes_e635dfb19cac114f7061efe3dca6fcde",
+  "source_strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "source_strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "source_strategy_run_manifest_id": "srm_2026-04-28T14:05:01Z_packages_strategy-dsl_fixtures_synthetic_strategy_definition.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_intent.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_trace.jsonl__packages_strategy-dsl_fixtures_synthetic_strategy_noop_run_summary.json",
+  "source_strategy_run_evidence_bundle_id": "sreb_59c95d7a4449cbc04d7ecff3714f14c7",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "dry_run_planned",
+  "total_trace_records": -1,
+  "total_steps_observed": 5,
+  "readiness_status": "dry_run_ready",
+  "status": "dry_run_noop_summary_ready",
+  "reason": "No-op dry-run summary only. No strategy logic, signals, decisions, trades, recommendations, analytics, or bankroll actions produced."
+}

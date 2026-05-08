@@ -87,6 +87,9 @@ function validateCoreFields(errors, summary) {
   if (summary.status === "dry_run_noop_summary_ready" && summary.readiness_status !== "dry_run_ready") {
     errors.push("ready dry-run no-op summary requires dry_run_ready readiness_status");
   }
+  if (summary.readiness_status === "dry_run_ready" && summary.status !== "dry_run_noop_summary_ready") {
+    errors.push("dry_run_ready readiness_status requires dry_run_noop_summary_ready status");
+  }
   if (Number.isInteger(summary.total_trace_records) && Number.isInteger(summary.total_steps_observed)) {
     if (summary.total_trace_records !== summary.total_steps_observed + 2) {
       errors.push("total_trace_records must equal total_steps_observed plus start and completed trace records");

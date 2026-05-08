@@ -2,7 +2,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readFile } from "node:fs/promises";
 import { validateForbiddenFields } from "./strategy-contract-rules.js";
-import { allowedDryRunStepTypes } from "./build-strategy-dry-run-plan.js";
+import { allowedDryRunInputArtifacts, allowedDryRunStepTypes } from "./build-strategy-dry-run-plan.js";
 import { strategyDryRunTraceId } from "./strategy-dry-run-trace-id.js";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
@@ -41,6 +41,7 @@ const allowedTraceTypes = new Set([
 ]);
 const allowedStatuses = new Set(["dry_run_trace_recorded", "dry_run_trace_rejected"]);
 const allowedRunModes = new Set(["validation_only", "dry_run_planned"]);
+const allowedObservedArtifactTypes = new Set(allowedDryRunInputArtifacts);
 const forbiddenStepTypes = new Set([
   "execute_strategy",
   "calculate_edge",
@@ -144,6 +145,12 @@ function validateIdShapes(errors, trace) {
 }
 
 function validateStep(errors, trace) {
+  if (trace.observed_artifact_ref !== undefined && (typeof trace.observed_artifact_ref !== "string" || trace.observed_artifact_ref.length === 0)) {
+    errors.push("observed_artifact_ref must be a non-empty string");
+  }
+  if (trace.observed_artifact_type !== null && trace.observed_artifact_type !== undefined && !allowedObservedArtifactTypes.has(trace.observed_artifact_type)) {
+    errors.push("observed_artifact_type is invalid");
+  }
   if (["noop_dry_run_started", "noop_dry_run_completed"].includes(trace.trace_event_type)) {
     if (trace.planned_observation_step !== null) errors.push("dry-run boundary traces must use null planned_observation_step");
     if (trace.observed_artifact_type !== null) errors.push("dry-run boundary traces must use null observed_artifact_type");
@@ -177,11 +184,18 @@ function validateDeterministicId(errors, trace) {
 }
 
 function validateLifecycle(errors, traces) {
+  const startedCount = traces.filter((trace) => trace?.trace_event_type === "noop_dry_run_started").length;
+  const completedCount = traces.filter((trace) => trace?.trace_event_type === "noop_dry_run_completed").length;
+  if (startedCount !== 1) errors.push("StrategyDryRunTrace must contain exactly one noop_dry_run_started trace");
+  if (completedCount !== 1) errors.push("StrategyDryRunTrace must contain exactly one noop_dry_run_completed trace");
   if (traces[0]?.trace_event_type !== "noop_dry_run_started") errors.push("StrategyDryRunTrace must start with noop_dry_run_started");
   const last = traces[traces.length - 1];
-  if (!["noop_dry_run_completed", "noop_dry_run_rejected"].includes(last?.trace_event_type)) {
-    errors.push("StrategyDryRunTrace must end with noop_dry_run_completed or noop_dry_run_rejected");
+  if (last?.trace_event_type !== "noop_dry_run_completed") {
+    errors.push("StrategyDryRunTrace must end with noop_dry_run_completed");
   }
+  const startedIndex = traces.findIndex((trace) => trace?.trace_event_type === "noop_dry_run_started");
+  const completedIndex = traces.findIndex((trace) => trace?.trace_event_type === "noop_dry_run_completed");
+  if (startedIndex > completedIndex && completedIndex !== -1) errors.push("noop_dry_run_started must come before noop_dry_run_completed");
   for (let index = 1; index < traces.length - 1; index += 1) {
     if (traces[index]?.trace_event_type !== "noop_dry_run_step_observed") {
       errors.push("StrategyDryRunTrace middle records must be noop_dry_run_step_observed events");
