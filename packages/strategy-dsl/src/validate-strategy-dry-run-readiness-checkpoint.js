@@ -109,6 +109,12 @@ function validateCoreFields(errors, checkpoint) {
   if (checkpoint.readiness_status === "dry_run_ready" && checkpoint.status !== "dry_run_readiness_checkpoint_ready") {
     errors.push("dry_run_ready requires dry_run_readiness_checkpoint_ready status");
   }
+  if (checkpoint.status === "dry_run_readiness_checkpoint_ready" && checkpoint.readiness_status !== "dry_run_ready") {
+    errors.push("dry_run_readiness_checkpoint_ready requires dry_run_ready readiness_status");
+  }
+  if (checkpoint.readiness_status === "dry_run_not_ready" && checkpoint.status !== "dry_run_readiness_checkpoint_rejected") {
+    errors.push("dry_run_not_ready requires dry_run_readiness_checkpoint_rejected status");
+  }
 }
 
 function validateIdShapes(errors, checkpoint) {
@@ -187,6 +193,7 @@ function validateReadinessChecks(errors, checkpoint) {
     }
     if (byName.has(check.check_name)) errors.push("duplicate readiness_check check_name is not allowed");
     byName.set(check.check_name, check);
+    if (!requiredReadinessCheckNames.includes(check.check_name)) errors.push("readiness_check check_name is invalid");
     if (!allowedCheckStatuses.has(check.status)) errors.push("readiness_check status is invalid");
   }
   for (const checkName of requiredReadinessCheckNames) {

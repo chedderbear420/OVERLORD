@@ -24,6 +24,8 @@ Phase 2J adds negative fixture hardening for malformed, unsafe, inconsistent, mi
 
 Phase 2K adds StrategyDryRunReadinessCheckpoint metadata. It inventories the validated strategy dry-run prerequisite stack and records whether it is ready for a future offline dry-run shell without executing strategy logic or producing signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 2L adds negative fixture hardening for malformed, unsafe, inconsistent, incomplete, executable, signal-like, decision-like, order-like, recommendation-like, credential-like, analytics-like, and bankroll-like StrategyDryRunReadinessCheckpoint records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -113,3 +115,5 @@ StrategyDryRunPlanEvidenceSummary is validation/inventory metadata only. It may 
 StrategyDryRunPlanEvidenceSummary negative fixtures must fail deterministically before any future strategy execution or analytics layer can consume dry-run plan summary metadata.
 
 StrategyDryRunReadinessCheckpoint is readiness metadata only. It may inventory validated prerequisite artifacts and readiness checks, but it must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.
+
+StrategyDryRunReadinessCheckpoint negative fixtures must fail deterministically before any future strategy dry-run shell can consume readiness metadata.

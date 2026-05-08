@@ -1,0 +1,127 @@
+{
+  "strategy_dry_run_readiness_checkpoint_id": "sdrpc_908d562249ea4816e1ad40091020c928",
+  "schema_version": "strategy_dry_run_readiness_checkpoint.v1",
+  "generated_at": "2026-04-28T14:05:04Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "strategy_run_manifest_id": "srm_2026-04-28T14:05:01Z_packages_strategy-dsl_fixtures_synthetic_strategy_definition.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_intent.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_trace.jsonl__packages_strategy-dsl_fixtures_synthetic_strategy_noop_run_summary.json",
+  "strategy_run_evidence_bundle_id": "sreb_59c95d7a4449cbc04d7ecff3714f14c7",
+  "strategy_dry_run_plan_id": "sdrp_d1f159eacc41c85aa462a28b9552809e",
+  "strategy_dry_run_plan_evidence_summary_id": "sdrpes_e635dfb19cac114f7061efe3dca6fcde",
+  "source_strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "source_strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "source_strategy_run_manifest_id": "srm_2026-04-28T14:05:01Z_packages_strategy-dsl_fixtures_synthetic_strategy_definition.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_intent.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_trace.jsonl__packages_strategy-dsl_fixtures_synthetic_strategy_noop_run_summary.json",
+  "source_strategy_run_evidence_bundle_id": "sreb_59c95d7a4449cbc04d7ecff3714f14c7",
+  "source_strategy_dry_run_plan_id": "sdrp_d1f159eacc41c85aa462a28b9552809e",
+  "source_strategy_dry_run_plan_evidence_summary_id": "sdrpes_e635dfb19cac114f7061efe3dca6fcde",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "dry_run_planned",
+  "prerequisite_artifacts": [
+    {
+      "artifact_type": "strategy_definition",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_definition.json",
+      "schema_version": "strategy_definition.v1",
+      "validation_command": "npm run validate:strategy-definition",
+      "artifact_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+      "validation_status": "validation_passed"
+    },
+    {
+      "artifact_type": "strategy_run_intent",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_run_intent.json",
+      "schema_version": "strategy_run_intent.v1",
+      "validation_command": "npm run validate:strategy-run-intent",
+      "artifact_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+      "validation_status": "validation_passed"
+    },
+    {
+      "artifact_type": "strategy_run_manifest",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_run_manifest.json",
+      "schema_version": "strategy_run_manifest.v1",
+      "validation_command": "npm run validate:strategy-run-manifest",
+      "artifact_id": "srm_2026-04-28T14:05:01Z_packages_strategy-dsl_fixtures_synthetic_strategy_definition.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_intent.json__packages_strategy-dsl_fixtures_synthetic_strategy_run_trace.jsonl__packages_strategy-dsl_fixtures_synthetic_strategy_noop_run_summary.json",
+      "validation_status": "validation_passed"
+    },
+    {
+      "artifact_type": "strategy_run_evidence_bundle",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_run_evidence_bundle.json",
+      "schema_version": "strategy_run_evidence_bundle.v1",
+      "validation_command": "npm run validate:strategy-run-evidence-bundle",
+      "artifact_id": "sreb_59c95d7a4449cbc04d7ecff3714f14c7",
+      "validation_status": "validation_passed"
+    },
+    {
+      "artifact_type": "strategy_dry_run_plan",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_dry_run_plan.json",
+      "schema_version": "strategy_dry_run_plan.v1",
+      "validation_command": "npm run validate:strategy-dry-run-plan",
+      "artifact_id": "sdrp_d1f159eacc41c85aa462a28b9552809e",
+      "validation_status": "validation_passed"
+    },
+    {
+      "artifact_type": "strategy_dry_run_plan_evidence_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_dry_run_plan_evidence_summary.json",
+      "schema_version": "strategy_dry_run_plan_evidence_summary.v1",
+      "validation_command": "npm run validate:strategy-dry-run-plan-evidence-summary",
+      "artifact_id": "sdrpes_e635dfb19cac114f7061efe3dca6fcde",
+      "validation_status": "validation_passed"
+    }
+  ],
+  "readiness_checks": [
+    {
+      "check_name": "strategy_definition_validated",
+      "status": "check_passed",
+      "reason": "strategy_definition_validated passed."
+    },
+    {
+      "check_name": "strategy_run_intent_validated",
+      "status": "check_passed",
+      "reason": "strategy_run_intent_validated passed."
+    },
+    {
+      "check_name": "strategy_run_manifest_validated",
+      "status": "check_passed",
+      "reason": "strategy_run_manifest_validated passed."
+    },
+    {
+      "check_name": "strategy_run_evidence_bundle_validated",
+      "status": "check_passed",
+      "reason": "strategy_run_evidence_bundle_validated passed."
+    },
+    {
+      "check_name": "strategy_dry_run_plan_validated",
+      "status": "check_passed",
+      "reason": "strategy_dry_run_plan_validated passed."
+    },
+    {
+      "check_name": "strategy_dry_run_plan_evidence_summary_validated",
+      "status": "check_passed",
+      "reason": "strategy_dry_run_plan_evidence_summary_validated passed."
+    },
+    {
+      "check_name": "safety_flags_validated",
+      "status": "check_passed",
+      "reason": "safety_flags_validated passed."
+    },
+    {
+      "check_name": "forbidden_outputs_validated",
+      "status": "check_passed",
+      "reason": "forbidden_outputs_validated passed."
+    },
+    {
+      "check_name": "no_execution_fields_detected",
+      "status": "check_passed",
+      "reason": "no_execution_fields_detected passed."
+    },
+    {
+      "check_name": "no_live_connectivity_detected",
+      "status": "check_passed",
+      "reason": "no_live_connectivity_detected passed."
+    }
+  ],
+  "readiness_status": "ready_for_live",
+  "status": "dry_run_readiness_checkpoint_ready",
+  "reason": "All offline strategy dry-run prerequisite artifacts are present, validated, safe, and internally consistent."
+}
