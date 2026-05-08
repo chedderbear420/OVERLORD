@@ -1,0 +1,103 @@
+{
+  "strategy_dry_run_evidence_bundle_id": "sdreb_3bcc24b7173bc0bd7813a30de1eb537f",
+  "schema_version": "strategy_dry_run_evidence_bundle.v1",
+  "generated_at": "2026-04-28T14:05:05Z",
+  "paper_only": false,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_dry_run_readiness_checkpoint_id": "sdrpc_908d562249ea4816e1ad40091020c928",
+  "strategy_dry_run_plan_id": "sdrp_d1f159eacc41c85aa462a28b9552809e",
+  "strategy_dry_run_plan_evidence_summary_id": "sdrpes_e635dfb19cac114f7061efe3dca6fcde",
+  "strategy_dry_run_noop_summary_id": "sdrns_377bdc7d85199ba752b727643b04ec90",
+  "strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "source_strategy_dry_run_readiness_checkpoint_id": "sdrpc_908d562249ea4816e1ad40091020c928",
+  "source_strategy_dry_run_plan_id": "sdrp_d1f159eacc41c85aa462a28b9552809e",
+  "source_strategy_dry_run_plan_evidence_summary_id": "sdrpes_e635dfb19cac114f7061efe3dca6fcde",
+  "source_strategy_dry_run_noop_summary_id": "sdrns_377bdc7d85199ba752b727643b04ec90",
+  "source_strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "source_strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "dry_run_planned",
+  "evidence_artifacts": [
+    {
+      "artifact_type": "strategy_dry_run_readiness_checkpoint",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_dry_run_readiness_checkpoint.json",
+      "schema_version": "strategy_dry_run_readiness_checkpoint.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-dry-run-readiness-checkpoint",
+      "artifact_id": "sdrpc_908d562249ea4816e1ad40091020c928"
+    },
+    {
+      "artifact_type": "strategy_dry_run_plan",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_dry_run_plan.json",
+      "schema_version": "strategy_dry_run_plan.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-dry-run-plan",
+      "artifact_id": "sdrp_d1f159eacc41c85aa462a28b9552809e"
+    },
+    {
+      "artifact_type": "strategy_dry_run_plan_evidence_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_dry_run_plan_evidence_summary.json",
+      "schema_version": "strategy_dry_run_plan_evidence_summary.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-dry-run-plan-evidence-summary",
+      "artifact_id": "sdrpes_e635dfb19cac114f7061efe3dca6fcde"
+    },
+    {
+      "artifact_type": "strategy_dry_run_trace",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_dry_run_trace.jsonl",
+      "schema_version": "strategy_dry_run_trace.v1",
+      "record_count": 7,
+      "validation_command": "npm run validate:strategy-dry-run-trace",
+      "artifact_id": null
+    },
+    {
+      "artifact_type": "strategy_dry_run_noop_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_dry_run_noop_summary.json",
+      "schema_version": "strategy_dry_run_noop_summary.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-dry-run-noop-summary",
+      "artifact_id": "sdrns_377bdc7d85199ba752b727643b04ec90"
+    }
+  ],
+  "consistency_checks": [
+    {
+      "check_name": "readiness_checkpoint_id_alignment",
+      "status": "check_passed",
+      "reason": "readiness_checkpoint_id_alignment passed."
+    },
+    {
+      "check_name": "dry_run_plan_id_alignment",
+      "status": "check_passed",
+      "reason": "dry_run_plan_id_alignment passed."
+    },
+    {
+      "check_name": "dry_run_plan_evidence_summary_id_alignment",
+      "status": "check_passed",
+      "reason": "dry_run_plan_evidence_summary_id_alignment passed."
+    },
+    {
+      "check_name": "dry_run_noop_summary_id_alignment",
+      "status": "check_passed",
+      "reason": "dry_run_noop_summary_id_alignment passed."
+    },
+    {
+      "check_name": "trace_record_total_alignment",
+      "status": "check_passed",
+      "reason": "trace_record_total_alignment passed."
+    },
+    {
+      "check_name": "observed_step_total_alignment",
+      "status": "check_passed",
+      "reason": "observed_step_total_alignment passed."
+    },
+    {
+      "check_name": "evidence_artifact_contract_count",
+      "status": "check_passed",
+      "reason": "evidence_artifact_contract_count passed."
+    }
+  ],
+  "status": "dry_run_evidence_bundle_ready",
+  "reason": "Strategy dry-run evidence bundle for local no-op dry-run only. No strategy logic, signals, decisions, trades, recommendations, analytics, or bankroll actions produced."
+}

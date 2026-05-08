@@ -32,6 +32,8 @@ Phase 2N adds negative fixture hardening for malformed, unsafe, inconsistent, un
 
 Phase 2O adds StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary metadata. These records inventory the validated no-op dry-run artifacts and final case-file totals without executing strategy logic or producing signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 2P adds negative fixture hardening for malformed, unsafe, inconsistent, duplicated, incomplete, executable, signal-like, decision-like, order-like, recommendation-like, credential-like, analytics-like, and bankroll-like StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -154,3 +156,5 @@ StrategyDryRunTrace and StrategyDryRunNoOpSummary are no-op dry-run metadata onl
 StrategyDryRunTrace and StrategyDryRunNoOpSummary negative fixtures must fail deterministically before any future strategy execution layer can consume dry-run trace metadata.
 
 StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary are dry-run evidence and case-file metadata only. They may inventory validated local no-op dry-run artifacts and consistency totals, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.
+
+StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary negative fixtures must fail deterministically before any future strategy execution or analytics layer can consume dry-run evidence metadata.

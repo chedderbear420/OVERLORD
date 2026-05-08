@@ -93,6 +93,9 @@ function validateCoreFields(errors, summary) {
   if (summary.status === "dry_run_case_file_summary_ready" && summary.consistency_status !== "consistency_passed") {
     errors.push("ready dry-run case-file summaries require consistency_passed");
   }
+  if (summary.status === "dry_run_case_file_summary_ready" && summary.readiness_status !== "dry_run_ready") {
+    errors.push("ready dry-run case-file summaries require dry_run_ready readiness_status");
+  }
 }
 
 function validateIdShapes(errors, summary) {

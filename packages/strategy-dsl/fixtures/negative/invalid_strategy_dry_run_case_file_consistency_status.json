@@ -1,0 +1,22 @@
+{
+  "strategy_dry_run_case_file_summary_id": "sdrcfs_f35d5ce48a300313e1fc26cf4176ec2d",
+  "schema_version": "strategy_dry_run_case_file_summary.v1",
+  "generated_at": "2026-04-28T14:05:05Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_dry_run_evidence_bundle_id": "sdreb_3bcc24b7173bc0bd7813a30de1eb537f",
+  "strategy_dry_run_readiness_checkpoint_id": "sdrpc_908d562249ea4816e1ad40091020c928",
+  "strategy_dry_run_plan_id": "sdrp_d1f159eacc41c85aa462a28b9552809e",
+  "strategy_dry_run_plan_evidence_summary_id": "sdrpes_e635dfb19cac114f7061efe3dca6fcde",
+  "strategy_dry_run_noop_summary_id": "sdrns_377bdc7d85199ba752b727643b04ec90",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "dry_run_planned",
+  "total_evidence_artifacts": 5,
+  "total_trace_records": 7,
+  "total_steps_observed": 5,
+  "readiness_status": "dry_run_ready",
+  "consistency_status": "consistency_unknown_bad",
+  "status": "dry_run_case_file_summary_ready",
+  "reason": "Strategy dry-run case-file summary for local no-op dry-run evidence only. No strategy logic, signals, decisions, trades, recommendations, analytics, or bankroll actions produced."
+}

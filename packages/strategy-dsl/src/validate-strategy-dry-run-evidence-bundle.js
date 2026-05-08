@@ -211,6 +211,9 @@ function validateConsistencyChecks(errors, checks, status) {
   if (status === "dry_run_evidence_bundle_ready" && checks.some((check) => check.status === "check_failed")) {
     errors.push("ready dry-run evidence bundles must not contain failed consistency checks");
   }
+  if (status === "dry_run_evidence_bundle_ready" && checks.some((check) => requiredCheckNames.has(check.check_name) && check.status !== "check_passed")) {
+    errors.push("ready dry-run evidence bundles require all required consistency checks to pass");
+  }
 }
 
 async function validateSafePath(errors, root, artifactPath, label) {
