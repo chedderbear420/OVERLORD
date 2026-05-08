@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "overlord.strategy_dry_run_stack_closeout_checkpoint.schema.json",
+  "title": "StrategyDryRunStackCloseoutCheckpoint",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "strategy_dry_run_stack_closeout_checkpoint_id",
+    "schema_version",
+    "generated_at",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "source_strategy_definition_id",
+    "source_strategy_run_intent_id",
+    "source_strategy_run_manifest_id",
+    "source_strategy_run_evidence_bundle_id",
+    "source_strategy_dry_run_plan_id",
+    "source_strategy_dry_run_plan_evidence_summary_id",
+    "source_strategy_dry_run_readiness_checkpoint_id",
+    "source_strategy_dry_run_noop_summary_id",
+    "source_strategy_dry_run_evidence_bundle_id",
+    "source_strategy_dry_run_case_file_summary_id",
+    "replay_mode",
+    "run_mode",
+    "closeout_artifacts",
+    "closeout_checks",
+    "readiness_status",
+    "consistency_status",
+    "freeze_recommendation",
+    "status",
+    "reason"
+  ],
+  "properties": {
+    "strategy_dry_run_stack_closeout_checkpoint_id": { "type": "string", "pattern": "^sdrscc_[a-f0-9]{32}$" },
+    "schema_version": { "const": "strategy_dry_run_stack_closeout_checkpoint.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "paper_only": { "const": true },
+    "live_execution_allowed": { "const": false },
+    "order_placement_allowed": { "const": false },
+    "replay_mode": { "const": "offline_fixture_replay" },
+    "run_mode": { "enum": ["validation_only", "dry_run_planned"] },
+    "readiness_status": { "enum": ["dry_run_ready", "dry_run_not_ready", "dry_run_readiness_unknown"] },
+    "consistency_status": { "enum": ["consistency_passed", "consistency_failed", "consistency_not_applicable"] },
+    "freeze_recommendation": { "enum": ["freeze_ready", "freeze_not_ready", "freeze_not_applicable"] },
+    "status": { "enum": ["dry_run_stack_closeout_ready", "dry_run_stack_closeout_rejected"] },
+    "closeout_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["artifact_type", "artifact_path", "schema_version", "record_count", "validation_command", "artifact_id"],
+        "properties": {
+          "artifact_type": { "type": "string" },
+          "artifact_path": { "type": "string" },
+          "schema_version": { "type": "string" },
+          "record_count": { "type": "integer", "minimum": 0 },
+          "validation_command": { "type": "string" },
+          "artifact_id": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "closeout_checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["check_name", "status", "reason"],
+        "properties": {
+          "check_name": { "type": "string" },
+          "status": { "enum": ["check_passed", "check_failed", "check_not_applicable"] },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "reason": { "type": "string" }
+  }
+}

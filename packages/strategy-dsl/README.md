@@ -34,6 +34,8 @@ Phase 2O adds StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary met
 
 Phase 2P adds negative fixture hardening for malformed, unsafe, inconsistent, duplicated, incomplete, executable, signal-like, decision-like, order-like, recommendation-like, credential-like, analytics-like, and bankroll-like StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary records.
 
+Phase 2Q adds StrategyDryRunStackCloseoutCheckpoint metadata. It inventories the full validated Phase 2 dry-run metadata stack and records freeze-readiness for the metadata stack only; it does not execute strategy logic or produce signals, decisions, trades, recommendations, analytics, or bankroll actions.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -49,6 +51,7 @@ Phase 2P adds negative fixture hardening for malformed, unsafe, inconsistent, du
 - `schemas/strategy_dry_run_noop_summary.schema.json`: StrategyDryRunNoOpSummary schema.
 - `schemas/strategy_dry_run_evidence_bundle.schema.json`: StrategyDryRunEvidenceBundle schema.
 - `schemas/strategy_dry_run_case_file_summary.schema.json`: StrategyDryRunCaseFileSummary schema.
+- `schemas/strategy_dry_run_stack_closeout_checkpoint.schema.json`: StrategyDryRunStackCloseoutCheckpoint schema.
 - `fixtures/synthetic_strategy_definition.json`: deterministic metadata-only strategy definition fixture.
 - `fixtures/synthetic_strategy_run_intent.json`: deterministic metadata-only replay attachment intent fixture.
 - `fixtures/synthetic_strategy_run_trace.jsonl`: deterministic no-op strategy observation trace fixture.
@@ -62,6 +65,7 @@ Phase 2P adds negative fixture hardening for malformed, unsafe, inconsistent, du
 - `fixtures/synthetic_strategy_dry_run_noop_summary.json`: deterministic no-op dry-run summary fixture.
 - `fixtures/synthetic_strategy_dry_run_evidence_bundle.json`: deterministic no-op dry-run evidence bundle fixture.
 - `fixtures/synthetic_strategy_dry_run_case_file_summary.json`: deterministic no-op dry-run case-file summary fixture.
+- `fixtures/synthetic_strategy_dry_run_stack_closeout_checkpoint.json`: deterministic Phase 2 dry-run metadata stack closeout fixture.
 - `fixtures/negative/*.json`: deterministic negative fixtures for StrategyDefinition, StrategyRunIntent, and StrategyNoOpRunSummary validation hardening.
 - `fixtures/negative/*.jsonl`: deterministic negative fixtures for StrategyRunTrace validation hardening.
 - `src/strategy-definition-id.js`: deterministic StrategyDefinition id helper.
@@ -77,6 +81,7 @@ Phase 2P adds negative fixture hardening for malformed, unsafe, inconsistent, du
 - `src/strategy-dry-run-noop-summary-id.js`: deterministic StrategyDryRunNoOpSummary id helper.
 - `src/strategy-dry-run-evidence-bundle-id.js`: deterministic StrategyDryRunEvidenceBundle id helper.
 - `src/strategy-dry-run-case-file-summary-id.js`: deterministic StrategyDryRunCaseFileSummary id helper.
+- `src/strategy-dry-run-stack-closeout-checkpoint-id.js`: deterministic StrategyDryRunStackCloseoutCheckpoint id helper.
 - `src/strategy-dry-run-artifacts.js`: local StrategyDryRun artifact contracts and readers.
 - `src/run-noop-strategy.js`: local no-op strategy trace shell.
 - `src/run-strategy-dry-run-noop.js`: local no-op strategy dry-run shell.
@@ -88,6 +93,7 @@ Phase 2P adds negative fixture hardening for malformed, unsafe, inconsistent, du
 - `src/build-strategy-dry-run-trace.js`: local StrategyDryRunTrace and StrategyDryRunNoOpSummary builder.
 - `src/build-strategy-dry-run-evidence-bundle.js`: local StrategyDryRunEvidenceBundle builder.
 - `src/build-strategy-dry-run-case-file-summary.js`: local StrategyDryRunCaseFileSummary builder.
+- `src/build-strategy-dry-run-stack-closeout-checkpoint.js`: local StrategyDryRunStackCloseoutCheckpoint builder.
 - `src/validate-strategy-definition.js`: local StrategyDefinition validator.
 - `src/validate-strategy-run-intent.js`: local StrategyRunIntent validator.
 - `src/validate-strategy-run-trace.js`: local StrategyRunTrace validator.
@@ -101,6 +107,7 @@ Phase 2P adds negative fixture hardening for malformed, unsafe, inconsistent, du
 - `src/validate-strategy-dry-run-noop-summary.js`: local StrategyDryRunNoOpSummary validator.
 - `src/validate-strategy-dry-run-evidence-bundle.js`: local StrategyDryRunEvidenceBundle validator.
 - `src/validate-strategy-dry-run-case-file-summary.js`: local StrategyDryRunCaseFileSummary validator.
+- `src/validate-strategy-dry-run-stack-closeout-checkpoint.js`: local StrategyDryRunStackCloseoutCheckpoint validator.
 
 ## Commands
 
@@ -118,6 +125,7 @@ npm run validate:strategy-dry-run-trace
 npm run validate:strategy-dry-run-noop-summary
 npm run validate:strategy-dry-run-evidence-bundle
 npm run validate:strategy-dry-run-case-file-summary
+npm run validate:strategy-dry-run-stack-closeout-checkpoint
 npm run test:strategy-dsl
 ```
 
@@ -158,3 +166,5 @@ StrategyDryRunTrace and StrategyDryRunNoOpSummary negative fixtures must fail de
 StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary are dry-run evidence and case-file metadata only. They may inventory validated local no-op dry-run artifacts and consistency totals, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.
 
 StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary negative fixtures must fail deterministically before any future strategy execution or analytics layer can consume dry-run evidence metadata.
+
+StrategyDryRunStackCloseoutCheckpoint is closeout/readiness metadata only. Its `freeze_recommendation` applies only to freezing the offline metadata stack and must not be interpreted as a trading, deployment, recommendation, analytics, or bankroll signal.
