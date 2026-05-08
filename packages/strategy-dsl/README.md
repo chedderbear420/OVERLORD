@@ -22,6 +22,8 @@ Phase 2I adds StrategyDryRunPlanEvidenceSummary metadata. It inventories the val
 
 Phase 2J adds negative fixture hardening for malformed, unsafe, inconsistent, mismatched, executable, signal-like, decision-like, order-like, recommendation-like, credential-like, and bankroll-like StrategyDryRunPlanEvidenceSummary records.
 
+Phase 2K adds StrategyDryRunReadinessCheckpoint metadata. It inventories the validated strategy dry-run prerequisite stack and records whether it is ready for a future offline dry-run shell without executing strategy logic or producing signals, decisions, trades, recommendations, analytics, or bankroll actions.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -32,6 +34,7 @@ Phase 2J adds negative fixture hardening for malformed, unsafe, inconsistent, mi
 - `schemas/strategy_run_evidence_bundle.schema.json`: StrategyRunEvidenceBundle schema.
 - `schemas/strategy_dry_run_plan.schema.json`: StrategyDryRunPlan schema.
 - `schemas/strategy_dry_run_plan_evidence_summary.schema.json`: StrategyDryRunPlanEvidenceSummary schema.
+- `schemas/strategy_dry_run_readiness_checkpoint.schema.json`: StrategyDryRunReadinessCheckpoint schema.
 - `fixtures/synthetic_strategy_definition.json`: deterministic metadata-only strategy definition fixture.
 - `fixtures/synthetic_strategy_run_intent.json`: deterministic metadata-only replay attachment intent fixture.
 - `fixtures/synthetic_strategy_run_trace.jsonl`: deterministic no-op strategy observation trace fixture.
@@ -40,6 +43,7 @@ Phase 2J adds negative fixture hardening for malformed, unsafe, inconsistent, mi
 - `fixtures/synthetic_strategy_run_evidence_bundle.json`: deterministic no-op strategy run evidence bundle fixture.
 - `fixtures/synthetic_strategy_dry_run_plan.json`: deterministic offline dry-run plan contract fixture.
 - `fixtures/synthetic_strategy_dry_run_plan_evidence_summary.json`: deterministic StrategyDryRunPlan evidence summary fixture.
+- `fixtures/synthetic_strategy_dry_run_readiness_checkpoint.json`: deterministic StrategyDryRunReadinessCheckpoint fixture.
 - `fixtures/negative/*.json`: deterministic negative fixtures for StrategyDefinition, StrategyRunIntent, and StrategyNoOpRunSummary validation hardening.
 - `fixtures/negative/*.jsonl`: deterministic negative fixtures for StrategyRunTrace validation hardening.
 - `src/strategy-definition-id.js`: deterministic StrategyDefinition id helper.
@@ -50,11 +54,13 @@ Phase 2J adds negative fixture hardening for malformed, unsafe, inconsistent, mi
 - `src/strategy-run-evidence-bundle-id.js`: deterministic StrategyRunEvidenceBundle id helper.
 - `src/strategy-dry-run-plan-id.js`: deterministic StrategyDryRunPlan id helper.
 - `src/strategy-dry-run-plan-evidence-summary-id.js`: deterministic StrategyDryRunPlanEvidenceSummary id helper.
+- `src/strategy-dry-run-readiness-checkpoint-id.js`: deterministic StrategyDryRunReadinessCheckpoint id helper.
 - `src/run-noop-strategy.js`: local no-op strategy trace shell.
 - `src/build-strategy-run-manifest.js`: local no-op strategy run manifest builder.
 - `src/build-strategy-run-evidence-bundle.js`: local no-op strategy run evidence bundle builder.
 - `src/build-strategy-dry-run-plan.js`: local StrategyDryRunPlan builder.
 - `src/build-strategy-dry-run-plan-evidence-summary.js`: local StrategyDryRunPlanEvidenceSummary builder.
+- `src/build-strategy-dry-run-readiness-checkpoint.js`: local StrategyDryRunReadinessCheckpoint builder.
 - `src/validate-strategy-definition.js`: local StrategyDefinition validator.
 - `src/validate-strategy-run-intent.js`: local StrategyRunIntent validator.
 - `src/validate-strategy-run-trace.js`: local StrategyRunTrace validator.
@@ -63,6 +69,7 @@ Phase 2J adds negative fixture hardening for malformed, unsafe, inconsistent, mi
 - `src/validate-strategy-run-evidence-bundle.js`: local StrategyRunEvidenceBundle validator.
 - `src/validate-strategy-dry-run-plan.js`: local StrategyDryRunPlan validator.
 - `src/validate-strategy-dry-run-plan-evidence-summary.js`: local StrategyDryRunPlanEvidenceSummary validator.
+- `src/validate-strategy-dry-run-readiness-checkpoint.js`: local StrategyDryRunReadinessCheckpoint validator.
 
 ## Commands
 
@@ -75,6 +82,7 @@ npm run validate:strategy-run-manifest
 npm run validate:strategy-run-evidence-bundle
 npm run validate:strategy-dry-run-plan
 npm run validate:strategy-dry-run-plan-evidence-summary
+npm run validate:strategy-dry-run-readiness-checkpoint
 npm run test:strategy-dsl
 ```
 
@@ -103,3 +111,5 @@ StrategyDryRunPlan negative fixtures must fail deterministically before any futu
 StrategyDryRunPlanEvidenceSummary is validation/inventory metadata only. It may count and reference a validated dry-run plan, but it must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.
 
 StrategyDryRunPlanEvidenceSummary negative fixtures must fail deterministically before any future strategy execution or analytics layer can consume dry-run plan summary metadata.
+
+StrategyDryRunReadinessCheckpoint is readiness metadata only. It may inventory validated prerequisite artifacts and readiness checks, but it must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, or place orders.

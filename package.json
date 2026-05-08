@@ -34,6 +34,7 @@
     "validate:strategy-run-evidence-bundle": "node packages/strategy-dsl/src/validate-strategy-run-evidence-bundle.js",
     "validate:strategy-dry-run-plan": "node packages/strategy-dsl/src/validate-strategy-dry-run-plan.js",
     "validate:strategy-dry-run-plan-evidence-summary": "node packages/strategy-dsl/src/validate-strategy-dry-run-plan-evidence-summary.js",
+    "validate:strategy-dry-run-readiness-checkpoint": "node packages/strategy-dsl/src/validate-strategy-dry-run-readiness-checkpoint.js",
     "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js"
   }
 }
