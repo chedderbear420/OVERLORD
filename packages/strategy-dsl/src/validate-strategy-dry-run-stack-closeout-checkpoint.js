@@ -112,6 +112,12 @@ function validateCoreFields(errors, checkpoint) {
     if (checkpoint.consistency_status !== "consistency_passed") errors.push("ready closeout checkpoints require consistency_passed");
     if (checkpoint.freeze_recommendation !== "freeze_ready") errors.push("ready closeout checkpoints require freeze_ready");
   }
+  if (checkpoint.readiness_status === "dry_run_not_ready" && checkpoint.status !== "dry_run_stack_closeout_rejected") {
+    errors.push("dry_run_not_ready readiness_status requires dry_run_stack_closeout_rejected status");
+  }
+  if (checkpoint.consistency_status === "consistency_failed" && checkpoint.status !== "dry_run_stack_closeout_rejected") {
+    errors.push("consistency_failed requires dry_run_stack_closeout_rejected status");
+  }
 }
 
 function validateIdShapes(errors, checkpoint) {

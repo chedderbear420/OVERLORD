@@ -36,6 +36,8 @@ Phase 2P adds negative fixture hardening for malformed, unsafe, inconsistent, du
 
 Phase 2Q adds StrategyDryRunStackCloseoutCheckpoint metadata. It inventories the full validated Phase 2 dry-run metadata stack and records freeze-readiness for the metadata stack only; it does not execute strategy logic or produce signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 2R adds negative fixture hardening for malformed, unsafe, inconsistent, incomplete, duplicated, executable, signal-like, decision-like, order-like, recommendation-like, credential-like, analytics-like, and bankroll-like StrategyDryRunStackCloseoutCheckpoint records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -168,3 +170,5 @@ StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary are dry-run evide
 StrategyDryRunEvidenceBundle and StrategyDryRunCaseFileSummary negative fixtures must fail deterministically before any future strategy execution or analytics layer can consume dry-run evidence metadata.
 
 StrategyDryRunStackCloseoutCheckpoint is closeout/readiness metadata only. Its `freeze_recommendation` applies only to freezing the offline metadata stack and must not be interpreted as a trading, deployment, recommendation, analytics, or bankroll signal.
+
+StrategyDryRunStackCloseoutCheckpoint negative fixtures must fail deterministically before the Phase 2 dry-run metadata stack is frozen.
