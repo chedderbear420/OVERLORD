@@ -1,0 +1,71 @@
+{
+  "strategy_observation_processing_input_set_id": "sopis_e375ea353c05147738b963a553f0e776",
+  "schema_version": "strategy_observation_processing_input_set.v1",
+  "generated_at": "2026-04-28T14:05:06Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_observation_processing_contract_id": "sopc_d5f85d3ac42b6ade0754837ea0354a77",
+  "strategy_observation_stack_closeout_checkpoint_id": "soscc_6c3d0fa93f86ee5acfc9e68d6fc3217b",
+  "source_strategy_observation_stack_closeout_checkpoint_id": "soscc_6c3d0fa93f86ee5acfc9e68d6fc3217b",
+  "source_strategy_observation_case_file_summary_id": "socfs_1c6d352afb254b579957e31232c56e4c",
+  "source_strategy_observation_evidence_bundle_id": "soeb_49abd0cda56025b7d2a91b37e71fbc39",
+  "source_strategy_observation_noop_summary_id": "sons_70a90bf2b12e15dcdf2fcdf7653dbc23",
+  "source_strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "source_strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "dry_run_planned",
+  "input_artifacts": [
+    {
+      "artifact_type": "strategy_observation_contract",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_contract.json",
+      "artifact_id": "soc_dcfd5ba220301322f52848017b619030",
+      "record_count": 1,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_input_set",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_input_set.json",
+      "artifact_id": "sois_385300d3af9be674fcb1699e270150b1",
+      "record_count": 1,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_trace",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_trace.jsonl",
+      "artifact_id": null,
+      "record_count": 7,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_noop_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_noop_summary.json",
+      "artifact_id": "sons_70a90bf2b12e15dcdf2fcdf7653dbc23",
+      "record_count": 1,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_evidence_bundle",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_evidence_bundle.json",
+      "artifact_id": "soeb_49abd0cda56025b7d2a91b37e71fbc39",
+      "record_count": 1,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_case_file_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_case_file_summary.json",
+      "artifact_id": "socfs_1c6d352afb254b579957e31232c56e4c",
+      "record_count": 1,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_stack_closeout_checkpoint",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_stack_closeout_checkpoint.json",
+      "artifact_id": "soscc_6c3d0fa93f86ee5acfc9e68d6fc3217b",
+      "record_count": 1,
+      "access_mode": "read_only"
+    }
+  ],
+  "status": "strategy_observation_processing_input_set_ready",
+  "reason": "Offline observation processing input inventory for immutable Phase 3 observation metadata only. No strategy logic, signals, decisions, trades, recommendations, analytics, or bankroll outputs are produced."
+}

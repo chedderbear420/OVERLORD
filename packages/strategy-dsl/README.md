@@ -54,6 +54,8 @@ Phase 3G adds StrategyObservationStackCloseoutCheckpoint metadata. It inventorie
 
 Phase 3H adds negative fixture hardening for malformed, unsafe, inconsistent, incomplete, duplicated, live-capable, executable, signal-like, decision-like, order-like, recommendation-like, bankroll-like, credential-like, analytics-like, and path-unsafe StrategyObservationStackCloseoutCheckpoint records.
 
+Phase 4A adds StrategyObservationProcessingContract and StrategyObservationProcessingInputSet metadata. These records consume the frozen Phase 3 observation metadata stack as immutable input and define how a future offline observation processing pass may inspect and summarize metadata, but they do not execute strategy logic or produce signals, decisions, trades, recommendations, analytics, or bankroll actions.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -77,6 +79,8 @@ Phase 3H adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `schemas/strategy_observation_evidence_bundle.schema.json`: StrategyObservationEvidenceBundle schema.
 - `schemas/strategy_observation_case_file_summary.schema.json`: StrategyObservationCaseFileSummary schema.
 - `schemas/strategy_observation_stack_closeout_checkpoint.schema.json`: StrategyObservationStackCloseoutCheckpoint schema.
+- `schemas/strategy_observation_processing_contract.schema.json`: StrategyObservationProcessingContract schema.
+- `schemas/strategy_observation_processing_input_set.schema.json`: StrategyObservationProcessingInputSet schema.
 - `fixtures/synthetic_strategy_definition.json`: deterministic metadata-only strategy definition fixture.
 - `fixtures/synthetic_strategy_run_intent.json`: deterministic metadata-only replay attachment intent fixture.
 - `fixtures/synthetic_strategy_run_trace.jsonl`: deterministic no-op strategy observation trace fixture.
@@ -98,6 +102,8 @@ Phase 3H adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `fixtures/synthetic_strategy_observation_evidence_bundle.json`: deterministic no-op observation evidence bundle fixture.
 - `fixtures/synthetic_strategy_observation_case_file_summary.json`: deterministic no-op observation case-file summary fixture.
 - `fixtures/synthetic_strategy_observation_stack_closeout_checkpoint.json`: deterministic Phase 3 observation metadata stack closeout fixture.
+- `fixtures/synthetic_strategy_observation_processing_contract.json`: deterministic offline observation processing contract fixture.
+- `fixtures/synthetic_strategy_observation_processing_input_set.json`: deterministic offline observation processing input inventory fixture.
 - `fixtures/negative/*.json`: deterministic negative fixtures for StrategyDefinition, StrategyRunIntent, and StrategyNoOpRunSummary validation hardening.
 - `fixtures/negative/*.jsonl`: deterministic negative fixtures for StrategyRunTrace validation hardening.
 - `src/strategy-definition-id.js`: deterministic StrategyDefinition id helper.
@@ -121,6 +127,8 @@ Phase 3H adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `src/strategy-observation-evidence-bundle-id.js`: deterministic StrategyObservationEvidenceBundle id helper.
 - `src/strategy-observation-case-file-summary-id.js`: deterministic StrategyObservationCaseFileSummary id helper.
 - `src/strategy-observation-stack-closeout-checkpoint-id.js`: deterministic StrategyObservationStackCloseoutCheckpoint id helper.
+- `src/strategy-observation-processing-contract-id.js`: deterministic StrategyObservationProcessingContract id helper.
+- `src/strategy-observation-processing-input-set-id.js`: deterministic StrategyObservationProcessingInputSet id helper.
 - `src/strategy-dry-run-artifacts.js`: local StrategyDryRun artifact contracts and readers.
 - `src/strategy-observation-artifacts.js`: local StrategyObservation artifact contracts and readers.
 - `src/run-noop-strategy.js`: local no-op strategy trace shell.
@@ -140,6 +148,8 @@ Phase 3H adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `src/build-strategy-observation-evidence-bundle.js`: local StrategyObservationEvidenceBundle builder.
 - `src/build-strategy-observation-case-file-summary.js`: local StrategyObservationCaseFileSummary builder.
 - `src/build-strategy-observation-stack-closeout-checkpoint.js`: local StrategyObservationStackCloseoutCheckpoint builder.
+- `src/build-strategy-observation-processing-contract.js`: local StrategyObservationProcessingContract builder.
+- `src/build-strategy-observation-processing-input-set.js`: local StrategyObservationProcessingInputSet builder.
 - `src/validate-strategy-definition.js`: local StrategyDefinition validator.
 - `src/validate-strategy-run-intent.js`: local StrategyRunIntent validator.
 - `src/validate-strategy-run-trace.js`: local StrategyRunTrace validator.
@@ -161,6 +171,8 @@ Phase 3H adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `src/validate-strategy-observation-evidence-bundle.js`: local StrategyObservationEvidenceBundle validator.
 - `src/validate-strategy-observation-case-file-summary.js`: local StrategyObservationCaseFileSummary validator.
 - `src/validate-strategy-observation-stack-closeout-checkpoint.js`: local StrategyObservationStackCloseoutCheckpoint validator.
+- `src/validate-strategy-observation-processing-contract.js`: local StrategyObservationProcessingContract validator.
+- `src/validate-strategy-observation-processing-input-set.js`: local StrategyObservationProcessingInputSet validator.
 
 ## Commands
 
@@ -186,6 +198,8 @@ npm run validate:strategy-observation-noop-summary
 npm run validate:strategy-observation-evidence-bundle
 npm run validate:strategy-observation-case-file-summary
 npm run validate:strategy-observation-stack-closeout-checkpoint
+npm run validate:strategy-observation-processing-contract
+npm run validate:strategy-observation-processing-input-set
 npm run test:strategy-dsl
 ```
 
@@ -246,3 +260,5 @@ StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary negativ
 StrategyObservationStackCloseoutCheckpoint is closeout/readiness metadata only. Its `freeze_recommendation` applies only to freezing the offline observation metadata stack and must not be interpreted as a trading, deployment, recommendation, analytics, or bankroll signal.
 
 StrategyObservationStackCloseoutCheckpoint negative fixtures must fail deterministically before the Phase 3 observation metadata stack is frozen.
+
+StrategyObservationProcessingContract and StrategyObservationProcessingInputSet are Phase 4 offline observation processing metadata only. They may identify immutable read-only inputs from the frozen Phase 3 observation stack and state metadata-only processing rules, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, place orders, or produce analytics.

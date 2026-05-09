@@ -1,0 +1,63 @@
+{
+  "strategy_observation_processing_contract_id": "sopc_d5f85d3ac42b6ade0754837ea0354a77",
+  "schema_version": "strategy_observation_processing_contract.v1",
+  "generated_at": "2026-04-28T14:05:06Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "strategy_observation_stack_closeout_checkpoint_id": "soscc_6c3d0fa93f86ee5acfc9e68d6fc3217b",
+  "source_strategy_observation_stack_closeout_checkpoint_id": "soscc_6c3d0fa93f86ee5acfc9e68d6fc3217b",
+  "source_strategy_observation_case_file_summary_id": "socfs_1c6d352afb254b579957e31232c56e4c",
+  "source_strategy_observation_evidence_bundle_id": "soeb_49abd0cda56025b7d2a91b37e71fbc39",
+  "source_strategy_observation_noop_summary_id": "sons_70a90bf2b12e15dcdf2fcdf7653dbc23",
+  "source_strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "source_strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "dry_run_planned",
+  "allowed_processing_inputs": [
+    "strategy_observation_contract",
+    "strategy_observation_input_set",
+    "strategy_observation_trace",
+    "strategy_observation_noop_summary",
+    "strategy_observation_evidence_bundle",
+    "strategy_observation_case_file_summary",
+    "strategy_observation_stack_closeout_checkpoint"
+  ],
+  "allowed_processing_outputs": [
+    "observation_processing_trace",
+    "observation_processing_noop_summary",
+    "observation_processing_evidence_bundle",
+    "observation_processing_case_file_summary"
+  ],
+  "forbidden_processing_outputs": [
+    "edge_signal",
+    "risk_decision",
+    "action_decision",
+    "paper_ledger_entry",
+    "paper_exit",
+    "live_order",
+    "real_trade",
+    "credential",
+    "api_key",
+    "bankroll_allocation",
+    "recommendation",
+    "analytics",
+    "strategy_analytics"
+  ],
+  "processing_rules": [
+    "read_only_inputs",
+    "preserve_source_provenance",
+    "emit_processing_metadata_only",
+    "no_signal_generation",
+    "no_decision_generation",
+    "no_trade_generation",
+    "no_recommendations",
+    "no_bankroll_outputs",
+    "no_analytics",
+    "no_network"
+  ],
+  "status": "strategy_observation_processing_contract_ready",
+  "reason": "Offline strategy observation processing contract for immutable Phase 3 observation metadata only. No strategy logic, signals, decisions, trades, recommendations, analytics, or bankroll outputs are produced."
+}
