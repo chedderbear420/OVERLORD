@@ -40,6 +40,8 @@ Phase 2R adds negative fixture hardening for malformed, unsafe, inconsistent, in
 
 Phase 3A adds StrategyObservationContract and StrategyObservationInputSet metadata. These records consume the frozen Phase 2 dry-run metadata stack as immutable input and define what a future offline observation pass may inspect, but they do not execute strategy logic or produce signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 3B adds negative fixture hardening for malformed, unsafe, inconsistent, executable, live-capable, signal-like, decision-like, order-like, recommendation-like, bankroll-like, analytics-like, credential-like, and path-unsafe StrategyObservationContract and StrategyObservationInputSet records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -188,3 +190,5 @@ StrategyDryRunStackCloseoutCheckpoint is closeout/readiness metadata only. Its `
 StrategyDryRunStackCloseoutCheckpoint negative fixtures must fail deterministically before the Phase 2 dry-run metadata stack is frozen.
 
 StrategyObservationContract and StrategyObservationInputSet are Phase 3 offline observation metadata only. They may identify immutable read-only inputs from the frozen Phase 2 dry-run stack and state metadata-only observation rules, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, place orders, or produce analytics.
+
+StrategyObservationContract and StrategyObservationInputSet negative fixtures must fail deterministically before any future observation pass can consume observation metadata.
