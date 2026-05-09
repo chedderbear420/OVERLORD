@@ -44,6 +44,8 @@ Phase 3B adds negative fixture hardening for malformed, unsafe, inconsistent, ex
 
 Phase 3C adds an offline StrategyObservationTrace no-op shell. It consumes validated StrategyObservationContract and StrategyObservationInputSet records, walks approved read-only inputs, and emits observation trace and no-op summary metadata only without executing strategy logic or producing signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 3D adds negative fixture hardening for malformed, unsafe, inconsistent, unordered, duplicated, lifecycle-invalid, executable, live-capable, signal-like, decision-like, order-like, recommendation-like, bankroll-like, analytics-like, credential-like, and path-unsafe StrategyObservationTrace and StrategyObservationNoOpSummary records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -207,3 +209,5 @@ StrategyObservationContract and StrategyObservationInputSet are Phase 3 offline 
 StrategyObservationContract and StrategyObservationInputSet negative fixtures must fail deterministically before any future observation pass can consume observation metadata.
 
 StrategyObservationTrace and StrategyObservationNoOpSummary are no-op observation metadata only. They may record that approved read-only observation inputs were seen, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, place orders, or produce analytics.
+
+StrategyObservationTrace and StrategyObservationNoOpSummary negative fixtures must fail deterministically before any future observation processing layer can consume observation trace metadata.
