@@ -1,0 +1,92 @@
+[
+  {
+    "name": "contract_nested_forbidden_key",
+    "target": "contract",
+    "set": [{ "path": ["nested", "order"], "value": { "status": "blocked" } }]
+  },
+  {
+    "name": "contract_forbidden_value_case_insensitive",
+    "target": "contract",
+    "set": [{ "path": ["reason"], "value": "recommended_action: BUY" }]
+  },
+  {
+    "name": "contract_unknown_field",
+    "target": "contract",
+    "set": [{ "path": ["market_state"], "value": { "status": "blocked" } }]
+  },
+  {
+    "name": "contract_case_file_source_mismatch",
+    "target": "contract",
+    "set": [{ "path": ["source_strategy_observation_case_file_summary_id"], "value": "socfs_wrong" }]
+  },
+  {
+    "name": "contract_evidence_source_mismatch",
+    "target": "contract",
+    "set": [{ "path": ["source_strategy_observation_evidence_bundle_id"], "value": "soeb_wrong" }]
+  },
+  {
+    "name": "contract_noop_source_mismatch",
+    "target": "contract",
+    "set": [{ "path": ["source_strategy_observation_noop_summary_id"], "value": "sons_wrong" }]
+  },
+  {
+    "name": "input_set_contract_id_mismatch",
+    "target": "input_set",
+    "set": [{ "path": ["strategy_observation_processing_contract_id"], "value": "sopc_wrong" }]
+  },
+  {
+    "name": "input_set_wrong_record_count",
+    "target": "input_set",
+    "set": [{ "path": ["input_artifacts", 2, "record_count"], "value": 8 }]
+  },
+  {
+    "name": "input_set_absolute_path",
+    "target": "input_set",
+    "set": [{ "path": ["input_artifacts", 0, "artifact_path"], "value": "C:/Users/example/secrets/api_key.json" }]
+  },
+  {
+    "name": "input_set_url_path",
+    "target": "input_set",
+    "set": [{ "path": ["input_artifacts", 0, "artifact_path"], "value": "https://example.invalid/artifact.json" }]
+  },
+  {
+    "name": "input_set_traversal_path",
+    "target": "input_set",
+    "set": [{ "path": ["input_artifacts", 0, "artifact_path"], "value": "../packages/strategy-dsl/fixtures/synthetic_strategy_observation_contract.json" }]
+  },
+  {
+    "name": "input_set_normalized_suspicious_path",
+    "target": "input_set",
+    "set": [{ "path": ["input_artifacts", 0, "artifact_path"], "value": "packages/../packages/strategy-dsl/fixtures/synthetic_strategy_observation_contract.json" }]
+  },
+  {
+    "name": "input_set_credential_path",
+    "target": "input_set",
+    "set": [{ "path": ["input_artifacts", 0, "artifact_path"], "value": "packages/strategy-dsl/fixtures/secrets/api_key.json" }]
+  },
+  {
+    "name": "input_set_live_stream_reason",
+    "target": "input_set",
+    "set": [{ "path": ["reason"], "value": "LIVE API fetch stream enabled" }]
+  },
+  {
+    "name": "manifest_unknown_field",
+    "target": "manifest",
+    "set": [{ "path": ["score"], "value": 1 }]
+  },
+  {
+    "name": "manifest_bad_hash",
+    "target": "manifest",
+    "set": [{ "path": ["artifact_hashes", 0, "sha256"], "value": "sha256:0000000000000000000000000000000000000000000000000000000000000000" }]
+  },
+  {
+    "name": "manifest_source_mismatch",
+    "target": "manifest",
+    "set": [{ "path": ["source_provenance", "source_strategy_observation_case_file_summary_id"], "value": "socfs_wrong" }]
+  },
+  {
+    "name": "manifest_nested_order_like_structure",
+    "target": "manifest",
+    "set": [{ "path": ["output", "buy"], "value": "blocked" }]
+  }
+]

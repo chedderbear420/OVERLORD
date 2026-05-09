@@ -94,7 +94,8 @@ export async function buildStrategyObservationProcessingContract(options = {}) {
     forbidden_processing_outputs: requiredForbiddenProcessingOutputs,
     processing_rules: allowedProcessingRules,
     status: "strategy_observation_processing_contract_ready",
-    reason: "Offline strategy observation processing contract for immutable Phase 3 observation metadata only. No strategy logic, signals, decisions, trades, recommendations, analytics, or bankroll outputs are produced."
+    reason_code: "VALIDATION_PASSED",
+    reason: "metadata boundary ready"
   };
 }
 

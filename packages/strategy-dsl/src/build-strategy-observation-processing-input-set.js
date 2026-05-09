@@ -6,6 +6,16 @@ import {
 } from "./build-strategy-observation-processing-contract.js";
 import { strategyObservationProcessingInputSetId } from "./strategy-observation-processing-input-set-id.js";
 
+export const expectedObservationProcessingArtifactPaths = new Map([
+  ["strategy_observation_contract", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_contract.json"],
+  ["strategy_observation_input_set", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_input_set.json"],
+  ["strategy_observation_trace", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_trace.jsonl"],
+  ["strategy_observation_noop_summary", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_noop_summary.json"],
+  ["strategy_observation_evidence_bundle", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_evidence_bundle.json"],
+  ["strategy_observation_case_file_summary", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_case_file_summary.json"],
+  ["strategy_observation_stack_closeout_checkpoint", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_stack_closeout_checkpoint.json"]
+]);
+
 export async function buildStrategyObservationProcessingInputSet(options = {}) {
   const repoRoot = options.repoRoot ?? path.resolve(import.meta.dirname, "..", "..", "..");
   const generatedAt = options.generatedAt ?? "2026-04-28T14:05:06Z";
@@ -37,7 +47,8 @@ export async function buildStrategyObservationProcessingInputSet(options = {}) {
     run_mode: contract.run_mode,
     input_artifacts: inputArtifacts,
     status: "strategy_observation_processing_input_set_ready",
-    reason: "Offline observation processing input inventory for immutable Phase 3 observation metadata only. No strategy logic, signals, decisions, trades, recommendations, analytics, or bankroll outputs are produced."
+    reason_code: "VALIDATION_PASSED",
+    reason: "metadata boundary ready"
   };
 }
 
@@ -61,6 +72,10 @@ function buildProcessingInputArtifacts({ paths, sources }) {
 }
 
 function makeArtifact(sourceArtifact) {
+  const expectedPath = expectedObservationProcessingArtifactPaths.get(sourceArtifact.artifact_type);
+  if (sourceArtifact.artifact_path !== expectedPath) {
+    throw new Error(`Unexpected artifact_path for ${sourceArtifact.artifact_type}`);
+  }
   return {
     artifact_type: sourceArtifact.artifact_type,
     artifact_path: sourceArtifact.artifact_path,

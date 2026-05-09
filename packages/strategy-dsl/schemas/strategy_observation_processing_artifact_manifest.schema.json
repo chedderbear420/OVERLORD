@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "overlord.strategy_observation_processing_artifact_manifest.schema.json",
+  "title": "StrategyObservationProcessingArtifactManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_manifest_id",
+    "schema_version",
+    "created_at",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "strategy_observation_processing_contract_id",
+    "strategy_observation_processing_input_set_id",
+    "input_artifacts",
+    "artifact_hashes",
+    "source_provenance",
+    "validation_status",
+    "status",
+    "reason_code",
+    "reason"
+  ],
+  "properties": {
+    "artifact_manifest_id": { "type": "string", "pattern": "^sopam_[a-f0-9]{32}$" },
+    "schema_version": { "const": "strategy_observation_processing_artifact_manifest.v1" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "paper_only": { "const": true },
+    "live_execution_allowed": { "const": false },
+    "order_placement_allowed": { "const": false },
+    "strategy_observation_processing_contract_id": { "type": "string", "pattern": "^sopc_" },
+    "strategy_observation_processing_input_set_id": { "type": "string", "pattern": "^sopis_" },
+    "input_artifacts": { "type": "array", "minItems": 1 },
+    "artifact_hashes": { "type": "array", "minItems": 1 },
+    "source_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_strategy_observation_stack_closeout_checkpoint_id",
+        "source_strategy_observation_case_file_summary_id",
+        "source_strategy_observation_evidence_bundle_id",
+        "source_strategy_observation_noop_summary_id",
+        "source_strategy_definition_id",
+        "source_strategy_run_intent_id"
+      ],
+      "properties": {
+        "source_strategy_observation_stack_closeout_checkpoint_id": { "type": "string", "pattern": "^soscc_" },
+        "source_strategy_observation_case_file_summary_id": { "type": "string", "pattern": "^socfs_" },
+        "source_strategy_observation_evidence_bundle_id": { "type": "string", "pattern": "^soeb_" },
+        "source_strategy_observation_noop_summary_id": { "type": "string", "pattern": "^sons_" },
+        "source_strategy_definition_id": { "type": "string", "pattern": "^sdef_" },
+        "source_strategy_run_intent_id": { "type": "string", "pattern": "^sri_" }
+      }
+    },
+    "validation_status": { "enum": ["validation_passed", "validation_failed"] },
+    "status": { "enum": ["artifact_manifest_ready", "artifact_manifest_rejected"] },
+    "reason_code": {
+      "enum": [
+        "ERR_FORBIDDEN_KEY_DETECTED",
+        "ERR_FORBIDDEN_VALUE_DETECTED",
+        "ERR_UNSAFE_PATH_DETECTED",
+        "ERR_UNKNOWN_FIELD",
+        "ERR_REASON_TEXT_UNSAFE",
+        "ERR_SOURCE_MISMATCH",
+        "ERR_RECORD_COUNT_MISMATCH",
+        "ERR_HASH_MISMATCH",
+        "VALIDATION_PASSED"
+      ]
+    },
+    "reason": { "type": "string" }
+  }
+}

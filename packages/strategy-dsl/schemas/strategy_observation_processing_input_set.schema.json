@@ -3,7 +3,7 @@
   "$id": "overlord.strategy_observation_processing_input_set.schema.json",
   "title": "StrategyObservationProcessingInputSet",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "required": [
     "strategy_observation_processing_input_set_id",
     "schema_version",
@@ -23,6 +23,7 @@
     "run_mode",
     "input_artifacts",
     "status",
+    "reason_code",
     "reason"
   ],
   "properties": {
@@ -41,6 +42,7 @@
       "minItems": 1,
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "required": ["artifact_type", "artifact_path", "artifact_id", "record_count", "access_mode"],
         "properties": {
           "artifact_type": {
@@ -62,6 +64,7 @@
       }
     },
     "status": { "enum": ["strategy_observation_processing_input_set_ready", "strategy_observation_processing_input_set_rejected"] },
+    "reason_code": { "enum": ["VALIDATION_PASSED"] },
     "reason": { "type": "string" }
   }
 }

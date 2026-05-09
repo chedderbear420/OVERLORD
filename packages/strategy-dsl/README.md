@@ -56,6 +56,8 @@ Phase 3H adds negative fixture hardening for malformed, unsafe, inconsistent, in
 
 Phase 4A adds StrategyObservationProcessingContract and StrategyObservationProcessingInputSet metadata. These records consume the frozen Phase 3 observation metadata stack as immutable input and define how a future offline observation processing pass may inspect and summarize metadata, but they do not execute strategy logic or produce signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 4B hardens the Phase 4A observation processing boundary with strict whitelist validation, recursive forbidden-content scanning, safe local artifact path validation, static reason codes, deterministic artifact hashing, and red-team fixture coverage. It distinguishes Overlord-generated metadata from raw immutable source artifacts and does not perform analytics, strategy evaluation, market prediction, recommendations, execution, order placement, or live trading.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -81,6 +83,7 @@ Phase 4A adds StrategyObservationProcessingContract and StrategyObservationProce
 - `schemas/strategy_observation_stack_closeout_checkpoint.schema.json`: StrategyObservationStackCloseoutCheckpoint schema.
 - `schemas/strategy_observation_processing_contract.schema.json`: StrategyObservationProcessingContract schema.
 - `schemas/strategy_observation_processing_input_set.schema.json`: StrategyObservationProcessingInputSet schema.
+- `schemas/strategy_observation_processing_artifact_manifest.schema.json`: StrategyObservationProcessingArtifactManifest schema.
 - `fixtures/synthetic_strategy_definition.json`: deterministic metadata-only strategy definition fixture.
 - `fixtures/synthetic_strategy_run_intent.json`: deterministic metadata-only replay attachment intent fixture.
 - `fixtures/synthetic_strategy_run_trace.jsonl`: deterministic no-op strategy observation trace fixture.
@@ -104,6 +107,7 @@ Phase 4A adds StrategyObservationProcessingContract and StrategyObservationProce
 - `fixtures/synthetic_strategy_observation_stack_closeout_checkpoint.json`: deterministic Phase 3 observation metadata stack closeout fixture.
 - `fixtures/synthetic_strategy_observation_processing_contract.json`: deterministic offline observation processing contract fixture.
 - `fixtures/synthetic_strategy_observation_processing_input_set.json`: deterministic offline observation processing input inventory fixture.
+- `fixtures/synthetic_strategy_observation_processing_artifact_manifest.json`: deterministic offline observation processing artifact manifest fixture.
 - `fixtures/negative/*.json`: deterministic negative fixtures for StrategyDefinition, StrategyRunIntent, and StrategyNoOpRunSummary validation hardening.
 - `fixtures/negative/*.jsonl`: deterministic negative fixtures for StrategyRunTrace validation hardening.
 - `src/strategy-definition-id.js`: deterministic StrategyDefinition id helper.
@@ -129,6 +133,7 @@ Phase 4A adds StrategyObservationProcessingContract and StrategyObservationProce
 - `src/strategy-observation-stack-closeout-checkpoint-id.js`: deterministic StrategyObservationStackCloseoutCheckpoint id helper.
 - `src/strategy-observation-processing-contract-id.js`: deterministic StrategyObservationProcessingContract id helper.
 - `src/strategy-observation-processing-input-set-id.js`: deterministic StrategyObservationProcessingInputSet id helper.
+- `src/strategy-observation-processing-artifact-manifest-id.js`: deterministic StrategyObservationProcessingArtifactManifest id helper.
 - `src/strategy-dry-run-artifacts.js`: local StrategyDryRun artifact contracts and readers.
 - `src/strategy-observation-artifacts.js`: local StrategyObservation artifact contracts and readers.
 - `src/run-noop-strategy.js`: local no-op strategy trace shell.
@@ -150,6 +155,8 @@ Phase 4A adds StrategyObservationProcessingContract and StrategyObservationProce
 - `src/build-strategy-observation-stack-closeout-checkpoint.js`: local StrategyObservationStackCloseoutCheckpoint builder.
 - `src/build-strategy-observation-processing-contract.js`: local StrategyObservationProcessingContract builder.
 - `src/build-strategy-observation-processing-input-set.js`: local StrategyObservationProcessingInputSet builder.
+- `src/build-strategy-observation-processing-artifact-manifest.js`: local StrategyObservationProcessingArtifactManifest builder.
+- `src/strategy-observation-boundary-guard.js`: local strict observation boundary guard and reason-code constants.
 - `src/validate-strategy-definition.js`: local StrategyDefinition validator.
 - `src/validate-strategy-run-intent.js`: local StrategyRunIntent validator.
 - `src/validate-strategy-run-trace.js`: local StrategyRunTrace validator.
@@ -173,6 +180,7 @@ Phase 4A adds StrategyObservationProcessingContract and StrategyObservationProce
 - `src/validate-strategy-observation-stack-closeout-checkpoint.js`: local StrategyObservationStackCloseoutCheckpoint validator.
 - `src/validate-strategy-observation-processing-contract.js`: local StrategyObservationProcessingContract validator.
 - `src/validate-strategy-observation-processing-input-set.js`: local StrategyObservationProcessingInputSet validator.
+- `src/validate-strategy-observation-processing-artifact-manifest.js`: local StrategyObservationProcessingArtifactManifest validator.
 
 ## Commands
 
@@ -200,6 +208,7 @@ npm run validate:strategy-observation-case-file-summary
 npm run validate:strategy-observation-stack-closeout-checkpoint
 npm run validate:strategy-observation-processing-contract
 npm run validate:strategy-observation-processing-input-set
+npm run validate:strategy-observation-processing-artifact-manifest
 npm run test:strategy-dsl
 ```
 
@@ -262,3 +271,5 @@ StrategyObservationStackCloseoutCheckpoint is closeout/readiness metadata only. 
 StrategyObservationStackCloseoutCheckpoint negative fixtures must fail deterministically before the Phase 3 observation metadata stack is frozen.
 
 StrategyObservationProcessingContract and StrategyObservationProcessingInputSet are Phase 4 offline observation processing metadata only. They may identify immutable read-only inputs from the frozen Phase 3 observation stack and state metadata-only processing rules, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, place orders, or produce analytics.
+
+StrategyObservationProcessingArtifactManifest is Phase 4 offline artifact manifest metadata only. It may hash local synthetic fixtures and validate snapshot provenance, but it must not inspect live systems, call APIs, stream data, poll, subscribe, execute strategy logic, calculate analytics, produce recommendations, or create trading outputs.

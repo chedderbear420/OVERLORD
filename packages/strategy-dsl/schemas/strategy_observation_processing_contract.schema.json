@@ -3,7 +3,7 @@
   "$id": "overlord.strategy_observation_processing_contract.schema.json",
   "title": "StrategyObservationProcessingContract",
   "type": "object",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "required": [
     "strategy_observation_processing_contract_id",
     "schema_version",
@@ -27,6 +27,7 @@
     "forbidden_processing_outputs",
     "processing_rules",
     "status",
+    "reason_code",
     "reason"
   ],
   "properties": {
@@ -92,6 +93,7 @@
       }
     },
     "status": { "enum": ["strategy_observation_processing_contract_ready", "strategy_observation_processing_contract_rejected"] },
+    "reason_code": { "enum": ["VALIDATION_PASSED"] },
     "reason": { "type": "string" }
   }
 }

@@ -1,7 +1,14 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { validateForbiddenFields } from "./strategy-contract-rules.js";
+import {
+  makeBoundaryError,
+  observationValidationReasonCodes,
+  validateNoUnknownFields,
+  validateObservationBoundary
+} from "./strategy-observation-boundary-guard.js";
 import {
   allowedProcessingInputs,
   allowedProcessingOutputs,
@@ -12,6 +19,12 @@ import { strategyObservationProcessingContractId } from "./strategy-observation-
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const defaultFixturePath = path.join(repoRoot, "packages", "strategy-dsl", "fixtures", "synthetic_strategy_observation_processing_contract.json");
+const sourceFixtures = {
+  caseFile: readLocalJson("synthetic_strategy_observation_case_file_summary.json"),
+  evidenceBundle: readLocalJson("synthetic_strategy_observation_evidence_bundle.json"),
+  noopSummary: readLocalJson("synthetic_strategy_observation_noop_summary.json"),
+  closeout: readLocalJson("synthetic_strategy_observation_stack_closeout_checkpoint.json")
+};
 const requiredFields = [
   "strategy_observation_processing_contract_id",
   "schema_version",
@@ -35,6 +48,7 @@ const requiredFields = [
   "forbidden_processing_outputs",
   "processing_rules",
   "status",
+  "reason_code",
   "reason"
 ];
 const allowedStatuses = new Set(["strategy_observation_processing_contract_ready", "strategy_observation_processing_contract_rejected"]);
@@ -75,17 +89,21 @@ export function validateStrategyObservationProcessingContract(contract) {
   if (!contract || typeof contract !== "object" || Array.isArray(contract)) {
     return { ok: false, errors: ["StrategyObservationProcessingContract must be a JSON object"] };
   }
+  validateNoUnknownFields(errors, contract, requiredFields, "StrategyObservationProcessingContract");
+  appendBoundaryErrors(errors, validateObservationBoundary(contract));
   validateForbiddenFields(errors, contract);
   for (const field of requiredFields) {
     if (!Object.hasOwn(contract, field)) errors.push(`${field} is required`);
   }
   validateCoreFields(errors, contract);
   validateIdShapes(errors, contract);
+  validateSourceFixtureConsistency(errors, contract);
   validateDeterministicId(errors, contract);
   validateAllowedInputs(errors, contract.allowed_processing_inputs);
   validateAllowedOutputs(errors, contract.allowed_processing_outputs);
   validateForbiddenOutputs(errors, contract.forbidden_processing_outputs);
   validateProcessingRules(errors, contract.processing_rules);
+  validateReasonCode(errors, contract);
 
   return { ok: errors.length === 0, errors };
 }
@@ -112,6 +130,11 @@ function validateCoreFields(errors, contract) {
   if (!allowedStatuses.has(contract.status)) errors.push("status is invalid");
 }
 
+function validateReasonCode(errors, contract) {
+  if (contract.reason_code !== observationValidationReasonCodes.VALIDATION_PASSED) errors.push("reason_code must be VALIDATION_PASSED");
+  if (typeof contract.reason !== "string" || contract.reason.length === 0) errors.push("reason must be a non-empty string");
+}
+
 function validateIdShapes(errors, contract) {
   if (typeof contract.strategy_observation_processing_contract_id !== "string" || !contract.strategy_observation_processing_contract_id.startsWith("sopc_")) errors.push("strategy_observation_processing_contract_id must reference a StrategyObservationProcessingContract id");
   if (typeof contract.strategy_definition_id !== "string" || !contract.strategy_definition_id.startsWith("sdef_")) errors.push("strategy_definition_id must reference a StrategyDefinition id");
@@ -135,6 +158,17 @@ function validateDeterministicId(errors, contract) {
     forbiddenProcessingOutputCount: Array.isArray(contract.forbidden_processing_outputs) ? contract.forbidden_processing_outputs.length : undefined
   });
   if (contract.strategy_observation_processing_contract_id !== expected) errors.push("strategy_observation_processing_contract_id must be deterministic from observation processing source ids and contract counts");
+}
+
+function validateSourceFixtureConsistency(errors, contract) {
+  if (contract.source_strategy_observation_case_file_summary_id !== sourceFixtures.caseFile.strategy_observation_case_file_summary_id) errors.push("source_strategy_observation_case_file_summary_id must match local StrategyObservationCaseFileSummary fixture");
+  if (contract.source_strategy_observation_evidence_bundle_id !== sourceFixtures.evidenceBundle.strategy_observation_evidence_bundle_id) errors.push("source_strategy_observation_evidence_bundle_id must match local StrategyObservationEvidenceBundle fixture");
+  if (contract.source_strategy_observation_noop_summary_id !== sourceFixtures.noopSummary.strategy_observation_noop_summary_id) errors.push("source_strategy_observation_noop_summary_id must match local StrategyObservationNoOpSummary fixture");
+  if (contract.strategy_observation_stack_closeout_checkpoint_id !== sourceFixtures.closeout.strategy_observation_stack_closeout_checkpoint_id) errors.push("strategy_observation_stack_closeout_checkpoint_id must match local StrategyObservationStackCloseoutCheckpoint fixture");
+}
+
+function readLocalJson(fileName) {
+  return JSON.parse(readFileSync(path.join(repoRoot, "packages", "strategy-dsl", "fixtures", fileName), "utf8"));
 }
 
 function validateAllowedInputs(errors, inputs) {
@@ -179,6 +213,12 @@ function validateProcessingRules(errors, rules) {
     if (forbiddenRules.has(rule)) errors.push("processing_rules contains forbidden rule");
     if (seen.has(rule)) errors.push("duplicate processing_rules are not allowed");
     seen.add(rule);
+  }
+}
+
+function appendBoundaryErrors(errors, report) {
+  for (const error of report.errors) {
+    errors.push(`${error.reason_code}: ${error.message}`);
   }
 }
 

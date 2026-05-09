@@ -67,5 +67,6 @@
     }
   ],
   "status": "strategy_observation_processing_input_set_ready",
-  "reason": "Offline observation processing input inventory for immutable Phase 3 observation metadata only. No strategy logic, signals, decisions, trades, recommendations, analytics, or bankroll outputs are produced."
+  "reason_code": "VALIDATION_PASSED",
+  "reason": "metadata boundary ready"
 }

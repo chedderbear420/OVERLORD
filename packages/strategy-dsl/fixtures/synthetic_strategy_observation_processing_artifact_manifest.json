@@ -1,0 +1,110 @@
+{
+  "artifact_manifest_id": "sopam_452c80395a3cc2948884a9722b0fb52f",
+  "schema_version": "strategy_observation_processing_artifact_manifest.v1",
+  "created_at": "2026-04-28T14:05:06Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_observation_processing_contract_id": "sopc_d5f85d3ac42b6ade0754837ea0354a77",
+  "strategy_observation_processing_input_set_id": "sopis_e375ea353c05147738b963a553f0e776",
+  "input_artifacts": [
+    {
+      "artifact_type": "strategy_observation_contract",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_contract.json",
+      "artifact_id": "soc_dcfd5ba220301322f52848017b619030",
+      "record_count": 1,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_input_set",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_input_set.json",
+      "artifact_id": "sois_385300d3af9be674fcb1699e270150b1",
+      "record_count": 1,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_trace",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_trace.jsonl",
+      "artifact_id": null,
+      "record_count": 7,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_noop_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_noop_summary.json",
+      "artifact_id": "sons_70a90bf2b12e15dcdf2fcdf7653dbc23",
+      "record_count": 1,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_evidence_bundle",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_evidence_bundle.json",
+      "artifact_id": "soeb_49abd0cda56025b7d2a91b37e71fbc39",
+      "record_count": 1,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_case_file_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_case_file_summary.json",
+      "artifact_id": "socfs_1c6d352afb254b579957e31232c56e4c",
+      "record_count": 1,
+      "access_mode": "read_only"
+    },
+    {
+      "artifact_type": "strategy_observation_stack_closeout_checkpoint",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_stack_closeout_checkpoint.json",
+      "artifact_id": "soscc_6c3d0fa93f86ee5acfc9e68d6fc3217b",
+      "record_count": 1,
+      "access_mode": "read_only"
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "artifact_type": "strategy_observation_contract",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_contract.json",
+      "sha256": "sha256:be35eecc0eca18a546a4b379d59638f7a9d5bc97754a1612969e3a73c0395a6b"
+    },
+    {
+      "artifact_type": "strategy_observation_input_set",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_input_set.json",
+      "sha256": "sha256:9ce0edd80f9c443bd8507bc5ac8346b083cac1c581533e483afb614d5499eb40"
+    },
+    {
+      "artifact_type": "strategy_observation_trace",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_trace.jsonl",
+      "sha256": "sha256:b280201add3235d6ca9a47577975c07c916fd7aa97fe1d53f59ac96f6447e863"
+    },
+    {
+      "artifact_type": "strategy_observation_noop_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_noop_summary.json",
+      "sha256": "sha256:bcaa7f8da24fc9660203e4cde5b06a18f92a08b8c4a6ac9beb8cc74043d1885f"
+    },
+    {
+      "artifact_type": "strategy_observation_evidence_bundle",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_evidence_bundle.json",
+      "sha256": "sha256:37d8c3f58249a21792fc3d68b8333d2e859bcd21636ea1ac1c72732c2b609cef"
+    },
+    {
+      "artifact_type": "strategy_observation_case_file_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_case_file_summary.json",
+      "sha256": "sha256:0ce443dd01dc20febba99d9a84d1ff2358ecb8dc40b62abef643f308d6a8d59c"
+    },
+    {
+      "artifact_type": "strategy_observation_stack_closeout_checkpoint",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_stack_closeout_checkpoint.json",
+      "sha256": "sha256:751a68ac10850a4a09b76067bc4b94b7f32b22a227e5ac37c8798ff79eb9a860"
+    }
+  ],
+  "source_provenance": {
+    "source_strategy_observation_stack_closeout_checkpoint_id": "soscc_6c3d0fa93f86ee5acfc9e68d6fc3217b",
+    "source_strategy_observation_case_file_summary_id": "socfs_1c6d352afb254b579957e31232c56e4c",
+    "source_strategy_observation_evidence_bundle_id": "soeb_49abd0cda56025b7d2a91b37e71fbc39",
+    "source_strategy_observation_noop_summary_id": "sons_70a90bf2b12e15dcdf2fcdf7653dbc23",
+    "source_strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+    "source_strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f"
+  },
+  "validation_status": "validation_passed",
+  "status": "artifact_manifest_ready",
+  "reason_code": "VALIDATION_PASSED",
+  "reason": "metadata snapshot ready"
+}

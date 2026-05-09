@@ -1,14 +1,29 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { resolveLocalArtifactPath } from "../../replay-engine/src/replay-artifact-reader.js";
 import { validateForbiddenFields } from "./strategy-contract-rules.js";
+import {
+  makeBoundaryError,
+  observationValidationReasonCodes,
+  validateNoUnknownFields,
+  validateObservationBoundary,
+  validateSafeStrategyDslArtifactPath
+} from "./strategy-observation-boundary-guard.js";
 import { allowedProcessingInputs } from "./build-strategy-observation-processing-contract.js";
 import { strategyObservationProcessingInputSetId } from "./strategy-observation-processing-input-set-id.js";
 import { readJsonl } from "./strategy-dry-run-artifacts.js";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const defaultFixturePath = path.join(repoRoot, "packages", "strategy-dsl", "fixtures", "synthetic_strategy_observation_processing_input_set.json");
+const sourceFixtures = {
+  contract: readLocalJson("synthetic_strategy_observation_processing_contract.json"),
+  caseFile: readLocalJson("synthetic_strategy_observation_case_file_summary.json"),
+  evidenceBundle: readLocalJson("synthetic_strategy_observation_evidence_bundle.json"),
+  noopSummary: readLocalJson("synthetic_strategy_observation_noop_summary.json"),
+  closeout: readLocalJson("synthetic_strategy_observation_stack_closeout_checkpoint.json")
+};
 const requiredFields = [
   "strategy_observation_processing_input_set_id",
   "schema_version",
@@ -28,9 +43,19 @@ const requiredFields = [
   "run_mode",
   "input_artifacts",
   "status",
+  "reason_code",
   "reason"
 ];
 const requiredArtifactFields = ["artifact_type", "artifact_path", "artifact_id", "record_count", "access_mode"];
+const expectedArtifactPaths = new Map([
+  ["strategy_observation_contract", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_contract.json"],
+  ["strategy_observation_input_set", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_input_set.json"],
+  ["strategy_observation_trace", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_trace.jsonl"],
+  ["strategy_observation_noop_summary", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_noop_summary.json"],
+  ["strategy_observation_evidence_bundle", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_evidence_bundle.json"],
+  ["strategy_observation_case_file_summary", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_case_file_summary.json"],
+  ["strategy_observation_stack_closeout_checkpoint", "packages/strategy-dsl/fixtures/synthetic_strategy_observation_stack_closeout_checkpoint.json"]
+]);
 const allowedStatuses = new Set(["strategy_observation_processing_input_set_ready", "strategy_observation_processing_input_set_rejected"]);
 const allowedRunModes = new Set(["validation_only", "dry_run_planned"]);
 const allowedInputSet = new Set(allowedProcessingInputs);
@@ -53,13 +78,17 @@ export async function validateStrategyObservationProcessingInputSet(inputSet, op
   if (!inputSet || typeof inputSet !== "object" || Array.isArray(inputSet)) {
     return { ok: false, errors: ["StrategyObservationProcessingInputSet must be a JSON object"] };
   }
+  validateNoUnknownFields(errors, inputSet, requiredFields, "StrategyObservationProcessingInputSet");
+  appendBoundaryErrors(errors, validateObservationBoundary(inputSet));
   validateForbiddenFields(errors, inputSet);
   for (const field of requiredFields) {
     if (!Object.hasOwn(inputSet, field)) errors.push(`${field} is required`);
   }
   validateCoreFields(errors, inputSet);
   validateIdShapes(errors, inputSet);
+  validateSourceFixtureConsistency(errors, inputSet);
   validateDeterministicId(errors, inputSet);
+  validateReasonCode(errors, inputSet);
   await validateInputArtifacts(errors, root, inputSet.input_artifacts);
 
   return { ok: errors.length === 0, errors };
@@ -87,6 +116,11 @@ function validateCoreFields(errors, inputSet) {
   if (!allowedStatuses.has(inputSet.status)) errors.push("status is invalid");
 }
 
+function validateReasonCode(errors, inputSet) {
+  if (inputSet.reason_code !== observationValidationReasonCodes.VALIDATION_PASSED) errors.push("reason_code must be VALIDATION_PASSED");
+  if (typeof inputSet.reason !== "string" || inputSet.reason.length === 0) errors.push("reason must be a non-empty string");
+}
+
 function validateIdShapes(errors, inputSet) {
   if (typeof inputSet.strategy_observation_processing_input_set_id !== "string" || !inputSet.strategy_observation_processing_input_set_id.startsWith("sopis_")) errors.push("strategy_observation_processing_input_set_id must reference a StrategyObservationProcessingInputSet id");
   if (typeof inputSet.strategy_observation_processing_contract_id !== "string" || !inputSet.strategy_observation_processing_contract_id.startsWith("sopc_")) errors.push("strategy_observation_processing_contract_id must reference a StrategyObservationProcessingContract id");
@@ -108,6 +142,14 @@ function validateDeterministicId(errors, inputSet) {
   if (inputSet.strategy_observation_processing_input_set_id !== expected) errors.push("strategy_observation_processing_input_set_id must be deterministic from observation processing contract, closeout checkpoint, and input count");
 }
 
+function validateSourceFixtureConsistency(errors, inputSet) {
+  if (inputSet.strategy_observation_processing_contract_id !== sourceFixtures.contract.strategy_observation_processing_contract_id) errors.push("strategy_observation_processing_contract_id must match local StrategyObservationProcessingContract fixture");
+  if (inputSet.strategy_observation_stack_closeout_checkpoint_id !== sourceFixtures.closeout.strategy_observation_stack_closeout_checkpoint_id) errors.push("strategy_observation_stack_closeout_checkpoint_id must match local StrategyObservationStackCloseoutCheckpoint fixture");
+  if (inputSet.source_strategy_observation_case_file_summary_id !== sourceFixtures.caseFile.strategy_observation_case_file_summary_id) errors.push("source_strategy_observation_case_file_summary_id must match local StrategyObservationCaseFileSummary fixture");
+  if (inputSet.source_strategy_observation_evidence_bundle_id !== sourceFixtures.evidenceBundle.strategy_observation_evidence_bundle_id) errors.push("source_strategy_observation_evidence_bundle_id must match local StrategyObservationEvidenceBundle fixture");
+  if (inputSet.source_strategy_observation_noop_summary_id !== sourceFixtures.noopSummary.strategy_observation_noop_summary_id) errors.push("source_strategy_observation_noop_summary_id must match local StrategyObservationNoOpSummary fixture");
+}
+
 async function validateInputArtifacts(errors, root, artifacts) {
   if (!Array.isArray(artifacts) || artifacts.length === 0) {
     errors.push("input_artifacts must be a non-empty array");
@@ -125,6 +167,9 @@ async function validateInputArtifacts(errors, root, artifacts) {
     if (!allowedInputSet.has(artifact.artifact_type)) errors.push("input_artifact artifact_type is invalid");
     if (seen.has(artifact.artifact_type)) errors.push("duplicate input_artifact artifact_type is not allowed");
     seen.add(artifact.artifact_type);
+    if (expectedArtifactPaths.has(artifact.artifact_type) && artifact.artifact_path !== expectedArtifactPaths.get(artifact.artifact_type)) {
+      errors.push("input_artifact artifact_path must match expected artifact path for artifact_type");
+    }
     if (artifact.access_mode !== "read_only") errors.push("input_artifact access_mode must be read_only");
     if (!Number.isInteger(artifact.record_count) || artifact.record_count < 0) errors.push("input_artifact record_count must be a non-negative integer");
     await validateSafePath(errors, root, artifact.artifact_path, "input_artifact artifact_path");
@@ -148,6 +193,7 @@ async function countArtifactRecords(root, artifactPath) {
 }
 
 async function validateSafePath(errors, root, artifactPath, label) {
+  await validateSafeStrategyDslArtifactPath(errors, root, artifactPath, label);
   try {
     await resolveLocalArtifactPath(root, artifactPath);
   } catch (error) {
@@ -155,8 +201,18 @@ async function validateSafePath(errors, root, artifactPath, label) {
   }
 }
 
+function appendBoundaryErrors(errors, report) {
+  for (const error of report.errors) {
+    errors.push(`${error.reason_code}: ${error.message}`);
+  }
+}
+
 function makeReport(filePath, errors) {
   return { ok: errors.length === 0, filePath: path.relative(repoRoot, filePath).replaceAll("\\", "/"), errors };
+}
+
+function readLocalJson(fileName) {
+  return JSON.parse(readFileSync(path.join(repoRoot, "packages", "strategy-dsl", "fixtures", fileName), "utf8"));
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
