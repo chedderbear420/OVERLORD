@@ -46,6 +46,7 @@
     "validate:strategy-observation-noop-summary": "node packages/strategy-dsl/src/validate-strategy-observation-noop-summary.js",
     "validate:strategy-observation-evidence-bundle": "node packages/strategy-dsl/src/validate-strategy-observation-evidence-bundle.js",
     "validate:strategy-observation-case-file-summary": "node packages/strategy-dsl/src/validate-strategy-observation-case-file-summary.js",
+    "validate:strategy-observation-stack-closeout-checkpoint": "node packages/strategy-dsl/src/validate-strategy-observation-stack-closeout-checkpoint.js",
     "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js"
   }
 }

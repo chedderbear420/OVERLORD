@@ -50,6 +50,8 @@ Phase 3E adds StrategyObservationEvidenceBundle and StrategyObservationCaseFileS
 
 Phase 3F adds negative fixture hardening for malformed, unsafe, inconsistent, incomplete, duplicated, live-capable, executable, signal-like, decision-like, order-like, recommendation-like, bankroll-like, credential-like, analytics-like, and path-unsafe StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary records.
 
+Phase 3G adds StrategyObservationStackCloseoutCheckpoint metadata. It inventories the full validated Phase 3 observation metadata stack and records freeze-readiness for the metadata stack only; it does not execute strategy logic or produce signals, decisions, trades, recommendations, analytics, or bankroll actions.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -72,6 +74,7 @@ Phase 3F adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `schemas/strategy_observation_noop_summary.schema.json`: StrategyObservationNoOpSummary schema.
 - `schemas/strategy_observation_evidence_bundle.schema.json`: StrategyObservationEvidenceBundle schema.
 - `schemas/strategy_observation_case_file_summary.schema.json`: StrategyObservationCaseFileSummary schema.
+- `schemas/strategy_observation_stack_closeout_checkpoint.schema.json`: StrategyObservationStackCloseoutCheckpoint schema.
 - `fixtures/synthetic_strategy_definition.json`: deterministic metadata-only strategy definition fixture.
 - `fixtures/synthetic_strategy_run_intent.json`: deterministic metadata-only replay attachment intent fixture.
 - `fixtures/synthetic_strategy_run_trace.jsonl`: deterministic no-op strategy observation trace fixture.
@@ -92,6 +95,7 @@ Phase 3F adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `fixtures/synthetic_strategy_observation_noop_summary.json`: deterministic no-op observation summary fixture.
 - `fixtures/synthetic_strategy_observation_evidence_bundle.json`: deterministic no-op observation evidence bundle fixture.
 - `fixtures/synthetic_strategy_observation_case_file_summary.json`: deterministic no-op observation case-file summary fixture.
+- `fixtures/synthetic_strategy_observation_stack_closeout_checkpoint.json`: deterministic Phase 3 observation metadata stack closeout fixture.
 - `fixtures/negative/*.json`: deterministic negative fixtures for StrategyDefinition, StrategyRunIntent, and StrategyNoOpRunSummary validation hardening.
 - `fixtures/negative/*.jsonl`: deterministic negative fixtures for StrategyRunTrace validation hardening.
 - `src/strategy-definition-id.js`: deterministic StrategyDefinition id helper.
@@ -114,6 +118,7 @@ Phase 3F adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `src/strategy-observation-noop-summary-id.js`: deterministic StrategyObservationNoOpSummary id helper.
 - `src/strategy-observation-evidence-bundle-id.js`: deterministic StrategyObservationEvidenceBundle id helper.
 - `src/strategy-observation-case-file-summary-id.js`: deterministic StrategyObservationCaseFileSummary id helper.
+- `src/strategy-observation-stack-closeout-checkpoint-id.js`: deterministic StrategyObservationStackCloseoutCheckpoint id helper.
 - `src/strategy-dry-run-artifacts.js`: local StrategyDryRun artifact contracts and readers.
 - `src/strategy-observation-artifacts.js`: local StrategyObservation artifact contracts and readers.
 - `src/run-noop-strategy.js`: local no-op strategy trace shell.
@@ -132,6 +137,7 @@ Phase 3F adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `src/build-strategy-observation-trace.js`: local StrategyObservationTrace and StrategyObservationNoOpSummary builder.
 - `src/build-strategy-observation-evidence-bundle.js`: local StrategyObservationEvidenceBundle builder.
 - `src/build-strategy-observation-case-file-summary.js`: local StrategyObservationCaseFileSummary builder.
+- `src/build-strategy-observation-stack-closeout-checkpoint.js`: local StrategyObservationStackCloseoutCheckpoint builder.
 - `src/validate-strategy-definition.js`: local StrategyDefinition validator.
 - `src/validate-strategy-run-intent.js`: local StrategyRunIntent validator.
 - `src/validate-strategy-run-trace.js`: local StrategyRunTrace validator.
@@ -152,6 +158,7 @@ Phase 3F adds negative fixture hardening for malformed, unsafe, inconsistent, in
 - `src/validate-strategy-observation-noop-summary.js`: local StrategyObservationNoOpSummary validator.
 - `src/validate-strategy-observation-evidence-bundle.js`: local StrategyObservationEvidenceBundle validator.
 - `src/validate-strategy-observation-case-file-summary.js`: local StrategyObservationCaseFileSummary validator.
+- `src/validate-strategy-observation-stack-closeout-checkpoint.js`: local StrategyObservationStackCloseoutCheckpoint validator.
 
 ## Commands
 
@@ -176,6 +183,7 @@ npm run validate:strategy-observation-trace
 npm run validate:strategy-observation-noop-summary
 npm run validate:strategy-observation-evidence-bundle
 npm run validate:strategy-observation-case-file-summary
+npm run validate:strategy-observation-stack-closeout-checkpoint
 npm run test:strategy-dsl
 ```
 
@@ -232,3 +240,5 @@ StrategyObservationTrace and StrategyObservationNoOpSummary negative fixtures mu
 StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary are observation evidence and case-file metadata only. They may inventory validated local no-op observation artifacts and consistency totals, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, place orders, or produce analytics.
 
 StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary negative fixtures must fail deterministically before any future observation processing layer can consume observation evidence metadata.
+
+StrategyObservationStackCloseoutCheckpoint is closeout/readiness metadata only. Its `freeze_recommendation` applies only to freezing the offline observation metadata stack and must not be interpreted as a trading, deployment, recommendation, analytics, or bankroll signal.
