@@ -1,5 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { resolveLocalArtifactPath } from "../../replay-engine/src/replay-artifact-reader.js";
 import { validateForbiddenFields } from "./strategy-contract-rules.js";
@@ -13,6 +14,13 @@ import { readJsonl } from "./strategy-observation-artifacts.js";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const defaultFixturePath = path.join(repoRoot, "packages", "strategy-dsl", "fixtures", "synthetic_strategy_observation_stack_closeout_checkpoint.json");
+const defaultSourceFixturePaths = {
+  strategyObservationContract: path.join(repoRoot, "packages", "strategy-dsl", "fixtures", "synthetic_strategy_observation_contract.json"),
+  strategyObservationInputSet: path.join(repoRoot, "packages", "strategy-dsl", "fixtures", "synthetic_strategy_observation_input_set.json"),
+  strategyObservationNoopSummary: path.join(repoRoot, "packages", "strategy-dsl", "fixtures", "synthetic_strategy_observation_noop_summary.json"),
+  strategyObservationEvidenceBundle: path.join(repoRoot, "packages", "strategy-dsl", "fixtures", "synthetic_strategy_observation_evidence_bundle.json"),
+  strategyObservationCaseFileSummary: path.join(repoRoot, "packages", "strategy-dsl", "fixtures", "synthetic_strategy_observation_case_file_summary.json")
+};
 const requiredFields = [
   "strategy_observation_stack_closeout_checkpoint_id",
   "schema_version",
@@ -73,6 +81,7 @@ export async function validateStrategyObservationStackCloseoutCheckpoint(checkpo
   validateCoreFields(errors, checkpoint);
   validateIdShapes(errors, checkpoint);
   validateDeterministicId(errors, checkpoint);
+  validateLocalSourceFixtureConsistency(errors, checkpoint);
   validateSourceArtifactAlignment(errors, checkpoint);
   await validateCloseoutArtifacts(errors, root, checkpoint.closeout_artifacts);
   validateCloseoutChecks(errors, checkpoint.closeout_checks, checkpoint.status, checkpoint.freeze_recommendation);
@@ -156,6 +165,26 @@ function validateSourceArtifactAlignment(errors, checkpoint) {
   }
   const traceArtifact = artifactByType.get("strategy_observation_trace");
   if (traceArtifact && traceArtifact.artifact_id !== null) errors.push("strategy_observation_trace artifact_id must be null");
+}
+
+function validateLocalSourceFixtureConsistency(errors, checkpoint) {
+  try {
+    const observationContract = readLocalJson(defaultSourceFixturePaths.strategyObservationContract);
+    const observationInputSet = readLocalJson(defaultSourceFixturePaths.strategyObservationInputSet);
+    const observationNoopSummary = readLocalJson(defaultSourceFixturePaths.strategyObservationNoopSummary);
+    const observationEvidenceBundle = readLocalJson(defaultSourceFixturePaths.strategyObservationEvidenceBundle);
+    const observationCaseFileSummary = readLocalJson(defaultSourceFixturePaths.strategyObservationCaseFileSummary);
+    if (checkpoint.source_strategy_observation_contract_id !== observationContract.strategy_observation_contract_id) errors.push("source_strategy_observation_contract_id must match the local observation contract fixture");
+    if (checkpoint.source_strategy_observation_input_set_id !== observationInputSet.strategy_observation_input_set_id) errors.push("source_strategy_observation_input_set_id must match the local observation input set fixture");
+    if (checkpoint.source_strategy_observation_noop_summary_id !== observationNoopSummary.strategy_observation_noop_summary_id) errors.push("source_strategy_observation_noop_summary_id must match the local observation no-op summary fixture");
+    if (checkpoint.source_strategy_observation_evidence_bundle_id !== observationEvidenceBundle.strategy_observation_evidence_bundle_id) errors.push("source_strategy_observation_evidence_bundle_id must match the local observation evidence bundle fixture");
+    if (checkpoint.source_strategy_observation_case_file_summary_id !== observationCaseFileSummary.strategy_observation_case_file_summary_id) errors.push("source_strategy_observation_case_file_summary_id must match the local observation case-file summary fixture");
+    if (checkpoint.source_strategy_dry_run_stack_closeout_checkpoint_id !== observationContract.strategy_dry_run_stack_closeout_checkpoint_id) errors.push("source_strategy_dry_run_stack_closeout_checkpoint_id must match the local observation contract fixture");
+    if (checkpoint.source_strategy_definition_id !== observationContract.strategy_definition_id) errors.push("source_strategy_definition_id must match the local observation contract fixture");
+    if (checkpoint.source_strategy_run_intent_id !== observationContract.strategy_run_intent_id) errors.push("source_strategy_run_intent_id must match the local observation contract fixture");
+  } catch (error) {
+    errors.push(`local observation closeout source consistency could not be verified: ${error.message}`);
+  }
 }
 
 async function validateCloseoutArtifacts(errors, root, artifacts) {
@@ -249,6 +278,10 @@ async function validateSafePath(errors, root, artifactPath, label) {
 
 function isSafeLocalNpmCommand(command) {
   return typeof command === "string" && command.startsWith("npm run ") && !forbiddenCommandPattern.test(command);
+}
+
+function readLocalJson(filePath) {
+  return JSON.parse(readFileSync(filePath, "utf8"));
 }
 
 function makeReport(filePath, errors) {

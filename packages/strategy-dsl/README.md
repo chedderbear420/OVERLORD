@@ -52,6 +52,8 @@ Phase 3F adds negative fixture hardening for malformed, unsafe, inconsistent, in
 
 Phase 3G adds StrategyObservationStackCloseoutCheckpoint metadata. It inventories the full validated Phase 3 observation metadata stack and records freeze-readiness for the metadata stack only; it does not execute strategy logic or produce signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 3H adds negative fixture hardening for malformed, unsafe, inconsistent, incomplete, duplicated, live-capable, executable, signal-like, decision-like, order-like, recommendation-like, bankroll-like, credential-like, analytics-like, and path-unsafe StrategyObservationStackCloseoutCheckpoint records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -242,3 +244,5 @@ StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary are obs
 StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary negative fixtures must fail deterministically before any future observation processing layer can consume observation evidence metadata.
 
 StrategyObservationStackCloseoutCheckpoint is closeout/readiness metadata only. Its `freeze_recommendation` applies only to freezing the offline observation metadata stack and must not be interpreted as a trading, deployment, recommendation, analytics, or bankroll signal.
+
+StrategyObservationStackCloseoutCheckpoint negative fixtures must fail deterministically before the Phase 3 observation metadata stack is frozen.
