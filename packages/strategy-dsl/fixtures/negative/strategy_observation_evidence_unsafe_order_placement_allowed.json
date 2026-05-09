@@ -1,0 +1,90 @@
+{
+  "strategy_observation_evidence_bundle_id": "soeb_49abd0cda56025b7d2a91b37e71fbc39",
+  "schema_version": "strategy_observation_evidence_bundle.v1",
+  "generated_at": "2026-04-28T14:05:06Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": true,
+  "strategy_observation_contract_id": "soc_dcfd5ba220301322f52848017b619030",
+  "strategy_observation_input_set_id": "sois_385300d3af9be674fcb1699e270150b1",
+  "strategy_observation_noop_summary_id": "sons_70a90bf2b12e15dcdf2fcdf7653dbc23",
+  "strategy_dry_run_stack_closeout_checkpoint_id": "sdrscc_5ee090d023e51a96816d8b7025b177d8",
+  "strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "source_strategy_observation_contract_id": "soc_dcfd5ba220301322f52848017b619030",
+  "source_strategy_observation_input_set_id": "sois_385300d3af9be674fcb1699e270150b1",
+  "source_strategy_observation_noop_summary_id": "sons_70a90bf2b12e15dcdf2fcdf7653dbc23",
+  "source_strategy_dry_run_stack_closeout_checkpoint_id": "sdrscc_5ee090d023e51a96816d8b7025b177d8",
+  "source_strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "source_strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "dry_run_planned",
+  "evidence_artifacts": [
+    {
+      "artifact_type": "strategy_observation_contract",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_contract.json",
+      "schema_version": "strategy_observation_contract.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-observation-contract",
+      "artifact_id": "soc_dcfd5ba220301322f52848017b619030"
+    },
+    {
+      "artifact_type": "strategy_observation_input_set",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_input_set.json",
+      "schema_version": "strategy_observation_input_set.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-observation-input-set",
+      "artifact_id": "sois_385300d3af9be674fcb1699e270150b1"
+    },
+    {
+      "artifact_type": "strategy_observation_trace",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_trace.jsonl",
+      "schema_version": "strategy_observation_trace.v1",
+      "record_count": 7,
+      "validation_command": "npm run validate:strategy-observation-trace",
+      "artifact_id": null
+    },
+    {
+      "artifact_type": "strategy_observation_noop_summary",
+      "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_noop_summary.json",
+      "schema_version": "strategy_observation_noop_summary.v1",
+      "record_count": 1,
+      "validation_command": "npm run validate:strategy-observation-noop-summary",
+      "artifact_id": "sons_70a90bf2b12e15dcdf2fcdf7653dbc23"
+    }
+  ],
+  "consistency_checks": [
+    {
+      "check_name": "observation_contract_id_alignment",
+      "status": "check_passed",
+      "reason": "observation_contract_id_alignment passed."
+    },
+    {
+      "check_name": "observation_input_set_id_alignment",
+      "status": "check_passed",
+      "reason": "observation_input_set_id_alignment passed."
+    },
+    {
+      "check_name": "observation_noop_summary_id_alignment",
+      "status": "check_passed",
+      "reason": "observation_noop_summary_id_alignment passed."
+    },
+    {
+      "check_name": "trace_record_total_alignment",
+      "status": "check_passed",
+      "reason": "trace_record_total_alignment passed."
+    },
+    {
+      "check_name": "observed_input_total_alignment",
+      "status": "check_passed",
+      "reason": "observed_input_total_alignment passed."
+    },
+    {
+      "check_name": "evidence_artifact_contract_count",
+      "status": "check_passed",
+      "reason": "evidence_artifact_contract_count passed."
+    }
+  ],
+  "status": "observation_evidence_bundle_ready",
+  "reason": "Strategy observation evidence bundle for local no-op observation only. No strategy logic, signals, decisions, trades, recommendations, analytics, or bankroll actions produced."
+}

@@ -48,6 +48,8 @@ Phase 3D adds negative fixture hardening for malformed, unsafe, inconsistent, un
 
 Phase 3E adds StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary metadata. These records inventory the validated no-op observation artifacts and final observation case-file totals without executing strategy logic or producing signals, decisions, trades, recommendations, analytics, or bankroll actions.
 
+Phase 3F adds negative fixture hardening for malformed, unsafe, inconsistent, incomplete, duplicated, live-capable, executable, signal-like, decision-like, order-like, recommendation-like, bankroll-like, credential-like, analytics-like, and path-unsafe StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary records.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -228,3 +230,5 @@ StrategyObservationTrace and StrategyObservationNoOpSummary are no-op observatio
 StrategyObservationTrace and StrategyObservationNoOpSummary negative fixtures must fail deterministically before any future observation processing layer can consume observation trace metadata.
 
 StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary are observation evidence and case-file metadata only. They may inventory validated local no-op observation artifacts and consistency totals, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, place orders, or produce analytics.
+
+StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary negative fixtures must fail deterministically before any future observation processing layer can consume observation evidence metadata.

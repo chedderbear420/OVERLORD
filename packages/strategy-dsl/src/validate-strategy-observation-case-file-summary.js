@@ -1,11 +1,14 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { validateForbiddenFields } from "./strategy-contract-rules.js";
 import { strategyObservationCaseFileSummaryId } from "./strategy-observation-case-file-summary-id.js";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const defaultFixturePath = path.join(repoRoot, "packages", "strategy-dsl", "fixtures", "synthetic_strategy_observation_case_file_summary.json");
+const defaultEvidenceBundlePath = path.join(repoRoot, "packages", "strategy-dsl", "fixtures", "synthetic_strategy_observation_evidence_bundle.json");
+const defaultNoopSummaryPath = path.join(repoRoot, "packages", "strategy-dsl", "fixtures", "synthetic_strategy_observation_noop_summary.json");
 const requiredFields = [
   "strategy_observation_case_file_summary_id",
   "schema_version",
@@ -55,6 +58,7 @@ export function validateStrategyObservationCaseFileSummary(summary) {
   validateCoreFields(errors, summary);
   validateIdShapes(errors, summary);
   validateDeterministicId(errors, summary);
+  validateLocalFixtureConsistency(errors, summary);
 
   return { ok: errors.length === 0, errors };
 }
@@ -113,6 +117,23 @@ function validateDeterministicId(errors, summary) {
   });
   if (summary.strategy_observation_case_file_summary_id !== expected) {
     errors.push("strategy_observation_case_file_summary_id must be deterministic from evidence bundle, observation ids, totals, and consistency status");
+  }
+}
+
+function validateLocalFixtureConsistency(errors, summary) {
+  try {
+    const evidenceBundle = JSON.parse(readFileSync(defaultEvidenceBundlePath, "utf8"));
+    const noopSummary = JSON.parse(readFileSync(defaultNoopSummaryPath, "utf8"));
+    if (summary.strategy_observation_evidence_bundle_id !== evidenceBundle.strategy_observation_evidence_bundle_id) errors.push("strategy_observation_evidence_bundle_id must match the local observation evidence bundle fixture");
+    if (summary.strategy_observation_contract_id !== evidenceBundle.strategy_observation_contract_id) errors.push("strategy_observation_contract_id must match the local observation evidence bundle fixture");
+    if (summary.strategy_observation_input_set_id !== evidenceBundle.strategy_observation_input_set_id) errors.push("strategy_observation_input_set_id must match the local observation evidence bundle fixture");
+    if (summary.strategy_observation_noop_summary_id !== noopSummary.strategy_observation_noop_summary_id) errors.push("strategy_observation_noop_summary_id must match the local observation no-op summary fixture");
+    if (summary.strategy_dry_run_stack_closeout_checkpoint_id !== evidenceBundle.strategy_dry_run_stack_closeout_checkpoint_id) errors.push("strategy_dry_run_stack_closeout_checkpoint_id must match the local observation evidence bundle fixture");
+    if (summary.total_evidence_artifacts !== evidenceBundle.evidence_artifacts.length) errors.push("total_evidence_artifacts must match the local observation evidence artifact count");
+    if (summary.total_trace_records !== noopSummary.total_trace_records) errors.push("total_trace_records must match the local observation no-op summary fixture");
+    if (summary.total_inputs_observed !== noopSummary.total_inputs_observed) errors.push("total_inputs_observed must match the local observation no-op summary fixture");
+  } catch (error) {
+    errors.push(`local observation case-file consistency could not be verified: ${error.message}`);
   }
 }
 

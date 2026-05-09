@@ -1,0 +1,21 @@
+{
+  "strategy_observation_case_file_summary_id": "bad",
+  "schema_version": "strategy_observation_case_file_summary.v1",
+  "generated_at": "2026-04-28T14:05:06Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_observation_evidence_bundle_id": "soeb_49abd0cda56025b7d2a91b37e71fbc39",
+  "strategy_observation_contract_id": "soc_dcfd5ba220301322f52848017b619030",
+  "strategy_observation_input_set_id": "sois_385300d3af9be674fcb1699e270150b1",
+  "strategy_observation_noop_summary_id": "sons_70a90bf2b12e15dcdf2fcdf7653dbc23",
+  "strategy_dry_run_stack_closeout_checkpoint_id": "sdrscc_5ee090d023e51a96816d8b7025b177d8",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "dry_run_planned",
+  "total_evidence_artifacts": 4,
+  "total_trace_records": 7,
+  "total_inputs_observed": 5,
+  "consistency_status": "consistency_passed",
+  "status": "observation_case_file_summary_ready",
+  "reason": "Strategy observation case-file summary for local no-op observation evidence only. No strategy logic, signals, decisions, trades, recommendations, analytics, or bankroll actions produced."
+}
