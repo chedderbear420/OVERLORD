@@ -44,6 +44,8 @@
     "validate:strategy-observation-input-set": "node packages/strategy-dsl/src/validate-strategy-observation-input-set.js",
     "validate:strategy-observation-trace": "node packages/strategy-dsl/src/validate-strategy-observation-trace.js",
     "validate:strategy-observation-noop-summary": "node packages/strategy-dsl/src/validate-strategy-observation-noop-summary.js",
+    "validate:strategy-observation-evidence-bundle": "node packages/strategy-dsl/src/validate-strategy-observation-evidence-bundle.js",
+    "validate:strategy-observation-case-file-summary": "node packages/strategy-dsl/src/validate-strategy-observation-case-file-summary.js",
     "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js"
   }
 }

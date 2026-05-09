@@ -46,6 +46,8 @@ Phase 3C adds an offline StrategyObservationTrace no-op shell. It consumes valid
 
 Phase 3D adds negative fixture hardening for malformed, unsafe, inconsistent, unordered, duplicated, lifecycle-invalid, executable, live-capable, signal-like, decision-like, order-like, recommendation-like, bankroll-like, analytics-like, credential-like, and path-unsafe StrategyObservationTrace and StrategyObservationNoOpSummary records.
 
+Phase 3E adds StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary metadata. These records inventory the validated no-op observation artifacts and final observation case-file totals without executing strategy logic or producing signals, decisions, trades, recommendations, analytics, or bankroll actions.
+
 ## Files
 
 - `schemas/strategy_definition.schema.json`: StrategyDefinition schema.
@@ -66,6 +68,8 @@ Phase 3D adds negative fixture hardening for malformed, unsafe, inconsistent, un
 - `schemas/strategy_observation_input_set.schema.json`: StrategyObservationInputSet schema.
 - `schemas/strategy_observation_trace.schema.json`: StrategyObservationTrace schema.
 - `schemas/strategy_observation_noop_summary.schema.json`: StrategyObservationNoOpSummary schema.
+- `schemas/strategy_observation_evidence_bundle.schema.json`: StrategyObservationEvidenceBundle schema.
+- `schemas/strategy_observation_case_file_summary.schema.json`: StrategyObservationCaseFileSummary schema.
 - `fixtures/synthetic_strategy_definition.json`: deterministic metadata-only strategy definition fixture.
 - `fixtures/synthetic_strategy_run_intent.json`: deterministic metadata-only replay attachment intent fixture.
 - `fixtures/synthetic_strategy_run_trace.jsonl`: deterministic no-op strategy observation trace fixture.
@@ -84,6 +88,8 @@ Phase 3D adds negative fixture hardening for malformed, unsafe, inconsistent, un
 - `fixtures/synthetic_strategy_observation_input_set.json`: deterministic offline observation input inventory fixture.
 - `fixtures/synthetic_strategy_observation_trace.jsonl`: deterministic no-op observation trace fixture.
 - `fixtures/synthetic_strategy_observation_noop_summary.json`: deterministic no-op observation summary fixture.
+- `fixtures/synthetic_strategy_observation_evidence_bundle.json`: deterministic no-op observation evidence bundle fixture.
+- `fixtures/synthetic_strategy_observation_case_file_summary.json`: deterministic no-op observation case-file summary fixture.
 - `fixtures/negative/*.json`: deterministic negative fixtures for StrategyDefinition, StrategyRunIntent, and StrategyNoOpRunSummary validation hardening.
 - `fixtures/negative/*.jsonl`: deterministic negative fixtures for StrategyRunTrace validation hardening.
 - `src/strategy-definition-id.js`: deterministic StrategyDefinition id helper.
@@ -104,7 +110,10 @@ Phase 3D adds negative fixture hardening for malformed, unsafe, inconsistent, un
 - `src/strategy-observation-input-set-id.js`: deterministic StrategyObservationInputSet id helper.
 - `src/strategy-observation-trace-id.js`: deterministic StrategyObservationTrace id helper.
 - `src/strategy-observation-noop-summary-id.js`: deterministic StrategyObservationNoOpSummary id helper.
+- `src/strategy-observation-evidence-bundle-id.js`: deterministic StrategyObservationEvidenceBundle id helper.
+- `src/strategy-observation-case-file-summary-id.js`: deterministic StrategyObservationCaseFileSummary id helper.
 - `src/strategy-dry-run-artifacts.js`: local StrategyDryRun artifact contracts and readers.
+- `src/strategy-observation-artifacts.js`: local StrategyObservation artifact contracts and readers.
 - `src/run-noop-strategy.js`: local no-op strategy trace shell.
 - `src/run-strategy-dry-run-noop.js`: local no-op strategy dry-run shell.
 - `src/build-strategy-run-manifest.js`: local no-op strategy run manifest builder.
@@ -119,6 +128,8 @@ Phase 3D adds negative fixture hardening for malformed, unsafe, inconsistent, un
 - `src/build-strategy-observation-contract.js`: local StrategyObservationContract builder.
 - `src/build-strategy-observation-input-set.js`: local StrategyObservationInputSet builder.
 - `src/build-strategy-observation-trace.js`: local StrategyObservationTrace and StrategyObservationNoOpSummary builder.
+- `src/build-strategy-observation-evidence-bundle.js`: local StrategyObservationEvidenceBundle builder.
+- `src/build-strategy-observation-case-file-summary.js`: local StrategyObservationCaseFileSummary builder.
 - `src/validate-strategy-definition.js`: local StrategyDefinition validator.
 - `src/validate-strategy-run-intent.js`: local StrategyRunIntent validator.
 - `src/validate-strategy-run-trace.js`: local StrategyRunTrace validator.
@@ -137,6 +148,8 @@ Phase 3D adds negative fixture hardening for malformed, unsafe, inconsistent, un
 - `src/validate-strategy-observation-input-set.js`: local StrategyObservationInputSet validator.
 - `src/validate-strategy-observation-trace.js`: local StrategyObservationTrace validator.
 - `src/validate-strategy-observation-noop-summary.js`: local StrategyObservationNoOpSummary validator.
+- `src/validate-strategy-observation-evidence-bundle.js`: local StrategyObservationEvidenceBundle validator.
+- `src/validate-strategy-observation-case-file-summary.js`: local StrategyObservationCaseFileSummary validator.
 
 ## Commands
 
@@ -159,6 +172,8 @@ npm run validate:strategy-observation-contract
 npm run validate:strategy-observation-input-set
 npm run validate:strategy-observation-trace
 npm run validate:strategy-observation-noop-summary
+npm run validate:strategy-observation-evidence-bundle
+npm run validate:strategy-observation-case-file-summary
 npm run test:strategy-dsl
 ```
 
@@ -211,3 +226,5 @@ StrategyObservationContract and StrategyObservationInputSet negative fixtures mu
 StrategyObservationTrace and StrategyObservationNoOpSummary are no-op observation metadata only. They may record that approved read-only observation inputs were seen, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, place orders, or produce analytics.
 
 StrategyObservationTrace and StrategyObservationNoOpSummary negative fixtures must fail deterministically before any future observation processing layer can consume observation trace metadata.
+
+StrategyObservationEvidenceBundle and StrategyObservationCaseFileSummary are observation evidence and case-file metadata only. They may inventory validated local no-op observation artifacts and consistency totals, but they must not execute strategy logic, calculate edge, generate signals, generate decisions, create paper entries/exits, recommend trades, allocate bankroll, connect to external systems, place orders, or produce analytics.
