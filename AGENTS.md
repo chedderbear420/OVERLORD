@@ -85,6 +85,48 @@ rtk grep -R "pattern" packages/strategy-dsl/schemas
 # rtk grep -R "pattern" packages/
 ```
 
+### WSL Node rule
+
+Before running tests or validate scripts in WSL, verify Node is v22+:
+
+```bash
+node --version   # must be v22.x or newer
+```
+
+Do not use Ubuntu apt Node 18 for this repo. It does not support `import.meta.dirname` and all tests will fail. Node 22 LTS is installed via nvm at `~/.nvm/versions/node/v22.22.2/bin/node`. If `node --version` shows 18, fix PATH first:
+
+```bash
+export PATH="$HOME/.nvm/versions/node/v22.22.2/bin:$HOME/.local/bin:$PATH"
+```
+
+### Search rule
+
+Prefer `git grep` for code search — it is faster, scope-aware, and respects `.gitignore`. Use tightly scoped `rtk grep` only when `git grep` is insufficient.
+
+```bash
+# Preferred
+git grep "pattern" -- packages/strategy-dsl/src/
+
+# Acceptable — tightly scoped to src/ or schemas/ only
+rtk grep -R "pattern" packages/strategy-dsl/src
+
+# NOT OK — can produce megabytes of output
+# rtk grep -R "pattern" packages/strategy-dsl
+# grep -R "pattern" packages/
+```
+
+Never run broad `grep -R` across whole packages without a scope suffix.
+
+### Test failure rule
+
+On test failure, do not dump full output into context. Re-run the failing command with limited output, then summarize:
+
+```bash
+rtk npm run test:<pkg> 2>&1 | head -80
+```
+
+Failing test suites with many failures produce large TAP error blocks. Always cap output when debugging.
+
 ### Test commands for this repo
 
 This repo uses `node --test` (no jest or vitest). Always run tests through `rtk npm run`:
