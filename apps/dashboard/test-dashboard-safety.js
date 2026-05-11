@@ -37,6 +37,16 @@ const REQUIRED_FLAGS = [
   { pattern: /paper_only.*?true/s, label: 'paper_only: true displayed' },
   { pattern: /VALIDATION_PASSED/, label: 'VALIDATION_PASSED reason code displayed' },
   { pattern: /offline_fixture_replay/, label: 'offline_fixture_replay mode displayed' },
+  // Phase 4I — processing pipeline panel markers
+  { pattern: /processing_noop_summary_ready/, label: 'processing_noop_summary_ready status displayed (Phase 4G)' },
+  { pattern: /noop_processing_completed/, label: 'noop_processing_completed lifecycle event displayed (Phase 4F)' },
+  { pattern: /strategy_observation_processing_trace/, label: 'processing trace artifact type displayed (Phase 4F)' },
+  { pattern: /strategy_observation_processing_noop_summary/, label: 'processing noop summary artifact type displayed (Phase 4G)' },
+  { pattern: /sopns_eb0a5457434b46ab04693890fa87ba42/, label: 'processing noop summary ID displayed (Phase 4G)' },
+  { pattern: /sopam_f925d406b96cad22874fe8dbf9f1541a/, label: 'updated artifact manifest ID displayed (Phase 4H)' },
+  { pattern: /sha256:46ebe409/, label: 'processing trace SHA-256 hash displayed (Phase 4H)' },
+  { pattern: /sha256:bcfb57e7/, label: 'processing noop summary SHA-256 hash displayed (Phase 4H)' },
+  { pattern: /actionable_outputs.*?0|actionable.*?output.*?0/s, label: 'actionable output count: 0 displayed' },
 ];
 
 let passed = 0;
