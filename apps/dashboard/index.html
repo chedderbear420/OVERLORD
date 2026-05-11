@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OVERLORD :: Operator Dashboard :: Phase 4C</title>
+<title>OVERLORD :: Operator Dashboard :: Phase 4I</title>
 <style>
 /* ═══════════════════════════════════════════════
-   OVERLORD OPERATOR DASHBOARD — PHASE 4C
+   OVERLORD OPERATOR DASHBOARD — PHASE 4I
    Offline · Read-only · Fixture-fed · No network
    ═══════════════════════════════════════════════ */
 :root {
@@ -182,6 +182,14 @@ body::before {
   margin-bottom: 14px;
 }
 
+/* ─── THREE-COL ──────────────────────────────────── */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
 /* ─── ROADMAP ────────────────────────────────────── */
 .rmap-item {
   display: flex;
@@ -266,6 +274,7 @@ tbody tr:hover td { background: var(--g2); }
 .td-mono { color: var(--g4); font-size: 9px; word-break: break-all; }
 .td-status { color: var(--phosphor); text-shadow: var(--glow-sm); }
 .td-hash { color: var(--g3); font-size: 9px; word-break: break-all; }
+.td-hash-full { color: var(--g5); font-size: 9px; word-break: break-all; }
 
 /* ─── COMMANDS ───────────────────────────────────── */
 .cmd-row {
@@ -321,6 +330,46 @@ tbody tr:hover td { background: var(--g2); }
 .kv-v { color: var(--g7); word-break: break-all; }
 .kv-v.good { color: var(--phosphor); text-shadow: var(--glow-sm); }
 
+/* ─── PIPELINE LIFECYCLE ─────────────────────────── */
+.lifecycle {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 14px;
+  overflow-x: auto;
+}
+.lc-node {
+  flex-shrink: 0;
+  border: 1px solid var(--g3);
+  background: var(--g1);
+  padding: 8px 12px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  min-width: 120px;
+}
+.lc-node.done {
+  border-color: var(--g4);
+  color: var(--g6);
+}
+.lc-node.terminal {
+  border-color: var(--phosphor);
+  color: var(--phosphor);
+  text-shadow: var(--glow-sm);
+}
+.lc-node .lc-count {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 2px;
+}
+.lc-arrow {
+  color: var(--g3);
+  padding: 0 4px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
 /* ─── FOOTER ─────────────────────────────────────── */
 .footer {
   margin-top: 24px;
@@ -341,12 +390,20 @@ tbody tr:hover td { background: var(--g2); }
 .ok { color: var(--phosphor); text-shadow: var(--glow-sm); }
 .dim { color: var(--g4); }
 .spacer { height: 4px; }
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--g3);
+  margin: 0;
+}
 
 @media (max-width: 860px) {
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .grid-2 { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: 1fr; }
   .zero-grid { grid-template-columns: repeat(3, 1fr); }
   .logo-ascii { font-size: 6px; }
+  .lifecycle { flex-direction: column; }
+  .lc-arrow { transform: rotate(90deg); }
 }
 </style>
 </head>
@@ -364,7 +421,7 @@ tbody tr:hover td { background: var(--g2); }
 ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║███████╗╚██████╔╝██║  ██║██████╔╝
  ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ </pre>
 <div class="logo-tag">Kalshi Sports Prediction Research OS &nbsp;·&nbsp; Phase 0: Paper-only · Read-only</div>
-<div class="phase-badge">▶ PHASE 4C :: OPERATOR DASHBOARD ACTIVE <span class="blink">█</span></div>
+<div class="phase-badge">▶ PHASE 4I :: PROCESSING PIPELINE PANEL ACTIVE <span class="blink">█</span></div>
 </div>
 
 <!-- ═══════════════════════════════════════════
@@ -373,13 +430,13 @@ tbody tr:hover td { background: var(--g2); }
 <div class="grid-4">
   <div class="stat">
     <div class="stat-label">Latest Completed Phase</div>
-    <div class="stat-val">4B</div>
-    <div class="stat-note">Observation boundary schema lockdown. Strict validation enforced.</div>
+    <div class="stat-val">4H</div>
+    <div class="stat-note">Artifact manifest update. Processing outputs sealed with SHA-256 hashes.</div>
   </div>
   <div class="stat">
     <div class="stat-label">Active Phase</div>
-    <div class="stat-val">4C</div>
-    <div class="stat-note">Dashboard forward. Reads existing local fixtures. No live path.</div>
+    <div class="stat-val">4I</div>
+    <div class="stat-note">Dashboard processing pipeline panel. Reads 4F/4G/4H fixture data.</div>
   </div>
   <div class="stat">
     <div class="stat-label">Safety State</div>
@@ -399,47 +456,55 @@ tbody tr:hover td { background: var(--g2); }
 <div class="grid-2">
   <div class="panel">
     <div class="ph">
-      <span>▸ Adjusted Roadmap</span>
-      <span class="ph-tag">Dashboard-first · Leash stays on</span>
+      <span>▸ Phase Roadmap</span>
+      <span class="ph-tag">Leash stays on</span>
     </div>
     <div class="pb">
       <div class="rmap-item">
-        <div class="rmap-phase-box">4B</div>
+        <div class="rmap-phase-box">4C</div>
         <div class="rmap-body">
-          <div class="rmap-title">Boundary Lockdown</div>
-          <div class="rmap-detail">Strict boundary schemas, artifact manifest hashing, reason codes, path validation, red-team fixtures.</div>
+          <div class="rmap-title">Operator Dashboard</div>
+          <div class="rmap-detail">Local read-only UI over synthetic fixtures. No live anything.</div>
         </div>
         <div class="rmap-status complete">COMPLETE</div>
       </div>
       <div class="rmap-item">
-        <div class="rmap-phase-box active">4C</div>
+        <div class="rmap-phase-box">4F</div>
         <div class="rmap-body">
-          <div class="rmap-title">Operator Dashboard</div>
-          <div class="rmap-detail">Local read-only UI over existing synthetic fixtures and validation outputs. No live anything.</div>
+          <div class="rmap-title">No-op Processing Trace Shell</div>
+          <div class="rmap-detail">9-record JSONL trace. Observation pipeline metadata only.</div>
+        </div>
+        <div class="rmap-status complete">COMPLETE</div>
+      </div>
+      <div class="rmap-item">
+        <div class="rmap-phase-box">4G</div>
+        <div class="rmap-body">
+          <div class="rmap-title">Processing Noop Summary</div>
+          <div class="rmap-detail">Single-record JSON closing out the no-op processing run.</div>
+        </div>
+        <div class="rmap-status complete">COMPLETE</div>
+      </div>
+      <div class="rmap-item">
+        <div class="rmap-phase-box">4H</div>
+        <div class="rmap-body">
+          <div class="rmap-title">Artifact Manifest Update</div>
+          <div class="rmap-detail">Processing outputs sealed into manifest with SHA-256 hashes.</div>
+        </div>
+        <div class="rmap-status complete">COMPLETE</div>
+      </div>
+      <div class="rmap-item">
+        <div class="rmap-phase-box active">4I</div>
+        <div class="rmap-body">
+          <div class="rmap-title">Dashboard Processing Pipeline Panel</div>
+          <div class="rmap-detail">Display 4F trace, 4G summary, 4H manifest output hashes. No live path.</div>
         </div>
         <div class="rmap-status active-s">ACTIVE <span class="blink">·</span></div>
       </div>
       <div class="rmap-item">
-        <div class="rmap-phase-box">4D</div>
+        <div class="rmap-phase-box">4J</div>
         <div class="rmap-body">
-          <div class="rmap-title">No-op Processing Trace Shell</div>
-          <div class="rmap-detail">Add observation processing trace and noop summary. No live inference.</div>
-        </div>
-        <div class="rmap-status next">NEXT</div>
-      </div>
-      <div class="rmap-item">
-        <div class="rmap-phase-box">4E</div>
-        <div class="rmap-body">
-          <div class="rmap-title">Evidence Viewer Expansion</div>
-          <div class="rmap-detail">Link traces, manifests, summaries, and boundary errors into one review flow.</div>
-        </div>
-        <div class="rmap-status later">LATER</div>
-      </div>
-      <div class="rmap-item">
-        <div class="rmap-phase-box">5A</div>
-        <div class="rmap-body">
-          <div class="rmap-title">Read-only Kalshi Adapter Contract</div>
-          <div class="rmap-detail">Define future ingestion contracts. No network calls added yet.</div>
+          <div class="rmap-title">Next Phase</div>
+          <div class="rmap-detail">TBD — maintains offline-safe posture.</div>
         </div>
         <div class="rmap-status later">LATER</div>
       </div>
@@ -494,6 +559,144 @@ tbody tr:hover td { background: var(--g2); }
 </div>
 
 <!-- ═══════════════════════════════════════════
+     PROCESSING PIPELINE PANEL (Phase 4F/4G/4H)
+     ═══════════════════════════════════════════ -->
+<div class="panel">
+  <div class="ph">
+    <span>▸ Processing Pipeline — No-op Run</span>
+    <span class="ph-tag">Phase 4F · Phase 4G · Phase 4H · offline_fixture_replay · actionable_outputs: 0</span>
+  </div>
+  <div class="pb">
+
+    <!-- Lifecycle bar -->
+    <div style="font-size:9px; color:var(--g4); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:8px;">Processing Lifecycle</div>
+    <div class="lifecycle">
+      <div class="lc-node done">
+        <span>noop_processing_started</span>
+        <span class="lc-count">1</span>
+        <span style="font-size:8px; color:var(--g4)">record</span>
+      </div>
+      <div class="lc-arrow">▶</div>
+      <div class="lc-node done">
+        <span>noop_processing_input_seen</span>
+        <span class="lc-count">7</span>
+        <span style="font-size:8px; color:var(--g4)">records</span>
+      </div>
+      <div class="lc-arrow">▶</div>
+      <div class="lc-node terminal">
+        <span>noop_processing_completed</span>
+        <span class="lc-count">1</span>
+        <span style="font-size:8px">record</span>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="grid-4" style="margin-bottom:14px">
+      <div class="stat">
+        <div class="stat-label">Total Trace Records</div>
+        <div class="stat-val">9</div>
+        <div class="stat-note">Phase 4F JSONL — 1 start + 7 input_seen + 1 completed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Inputs Observed</div>
+        <div class="stat-val">7</div>
+        <div class="stat-note">Read-only Phase 3 observation artifacts seen by processor</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Actionable Outputs</div>
+        <div class="stat-val" style="color:var(--red)">0</div>
+        <div class="stat-note">No signals · No decisions · No trades · No recommendations</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Noop Summary Status</div>
+        <div class="stat-val ok" style="font-size:11px">READY</div>
+        <div class="stat-note">processing_noop_summary_ready — Phase 4G</div>
+      </div>
+    </div>
+
+    <!-- Phase 4G noop summary detail -->
+    <div style="font-size:9px; color:var(--g4); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:8px;">Phase 4G — Processing Noop Summary</div>
+    <div class="kv" style="margin-bottom:14px">
+      <div class="kv-row">
+        <span class="kv-k">strategy_observation_processing_noop_summary_id</span>
+        <span class="kv-v good">sopns_eb0a5457434b46ab04693890fa87ba42</span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-k">schema_version</span>
+        <span class="kv-v">strategy_observation_processing_noop_summary.v1</span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-k">total_trace_records</span>
+        <span class="kv-v good">9</span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-k">total_inputs_observed</span>
+        <span class="kv-v good">7</span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-k">status</span>
+        <span class="kv-v good">processing_noop_summary_ready</span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-k">paper_only</span>
+        <span class="kv-v good">true</span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-k">live_execution_allowed</span>
+        <span class="kv-v" style="color:var(--red)">false</span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-k">order_placement_allowed</span>
+        <span class="kv-v" style="color:var(--red)">false</span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-k">replay_mode</span>
+        <span class="kv-v">offline_fixture_replay</span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-k">strategy_observation_processing_contract_id</span>
+        <span class="kv-v">sopc_d5f85d3ac42b6ade0754837ea0354a77</span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-k">strategy_observation_processing_input_set_id</span>
+        <span class="kv-v">sopis_e375ea353c05147738b963a553f0e776</span>
+      </div>
+    </div>
+
+    <!-- Phase 4H processing output artifacts -->
+    <div style="font-size:9px; color:var(--g4); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:8px;">Phase 4H — Processing Output Artifacts &amp; Hashes</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Artifact Type</th>
+          <th>Path</th>
+          <th>Artifact ID</th>
+          <th>Records</th>
+          <th>SHA-256</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-name">strategy_observation_processing_trace</td>
+          <td class="td-mono">fixtures/synthetic_strategy_observation_processing_trace.jsonl</td>
+          <td class="td-mono dim">null</td>
+          <td class="dim">9</td>
+          <td class="td-hash-full">sha256:46ebe409182f4e1aa5b5c17108eefca507393327cc7e210a105414f88ce0637b</td>
+        </tr>
+        <tr>
+          <td class="td-name">strategy_observation_processing_noop_summary</td>
+          <td class="td-mono">fixtures/synthetic_strategy_observation_processing_noop_summary.json</td>
+          <td class="td-mono">sopns_eb0a5457…</td>
+          <td class="dim">1</td>
+          <td class="td-hash-full">sha256:bcfb57e70235063ceab206fa3c35916aa670093d7b299ab4b80fd03dfe610cde</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
      FIXTURE ARTIFACT VIEWER
      ═══════════════════════════════════════════ -->
 <div class="panel">
@@ -535,6 +738,20 @@ tbody tr:hover td { background: var(--g2); }
           <td class="dim">read_only</td>
         </tr>
         <tr>
+          <td class="td-name">Processing Trace</td>
+          <td class="td-mono">synthetic_strategy_observation_processing_trace.jsonl</td>
+          <td class="td-mono">strategy_observation_processing_trace.v1</td>
+          <td class="td-status ok">VALIDATION_PASSED</td>
+          <td class="dim">read_only</td>
+        </tr>
+        <tr>
+          <td class="td-name">Processing Noop Summary</td>
+          <td class="td-mono">synthetic_strategy_observation_processing_noop_summary.json</td>
+          <td class="td-mono">strategy_observation_processing_noop_summary.v1</td>
+          <td class="td-status ok">processing_noop_summary_ready</td>
+          <td class="dim">read_only</td>
+        </tr>
+        <tr>
           <td class="td-name">Evidence Bundle</td>
           <td class="td-mono">synthetic_strategy_observation_evidence_bundle.json</td>
           <td class="td-mono">strategy_observation_evidence_bundle.v1</td>
@@ -559,7 +776,7 @@ tbody tr:hover td { background: var(--g2); }
 <div class="panel">
   <div class="ph">
     <span>▸ Artifact Manifest — Input Artifacts</span>
-    <span class="ph-tag">sopam_452c80395a3cc2948884a9722b0fb52f · 7 artifacts hashed</span>
+    <span class="ph-tag">sopam_f925d406b96cad22874fe8dbf9f1541a · 7 inputs · 2 outputs hashed</span>
   </div>
   <div class="pb" style="padding:0">
     <table>
@@ -651,6 +868,14 @@ tbody tr:hover td { background: var(--g2); }
       </div>
       <div class="cmd-row">
         <span class="cmd-prompt">$</span>
+        <span class="cmd-text">npm run validate:strategy-observation-processing-trace</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-prompt">$</span>
+        <span class="cmd-text">npm run validate:strategy-observation-processing-noop-summary</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-prompt">$</span>
         <span class="cmd-text">npm run test:strategy-dsl</span>
       </div>
       <div class="cmd-row">
@@ -727,7 +952,7 @@ tbody tr:hover td { background: var(--g2); }
       </div>
       <div class="kv-row">
         <span class="kv-k">artifact_manifest_id</span>
-        <span class="kv-v good">sopam_452c80395a3cc2948884a9722b0fb52f</span>
+        <span class="kv-v good">sopam_f925d406b96cad22874fe8dbf9f1541a</span>
       </div>
       <div class="kv-row">
         <span class="kv-k">validation_status</span>
@@ -738,13 +963,13 @@ tbody tr:hover td { background: var(--g2); }
 </div>
 
 <!-- ═══════════════════════════════════════════
-     ZERO COUNTERS + CASE FILE SUMMARY
+     EXECUTION SURFACE + CASE FILE SUMMARY
      ═══════════════════════════════════════════ -->
 <div class="grid-2">
   <div class="panel">
     <div class="ph">
       <span>▸ Execution Surface</span>
-      <span class="ph-tag">Locked until Phase 4D+</span>
+      <span class="ph-tag">Locked — no live path</span>
     </div>
     <div class="pb">
       <div class="zero-grid">
@@ -758,7 +983,7 @@ tbody tr:hover td { background: var(--g2); }
         </div>
         <div class="zero-card">
           <div class="zero-label">Display Artifacts</div>
-          <div class="zero-num safe">5</div>
+          <div class="zero-num safe">7</div>
         </div>
       </div>
     </div>
@@ -800,9 +1025,9 @@ tbody tr:hover td { background: var(--g2); }
      FOOTER
      ═══════════════════════════════════════════ -->
 <div class="footer">
-  <strong>OVERLORD</strong> :: Operator Dashboard :: Phase 4C &nbsp;·&nbsp;
+  <strong>OVERLORD</strong> :: Operator Dashboard :: Phase 4I &nbsp;·&nbsp;
   Offline · Read-only · Fixture-fed · No network · No execution &nbsp;·&nbsp;
-  Phase 4B safety checks remain enforced
+  Phase 4B–4H safety checks remain enforced
 </div>
 
 </div><!-- /wrap -->
