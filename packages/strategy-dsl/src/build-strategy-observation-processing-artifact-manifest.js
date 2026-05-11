@@ -6,19 +6,37 @@ import { buildStrategyObservationProcessingContract } from "./build-strategy-obs
 import { buildStrategyObservationProcessingInputSet } from "./build-strategy-observation-processing-input-set.js";
 import { strategyObservationProcessingArtifactManifestId } from "./strategy-observation-processing-artifact-manifest-id.js";
 
+const processingOutputArtifacts = [
+  {
+    artifact_type: "strategy_observation_processing_trace",
+    artifact_path: "packages/strategy-dsl/fixtures/synthetic_strategy_observation_processing_trace.jsonl",
+    artifact_id: null,
+    record_count: 9
+  },
+  {
+    artifact_type: "strategy_observation_processing_noop_summary",
+    artifact_path: "packages/strategy-dsl/fixtures/synthetic_strategy_observation_processing_noop_summary.json",
+    artifact_id: "sopns_eb0a5457434b46ab04693890fa87ba42",
+    record_count: 1
+  }
+];
+
 export async function buildStrategyObservationProcessingArtifactManifest(options = {}) {
   const repoRoot = options.repoRoot ?? path.resolve(import.meta.dirname, "..", "..", "..");
   const createdAt = options.createdAt ?? "2026-04-28T14:05:06Z";
   const contract = options.contract ?? await buildStrategyObservationProcessingContract({ repoRoot, generatedAt: createdAt });
   const inputSet = options.inputSet ?? await buildStrategyObservationProcessingInputSet({ repoRoot, generatedAt: createdAt, contract });
   const artifactHashes = await hashInputArtifacts(repoRoot, inputSet.input_artifacts);
+  const outputArtifactHashes = await hashOutputArtifacts(repoRoot, processingOutputArtifacts);
 
   return {
     artifact_manifest_id: strategyObservationProcessingArtifactManifestId({
       strategyObservationProcessingContractId: contract.strategy_observation_processing_contract_id,
       strategyObservationProcessingInputSetId: inputSet.strategy_observation_processing_input_set_id,
       artifactCount: inputSet.input_artifacts.length,
-      hashCount: artifactHashes.length
+      hashCount: artifactHashes.length,
+      outputArtifactCount: processingOutputArtifacts.length,
+      outputHashCount: outputArtifactHashes.length
     }),
     schema_version: "strategy_observation_processing_artifact_manifest.v1",
     created_at: createdAt,
@@ -29,6 +47,8 @@ export async function buildStrategyObservationProcessingArtifactManifest(options
     strategy_observation_processing_input_set_id: inputSet.strategy_observation_processing_input_set_id,
     input_artifacts: inputSet.input_artifacts,
     artifact_hashes: artifactHashes,
+    processing_output_artifacts: processingOutputArtifacts,
+    output_artifact_hashes: outputArtifactHashes,
     source_provenance: {
       source_strategy_observation_stack_closeout_checkpoint_id: inputSet.source_strategy_observation_stack_closeout_checkpoint_id,
       source_strategy_observation_case_file_summary_id: inputSet.source_strategy_observation_case_file_summary_id,
@@ -42,6 +62,10 @@ export async function buildStrategyObservationProcessingArtifactManifest(options
     reason_code: "VALIDATION_PASSED",
     reason: "metadata snapshot ready"
   };
+}
+
+async function hashOutputArtifacts(repoRoot, outputArtifacts) {
+  return hashInputArtifacts(repoRoot, outputArtifacts);
 }
 
 export async function hashInputArtifacts(repoRoot, inputArtifacts) {

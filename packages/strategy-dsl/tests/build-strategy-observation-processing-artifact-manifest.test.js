@@ -21,3 +21,16 @@ test("buildStrategyObservationProcessingArtifactManifest hashes every local inpu
   assert.equal(manifest.artifact_hashes.every((hash) => /^sha256:[a-f0-9]{64}$/u.test(hash.sha256)), true);
   assert.equal(manifest.reason_code, "VALIDATION_PASSED");
 });
+
+test("buildStrategyObservationProcessingArtifactManifest seals Phase 4F/4G processing outputs", async () => {
+  const manifest = await buildStrategyObservationProcessingArtifactManifest({ repoRoot });
+
+  assert.equal(manifest.processing_output_artifacts.length, 2);
+  assert.equal(manifest.output_artifact_hashes.length, 2);
+  assert.equal(manifest.output_artifact_hashes.every((hash) => /^sha256:[a-f0-9]{64}$/u.test(hash.sha256)), true);
+  assert.equal(manifest.processing_output_artifacts.some((a) => a.artifact_type === "strategy_observation_processing_trace"), true);
+  assert.equal(manifest.processing_output_artifacts.some((a) => a.artifact_type === "strategy_observation_processing_noop_summary"), true);
+  assert.equal(manifest.paper_only, true);
+  assert.equal(manifest.live_execution_allowed, false);
+  assert.equal(manifest.order_placement_allowed, false);
+});
