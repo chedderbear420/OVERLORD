@@ -62,37 +62,37 @@
     {
       "artifact_type": "strategy_observation_contract",
       "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_contract.json",
-      "sha256": "sha256:be35eecc0eca18a546a4b379d59638f7a9d5bc97754a1612969e3a73c0395a6b"
+      "sha256": "sha256:f9cd8e8978229a19706717f254676ae958b71be8b1f29f1c28fa054e78a90d6a"
     },
     {
       "artifact_type": "strategy_observation_input_set",
       "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_input_set.json",
-      "sha256": "sha256:9ce0edd80f9c443bd8507bc5ac8346b083cac1c581533e483afb614d5499eb40"
+      "sha256": "sha256:f915c6618c526431a27ccbd0e5d54a2be4405a1fe1f61f0ca1fef59ad5fff899"
     },
     {
       "artifact_type": "strategy_observation_trace",
       "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_trace.jsonl",
-      "sha256": "sha256:b280201add3235d6ca9a47577975c07c916fd7aa97fe1d53f59ac96f6447e863"
+      "sha256": "sha256:7a0d3dfc0e79af3f394ccd069e8309e565c32b5be7770555d72973bcf80bdcb1"
     },
     {
       "artifact_type": "strategy_observation_noop_summary",
       "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_noop_summary.json",
-      "sha256": "sha256:bcaa7f8da24fc9660203e4cde5b06a18f92a08b8c4a6ac9beb8cc74043d1885f"
+      "sha256": "sha256:26142d8eebb3fdc3fd0ecc0d399f5b05df424f9bc26961165fc0cb064593cbc7"
     },
     {
       "artifact_type": "strategy_observation_evidence_bundle",
       "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_evidence_bundle.json",
-      "sha256": "sha256:37d8c3f58249a21792fc3d68b8333d2e859bcd21636ea1ac1c72732c2b609cef"
+      "sha256": "sha256:3bf4dc07c18610465ccdb880758adf849318f8b6ee79fe2e59e75a59e61f468f"
     },
     {
       "artifact_type": "strategy_observation_case_file_summary",
       "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_case_file_summary.json",
-      "sha256": "sha256:0ce443dd01dc20febba99d9a84d1ff2358ecb8dc40b62abef643f308d6a8d59c"
+      "sha256": "sha256:56c6861f207e8331056938f3274f26859ab294d48092c65e6ab81c37b4695b4c"
     },
     {
       "artifact_type": "strategy_observation_stack_closeout_checkpoint",
       "artifact_path": "packages/strategy-dsl/fixtures/synthetic_strategy_observation_stack_closeout_checkpoint.json",
-      "sha256": "sha256:751a68ac10850a4a09b76067bc4b94b7f32b22a227e5ac37c8798ff79eb9a860"
+      "sha256": "sha256:3838d6ee591661dfe0af798f53ff73cced007b350579f4f06f22f3bf7525f77e"
     }
   ],
   "source_provenance": {
