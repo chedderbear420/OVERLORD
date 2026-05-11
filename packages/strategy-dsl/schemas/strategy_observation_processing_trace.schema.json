@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "overlord.strategy_observation_processing_trace.schema.json",
+  "title": "StrategyObservationProcessingTrace",
+  "description": "A single JSONL record in a no-op observation processing trace. Records metadata about what processing inputs were seen. Produces no signals, decisions, recommendations, analytics, or execution outputs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "strategy_observation_processing_trace_id",
+    "schema_version",
+    "generated_at",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "strategy_observation_processing_contract_id",
+    "strategy_observation_processing_input_set_id",
+    "strategy_observation_stack_closeout_checkpoint_id",
+    "source_strategy_observation_processing_contract_id",
+    "source_strategy_observation_processing_input_set_id",
+    "source_strategy_observation_stack_closeout_checkpoint_id",
+    "source_strategy_definition_id",
+    "source_strategy_run_intent_id",
+    "replay_mode",
+    "run_mode",
+    "trace_event_type",
+    "trace_index",
+    "observed_input_type",
+    "observed_artifact_path",
+    "observed_record_count",
+    "status",
+    "reason"
+  ],
+  "properties": {
+    "strategy_observation_processing_trace_id": { "type": "string", "pattern": "^sopt_[a-f0-9]{32}$" },
+    "schema_version": { "const": "strategy_observation_processing_trace.v1" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "paper_only": { "const": true },
+    "live_execution_allowed": { "const": false },
+    "order_placement_allowed": { "const": false },
+    "strategy_observation_processing_contract_id": { "type": "string", "pattern": "^sopc_" },
+    "strategy_observation_processing_input_set_id": { "type": "string", "pattern": "^sopis_" },
+    "strategy_observation_stack_closeout_checkpoint_id": { "type": "string", "pattern": "^soscc_" },
+    "source_strategy_observation_processing_contract_id": { "type": "string", "pattern": "^sopc_" },
+    "source_strategy_observation_processing_input_set_id": { "type": "string", "pattern": "^sopis_" },
+    "source_strategy_observation_stack_closeout_checkpoint_id": { "type": "string", "pattern": "^soscc_" },
+    "source_strategy_definition_id": { "type": "string", "pattern": "^sdef_" },
+    "source_strategy_run_intent_id": { "type": "string", "pattern": "^sri_" },
+    "replay_mode": { "const": "offline_fixture_replay" },
+    "run_mode": { "enum": ["validation_only", "dry_run_planned"] },
+    "trace_event_type": {
+      "enum": [
+        "noop_processing_started",
+        "noop_processing_input_seen",
+        "noop_processing_completed",
+        "noop_processing_rejected"
+      ]
+    },
+    "trace_index": { "type": "integer", "minimum": 0 },
+    "observed_input_type": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "enum": [
+            "strategy_observation_contract",
+            "strategy_observation_input_set",
+            "strategy_observation_trace",
+            "strategy_observation_noop_summary",
+            "strategy_observation_evidence_bundle",
+            "strategy_observation_case_file_summary",
+            "strategy_observation_stack_closeout_checkpoint"
+          ]
+        }
+      ]
+    },
+    "observed_artifact_path": { "type": ["string", "null"] },
+    "observed_record_count": { "type": ["integer", "null"], "minimum": 0 },
+    "status": { "enum": ["processing_trace_recorded", "processing_trace_rejected"] },
+    "reason": { "type": "string", "minLength": 1 }
+  }
+}

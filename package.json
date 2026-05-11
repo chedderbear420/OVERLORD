@@ -50,6 +50,7 @@
     "validate:strategy-observation-processing-contract": "node packages/strategy-dsl/src/validate-strategy-observation-processing-contract.js",
     "validate:strategy-observation-processing-input-set": "node packages/strategy-dsl/src/validate-strategy-observation-processing-input-set.js",
     "validate:strategy-observation-processing-artifact-manifest": "node packages/strategy-dsl/src/validate-strategy-observation-processing-artifact-manifest.js",
+    "validate:strategy-observation-processing-trace": "node packages/strategy-dsl/src/validate-strategy-observation-processing-trace.js",
     "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js",
     "dashboard": "node -e \"import('child_process').then(m=>m.exec('start apps\\\\dashboard\\\\index.html'))\"",
     "test:dashboard": "node apps/dashboard/test-dashboard-safety.js"
