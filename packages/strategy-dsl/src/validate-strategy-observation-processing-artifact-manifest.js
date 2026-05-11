@@ -25,6 +25,8 @@ const requiredFields = [
   "strategy_observation_processing_input_set_id",
   "input_artifacts",
   "artifact_hashes",
+  "processing_output_artifacts",
+  "output_artifact_hashes",
   "source_provenance",
   "validation_status",
   "status",
@@ -32,6 +34,7 @@ const requiredFields = [
   "reason"
 ];
 const artifactFields = ["artifact_type", "artifact_path", "artifact_id", "record_count", "access_mode"];
+const outputArtifactFields = ["artifact_type", "artifact_path", "artifact_id", "record_count"];
 const hashFields = ["artifact_type", "artifact_path", "sha256"];
 const provenanceFields = [
   "source_strategy_observation_stack_closeout_checkpoint_id",
@@ -69,6 +72,8 @@ export async function validateStrategyObservationProcessingArtifactManifest(mani
   validateDeterministicId(errors, manifest);
   await validateManifestArtifacts(errors, root, manifest);
   await validateHashes(errors, root, manifest);
+  validateOutputArtifacts(errors, manifest);
+  await validateOutputHashes(errors, root, manifest);
   validateSourceProvenance(errors, manifest);
 
   return { ok: errors.length === 0, errors };
@@ -103,7 +108,9 @@ function validateDeterministicId(errors, manifest) {
     strategyObservationProcessingContractId: manifest.strategy_observation_processing_contract_id,
     strategyObservationProcessingInputSetId: manifest.strategy_observation_processing_input_set_id,
     artifactCount: Array.isArray(manifest.input_artifacts) ? manifest.input_artifacts.length : undefined,
-    hashCount: Array.isArray(manifest.artifact_hashes) ? manifest.artifact_hashes.length : undefined
+    hashCount: Array.isArray(manifest.artifact_hashes) ? manifest.artifact_hashes.length : undefined,
+    outputArtifactCount: Array.isArray(manifest.processing_output_artifacts) ? manifest.processing_output_artifacts.length : undefined,
+    outputHashCount: Array.isArray(manifest.output_artifact_hashes) ? manifest.output_artifact_hashes.length : undefined
   });
   if (manifest.artifact_manifest_id !== expected) errors.push("artifact_manifest_id must be deterministic from processing contract, input set, and artifact counts");
 }
@@ -156,6 +163,50 @@ async function validateHashes(errors, root, manifest) {
         errors.push(`artifact_hashes missing ${expectedHash.artifact_type}`);
       } else if (actual.artifact_path !== expectedHash.artifact_path || actual.sha256 !== expectedHash.sha256) {
         errors.push(`${observationValidationReasonCodes.ERR_HASH_MISMATCH}: artifact_hash must match local snapshot for ${expectedHash.artifact_type}`);
+      }
+    }
+  } catch (error) {
+    errors.push(`${observationValidationReasonCodes.ERR_HASH_MISMATCH}: ${error.message}`);
+  }
+}
+
+function validateOutputArtifacts(errors, manifest) {
+  if (!Array.isArray(manifest.processing_output_artifacts) || manifest.processing_output_artifacts.length === 0) {
+    errors.push("processing_output_artifacts must be a non-empty array");
+    return;
+  }
+  for (const artifact of manifest.processing_output_artifacts) {
+    validateNoUnknownFields(errors, artifact, outputArtifactFields, "processing_output_artifact");
+    if (typeof artifact.artifact_type !== "string") errors.push("processing_output_artifact artifact_type must be a string");
+    if (typeof artifact.artifact_path !== "string") errors.push("processing_output_artifact artifact_path must be a string");
+    if (!Number.isInteger(artifact.record_count) || artifact.record_count < 0) errors.push("processing_output_artifact record_count must be a non-negative integer");
+  }
+}
+
+async function validateOutputHashes(errors, root, manifest) {
+  if (!Array.isArray(manifest.output_artifact_hashes) || manifest.output_artifact_hashes.length === 0) {
+    errors.push("output_artifact_hashes must be a non-empty array");
+    return;
+  }
+  if (!Array.isArray(manifest.processing_output_artifacts)) return;
+  if (manifest.output_artifact_hashes.length !== manifest.processing_output_artifacts.length) {
+    errors.push("output_artifact_hashes length must match processing_output_artifacts length");
+  }
+
+  for (const hash of manifest.output_artifact_hashes) {
+    validateNoUnknownFields(errors, hash, hashFields, "output_artifact_hash");
+    if (typeof hash.sha256 !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(hash.sha256)) errors.push("output_artifact_hash sha256 must be sha256-prefixed hex");
+    await validateSafeStrategyDslArtifactPath(errors, root, hash.artifact_path, "output_artifact_hash artifact_path");
+  }
+
+  try {
+    const expected = await hashInputArtifacts(root, manifest.processing_output_artifacts);
+    for (const expectedHash of expected) {
+      const actual = manifest.output_artifact_hashes.find((hash) => hash.artifact_type === expectedHash.artifact_type);
+      if (!actual) {
+        errors.push(`output_artifact_hashes missing ${expectedHash.artifact_type}`);
+      } else if (actual.artifact_path !== expectedHash.artifact_path || actual.sha256 !== expectedHash.sha256) {
+        errors.push(`${observationValidationReasonCodes.ERR_HASH_MISMATCH}: output_artifact_hash must match local snapshot for ${expectedHash.artifact_type}`);
       }
     }
   } catch (error) {

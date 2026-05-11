@@ -4,14 +4,18 @@ export function strategyObservationProcessingArtifactManifestId({
   strategyObservationProcessingContractId,
   strategyObservationProcessingInputSetId,
   artifactCount,
-  hashCount
+  hashCount,
+  outputArtifactCount,
+  outputHashCount
 }) {
   const digest = createHash("sha256")
     .update([
       strategyObservationProcessingContractId,
       strategyObservationProcessingInputSetId,
       artifactCount,
-      hashCount
+      hashCount,
+      outputArtifactCount,
+      outputHashCount
     ].join("|"))
     .digest("hex")
     .slice(0, 32);
