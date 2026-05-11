@@ -47,6 +47,16 @@ const REQUIRED_FLAGS = [
   { pattern: /sha256:46ebe409/, label: 'processing trace SHA-256 hash displayed (Phase 4H)' },
   { pattern: /sha256:bcfb57e7/, label: 'processing noop summary SHA-256 hash displayed (Phase 4H)' },
   { pattern: /actionable_outputs.*?0|actionable.*?output.*?0/s, label: 'actionable output count: 0 displayed' },
+  // Phase 4J — evidence chain viewer markers
+  { pattern: /id="evidence-chain"/, label: 'evidence-chain panel id present (Phase 4J)' },
+  { pattern: /id="safety-guarantee-block"/, label: 'safety-guarantee-block panel id present (Phase 4J)' },
+  { pattern: /sopc_d5f85d3ac42b6ade0754837ea0354a77/, label: 'processing contract ID displayed in evidence chain (Phase 4J)' },
+  { pattern: /sopis_e375ea353c05147738b963a553f0e776/, label: 'processing input set ID displayed in evidence chain (Phase 4J)' },
+  { pattern: /Processing Contract/, label: 'Processing Contract step label displayed (Phase 4J)' },
+  { pattern: /Processing Input Set/, label: 'Processing Input Set step label displayed (Phase 4J)' },
+  { pattern: /Processing Trace/, label: 'Processing Trace step label displayed (Phase 4J)' },
+  { pattern: /Processing Noop Summary/, label: 'Processing Noop Summary step label displayed (Phase 4J)' },
+  { pattern: /Artifact Manifest/, label: 'Artifact Manifest step label displayed (Phase 4J)' },
 ];
 
 let passed = 0;
