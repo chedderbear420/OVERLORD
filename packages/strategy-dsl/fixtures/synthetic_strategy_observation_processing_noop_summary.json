@@ -1,0 +1,22 @@
+{
+  "strategy_observation_processing_noop_summary_id": "sopns_eb0a5457434b46ab04693890fa87ba42",
+  "schema_version": "strategy_observation_processing_noop_summary.v1",
+  "generated_at": "2026-04-28T14:05:06Z",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "strategy_observation_processing_contract_id": "sopc_d5f85d3ac42b6ade0754837ea0354a77",
+  "strategy_observation_processing_input_set_id": "sopis_e375ea353c05147738b963a553f0e776",
+  "strategy_observation_stack_closeout_checkpoint_id": "soscc_6c3d0fa93f86ee5acfc9e68d6fc3217b",
+  "source_strategy_observation_processing_contract_id": "sopc_d5f85d3ac42b6ade0754837ea0354a77",
+  "source_strategy_observation_processing_input_set_id": "sopis_e375ea353c05147738b963a553f0e776",
+  "source_strategy_observation_stack_closeout_checkpoint_id": "soscc_6c3d0fa93f86ee5acfc9e68d6fc3217b",
+  "source_strategy_definition_id": "sdef_465b3a781e17ac699a505ad3724dcfee",
+  "source_strategy_run_intent_id": "sri_82c2c9bd204d1a3fd4452508ea1b364f",
+  "replay_mode": "offline_fixture_replay",
+  "run_mode": "dry_run_planned",
+  "total_trace_records": 9,
+  "total_inputs_observed": 7,
+  "status": "processing_noop_summary_ready",
+  "reason": "No-op observation processing summary only. No strategy logic, signals, decisions, trades, recommendations, analytics, or bankroll actions produced."
+}
