@@ -1,0 +1,155 @@
+{
+  "kalshi_research_review_evidence_bundle_id": "krreb_2d4bb748dc0130b2d91397a06cacde74",
+  "schema_version": "kalshi_research_review_evidence_bundle.v1",
+  "generated_at": "2026-05-12T00:00:00Z",
+  "evidence_bundle_mode": "phase_5b_evidence_bundle_only",
+  "source_phase": "Phase 5B",
+  "confidence_gate_contract_id": "kcgc_787dd9801f55fa3a73598d9f781a3f06",
+  "confidence_gate_contract_schema_version": "kalshi_confidence_gate_contract.v1",
+  "input_artifact_refs": {
+    "confidence_gate_contract": {
+      "artifact_id": "kcgc_787dd9801f55fa3a73598d9f781a3f06",
+      "schema_version": "kalshi_confidence_gate_contract.v1",
+      "required": true
+    },
+    "market_snapshot": {
+      "artifact_id": "kms_a64e39e9a580e9065a5ecbef7baea712",
+      "schema_version": "kalshi_market_snapshot.v1",
+      "required": true
+    },
+    "strategy_signal_definition": {
+      "artifact_id": "kssd_632d07fb70d0027b0656993db9586134",
+      "schema_version": "kalshi_strategy_signal_definition.v1",
+      "required": true
+    },
+    "signal_evaluation_summary": {
+      "artifact_id": "kses_a51a8e170085f9e894a0ca4f39080a4a",
+      "schema_version": "kalshi_signal_evaluation_summary.v1",
+      "required": true
+    },
+    "paper_ledger_entry": {
+      "artifact_id": "kple_a0c6fee03aa1fc7fc6bca2dbf9074dac",
+      "schema_version": "kalshi_paper_ledger_entry.v1",
+      "required": true
+    }
+  },
+  "evidence_items": [
+    {
+      "evidence_id": "ev_kms_001",
+      "evidence_type": "market_snapshot_fixture",
+      "source_artifact_key": "market_snapshot",
+      "source_artifact_id": "kms_a64e39e9a580e9065a5ecbef7baea712",
+      "source_schema_version": "kalshi_market_snapshot.v1",
+      "supports_gate_ids": [
+        "signal_calibration",
+        "edge_consistency"
+      ],
+      "evidence_status": "indexed",
+      "review_scope": "phase_5b_indexing_only",
+      "summary": "market snapshot fixture indexed"
+    },
+    {
+      "evidence_id": "ev_ksd_001",
+      "evidence_type": "strategy_signal_definition_fixture",
+      "source_artifact_key": "strategy_signal_definition",
+      "source_artifact_id": "kssd_632d07fb70d0027b0656993db9586134",
+      "source_schema_version": "kalshi_strategy_signal_definition.v1",
+      "supports_gate_ids": [
+        "signal_calibration",
+        "edge_consistency"
+      ],
+      "evidence_status": "indexed",
+      "review_scope": "phase_5b_indexing_only",
+      "summary": "signal definition fixture indexed"
+    },
+    {
+      "evidence_id": "ev_ses_001",
+      "evidence_type": "signal_evaluation_summary_fixture",
+      "source_artifact_key": "signal_evaluation_summary",
+      "source_artifact_id": "kses_a51a8e170085f9e894a0ca4f39080a4a",
+      "source_schema_version": "kalshi_signal_evaluation_summary.v1",
+      "supports_gate_ids": [
+        "signal_calibration",
+        "edge_consistency"
+      ],
+      "evidence_status": "indexed",
+      "review_scope": "phase_5b_indexing_only",
+      "summary": "evaluation summary fixture indexed"
+    },
+    {
+      "evidence_id": "ev_ple_001",
+      "evidence_type": "paper_ledger_entry_fixture",
+      "source_artifact_key": "paper_ledger_entry",
+      "source_artifact_id": "kple_a0c6fee03aa1fc7fc6bca2dbf9074dac",
+      "source_schema_version": "kalshi_paper_ledger_entry.v1",
+      "supports_gate_ids": [
+        "signal_calibration",
+        "edge_consistency",
+        "paper_pnl"
+      ],
+      "evidence_status": "indexed",
+      "review_scope": "phase_5b_indexing_only",
+      "summary": "paper ledger entry fixture indexed"
+    },
+    {
+      "evidence_id": "ev_cgc_001",
+      "evidence_type": "confidence_gate_contract_fixture",
+      "source_artifact_key": "confidence_gate_contract",
+      "source_artifact_id": "kcgc_787dd9801f55fa3a73598d9f781a3f06",
+      "source_schema_version": "kalshi_confidence_gate_contract.v1",
+      "supports_gate_ids": [
+        "signal_calibration",
+        "edge_consistency",
+        "paper_pnl",
+        "risk_governor",
+        "operator_signoff"
+      ],
+      "evidence_status": "indexed",
+      "review_scope": "phase_5b_indexing_only",
+      "summary": "confidence gate contract fixture indexed"
+    }
+  ],
+  "gate_evidence_map": {
+    "signal_calibration": {
+      "mapped_evidence_ids": [
+        "ev_ses_001",
+        "ev_ple_001"
+      ],
+      "evidence_status": "mapped_not_evaluated"
+    },
+    "edge_consistency": {
+      "mapped_evidence_ids": [
+        "ev_ses_001",
+        "ev_ple_001"
+      ],
+      "evidence_status": "mapped_not_evaluated"
+    },
+    "paper_pnl": {
+      "mapped_evidence_ids": [
+        "ev_ple_001"
+      ],
+      "evidence_status": "mapped_not_evaluated"
+    },
+    "risk_governor": {
+      "mapped_evidence_ids": [],
+      "evidence_status": "missing_future_evidence"
+    },
+    "operator_signoff": {
+      "mapped_evidence_ids": [],
+      "evidence_status": "missing_future_evidence"
+    }
+  },
+  "bundle_status": "evidence_indexed_not_evaluated",
+  "review_status": "pending_gate_evaluation",
+  "gate_evaluation_allowed": false,
+  "gates_passed": false,
+  "phase_6_ready": false,
+  "live_mode_allowed": false,
+  "credentials_allowed": false,
+  "order_placement_allowed": false,
+  "autonomous_execution_allowed": false,
+  "operator_signoff_complete": false,
+  "paper_only": true,
+  "reason_code": "EVIDENCE_BUNDLE_INDEXED_NOT_EVALUATED",
+  "reason": "evidence bundle indexed; gates remain blocked"
+}

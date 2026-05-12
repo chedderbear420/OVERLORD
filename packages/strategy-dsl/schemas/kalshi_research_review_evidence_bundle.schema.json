@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kalshi_research_review_evidence_bundle.schema.json",
+  "title": "KalshiResearchReviewEvidenceBundle",
+  "description": "Phase 5B — Evidence bundle indexing artifacts mapped to confidence gates for future review. No gates are evaluated or passed. All advanced/live permissions remain blocked.",
+  "type": "object",
+  "required": [
+    "kalshi_research_review_evidence_bundle_id",
+    "schema_version",
+    "generated_at",
+    "evidence_bundle_mode",
+    "source_phase",
+    "confidence_gate_contract_id",
+    "confidence_gate_contract_schema_version",
+    "input_artifact_refs",
+    "evidence_items",
+    "gate_evidence_map",
+    "bundle_status",
+    "review_status",
+    "gate_evaluation_allowed",
+    "gates_passed",
+    "phase_6_ready",
+    "live_mode_allowed",
+    "credentials_allowed",
+    "order_placement_allowed",
+    "autonomous_execution_allowed",
+    "operator_signoff_complete",
+    "paper_only",
+    "reason_code",
+    "reason"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kalshi_research_review_evidence_bundle_id": {
+      "type": "string",
+      "pattern": "^krreb_[a-f0-9]{32}$",
+      "description": "Deterministic content-addressed ID: krreb_ + first 32 hex chars of SHA-256."
+    },
+    "schema_version": {
+      "const": "kalshi_research_review_evidence_bundle.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidence_bundle_mode": {
+      "const": "phase_5b_evidence_bundle_only"
+    },
+    "source_phase": {
+      "const": "Phase 5B"
+    },
+    "confidence_gate_contract_id": {
+      "type": "string",
+      "pattern": "^kcgc_[a-f0-9]{32}$"
+    },
+    "confidence_gate_contract_schema_version": {
+      "const": "kalshi_confidence_gate_contract.v1"
+    },
+    "input_artifact_refs": {
+      "type": "object",
+      "required": [
+        "confidence_gate_contract",
+        "market_snapshot",
+        "strategy_signal_definition",
+        "signal_evaluation_summary",
+        "paper_ledger_entry"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "confidence_gate_contract": {
+          "type": "object",
+          "required": ["artifact_id", "schema_version", "required"],
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": { "type": "string", "pattern": "^kcgc_[a-f0-9]{32}$" },
+            "schema_version": { "const": "kalshi_confidence_gate_contract.v1" },
+            "required": { "const": true }
+          }
+        },
+        "market_snapshot": {
+          "type": "object",
+          "required": ["artifact_id", "schema_version", "required"],
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": { "type": "string", "pattern": "^kms_[a-f0-9]{32}$" },
+            "schema_version": { "const": "kalshi_market_snapshot.v1" },
+            "required": { "const": true }
+          }
+        },
+        "strategy_signal_definition": {
+          "type": "object",
+          "required": ["artifact_id", "schema_version", "required"],
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": { "type": "string", "pattern": "^kssd_[a-f0-9]{32}$" },
+            "schema_version": { "const": "kalshi_strategy_signal_definition.v1" },
+            "required": { "const": true }
+          }
+        },
+        "signal_evaluation_summary": {
+          "type": "object",
+          "required": ["artifact_id", "schema_version", "required"],
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": { "type": "string", "pattern": "^kses_[a-f0-9]{32}$" },
+            "schema_version": { "const": "kalshi_signal_evaluation_summary.v1" },
+            "required": { "const": true }
+          }
+        },
+        "paper_ledger_entry": {
+          "type": "object",
+          "required": ["artifact_id", "schema_version", "required"],
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": { "type": "string", "pattern": "^kple_[a-f0-9]{32}$" },
+            "schema_version": { "const": "kalshi_paper_ledger_entry.v1" },
+            "required": { "const": true }
+          }
+        }
+      }
+    },
+    "evidence_items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "evidence_id",
+          "evidence_type",
+          "source_artifact_key",
+          "source_artifact_id",
+          "source_schema_version",
+          "supports_gate_ids",
+          "evidence_status",
+          "review_scope",
+          "summary"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "evidence_id": { "type": "string", "minLength": 1 },
+          "evidence_type": {
+            "type": "string",
+            "enum": [
+              "market_snapshot_fixture",
+              "strategy_signal_definition_fixture",
+              "signal_evaluation_summary_fixture",
+              "paper_ledger_entry_fixture",
+              "confidence_gate_contract_fixture"
+            ]
+          },
+          "source_artifact_key": {
+            "type": "string",
+            "enum": [
+              "confidence_gate_contract",
+              "market_snapshot",
+              "strategy_signal_definition",
+              "signal_evaluation_summary",
+              "paper_ledger_entry"
+            ]
+          },
+          "source_artifact_id": { "type": "string", "minLength": 1 },
+          "source_schema_version": { "type": "string", "minLength": 1 },
+          "supports_gate_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "signal_calibration",
+                "edge_consistency",
+                "paper_pnl",
+                "risk_governor",
+                "operator_signoff"
+              ]
+            }
+          },
+          "evidence_status": {
+            "type": "string",
+            "enum": ["indexed", "available_for_future_review", "not_evaluated"]
+          },
+          "review_scope": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "gate_evidence_map": {
+      "type": "object",
+      "required": [
+        "signal_calibration",
+        "edge_consistency",
+        "paper_pnl",
+        "risk_governor",
+        "operator_signoff"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "signal_calibration": {
+          "type": "object",
+          "required": ["mapped_evidence_ids", "evidence_status"],
+          "additionalProperties": false,
+          "properties": {
+            "mapped_evidence_ids": { "type": "array", "items": { "type": "string" } },
+            "evidence_status": {
+              "type": "string",
+              "enum": ["mapped_not_evaluated", "missing_future_evidence"]
+            }
+          }
+        },
+        "edge_consistency": {
+          "type": "object",
+          "required": ["mapped_evidence_ids", "evidence_status"],
+          "additionalProperties": false,
+          "properties": {
+            "mapped_evidence_ids": { "type": "array", "items": { "type": "string" } },
+            "evidence_status": {
+              "type": "string",
+              "enum": ["mapped_not_evaluated", "missing_future_evidence"]
+            }
+          }
+        },
+        "paper_pnl": {
+          "type": "object",
+          "required": ["mapped_evidence_ids", "evidence_status"],
+          "additionalProperties": false,
+          "properties": {
+            "mapped_evidence_ids": { "type": "array", "items": { "type": "string" } },
+            "evidence_status": {
+              "type": "string",
+              "enum": ["mapped_not_evaluated", "missing_future_evidence"]
+            }
+          }
+        },
+        "risk_governor": {
+          "type": "object",
+          "required": ["mapped_evidence_ids", "evidence_status"],
+          "additionalProperties": false,
+          "properties": {
+            "mapped_evidence_ids": { "type": "array", "maxItems": 0 },
+            "evidence_status": { "const": "missing_future_evidence" }
+          }
+        },
+        "operator_signoff": {
+          "type": "object",
+          "required": ["mapped_evidence_ids", "evidence_status"],
+          "additionalProperties": false,
+          "properties": {
+            "mapped_evidence_ids": { "type": "array", "maxItems": 0 },
+            "evidence_status": { "const": "missing_future_evidence" }
+          }
+        }
+      }
+    },
+    "bundle_status": {
+      "const": "evidence_indexed_not_evaluated"
+    },
+    "review_status": {
+      "const": "pending_gate_evaluation"
+    },
+    "gate_evaluation_allowed": { "const": false },
+    "gates_passed": { "const": false },
+    "phase_6_ready": { "const": false },
+    "live_mode_allowed": { "const": false },
+    "credentials_allowed": { "const": false },
+    "order_placement_allowed": { "const": false },
+    "autonomous_execution_allowed": { "const": false },
+    "operator_signoff_complete": { "const": false },
+    "paper_only": { "const": true },
+    "reason_code": { "const": "EVIDENCE_BUNDLE_INDEXED_NOT_EVALUATED" },
+    "reason": { "type": "string", "minLength": 1 }
+  }
+}
