@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kalshi_confidence_gate_contract.schema.json",
+  "title": "KalshiConfidenceGateContract",
+  "description": "Phase 5A — Confidence gate contract defining the evidence required before any future restricted live mode can be considered. All advanced/live permissions are blocked by default. No gates are passed in Phase 5A.",
+  "type": "object",
+  "required": [
+    "kalshi_confidence_gate_contract_id",
+    "schema_version",
+    "generated_at",
+    "gate_contract_mode",
+    "source_phase",
+    "required_source_artifacts",
+    "gates",
+    "overall_gate_status",
+    "phase_6_ready",
+    "live_mode_allowed",
+    "credentials_allowed",
+    "order_placement_allowed",
+    "autonomous_execution_allowed",
+    "risk_governor_required",
+    "operator_signoff_required",
+    "operator_signoff_complete",
+    "paper_only",
+    "reason_code",
+    "reason"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kalshi_confidence_gate_contract_id": {
+      "type": "string",
+      "pattern": "^kcgc_[a-f0-9]{32}$",
+      "description": "Deterministic content-addressed ID: kcgc_ + first 32 hex chars of SHA-256."
+    },
+    "schema_version": {
+      "const": "kalshi_confidence_gate_contract.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "gate_contract_mode": {
+      "const": "phase_5a_gate_contract_only"
+    },
+    "source_phase": {
+      "const": "Phase 5A"
+    },
+    "required_source_artifacts": {
+      "type": "object",
+      "required": [
+        "market_snapshot",
+        "strategy_signal_definition",
+        "signal_evaluation_summary",
+        "paper_ledger_entry"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "market_snapshot": {
+          "type": "object",
+          "required": ["schema_version", "required"],
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": { "const": "kalshi_market_snapshot.v1" },
+            "required": { "const": true }
+          }
+        },
+        "strategy_signal_definition": {
+          "type": "object",
+          "required": ["schema_version", "required"],
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": { "const": "kalshi_strategy_signal_definition.v1" },
+            "required": { "const": true }
+          }
+        },
+        "signal_evaluation_summary": {
+          "type": "object",
+          "required": ["schema_version", "required"],
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": { "const": "kalshi_signal_evaluation_summary.v1" },
+            "required": { "const": true }
+          }
+        },
+        "paper_ledger_entry": {
+          "type": "object",
+          "required": ["schema_version", "required"],
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": { "const": "kalshi_paper_ledger_entry.v1" },
+            "required": { "const": true }
+          }
+        }
+      }
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "gate_id",
+          "gate_name",
+          "gate_status",
+          "required_before_phase",
+          "evidence_required",
+          "minimum_requirements",
+          "current_evidence_status",
+          "blocking_reason"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "gate_id": {
+            "type": "string",
+            "enum": [
+              "signal_calibration",
+              "edge_consistency",
+              "paper_pnl",
+              "risk_governor",
+              "operator_signoff"
+            ]
+          },
+          "gate_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "gate_status": {
+            "type": "string",
+            "enum": ["blocked", "requires_evidence", "not_evaluated"]
+          },
+          "required_before_phase": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_required": {
+            "type": "boolean"
+          },
+          "minimum_requirements": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" }
+          },
+          "current_evidence_status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "blocking_reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "overall_gate_status": {
+      "const": "blocked"
+    },
+    "phase_6_ready": {
+      "const": false
+    },
+    "live_mode_allowed": {
+      "const": false
+    },
+    "credentials_allowed": {
+      "const": false
+    },
+    "order_placement_allowed": {
+      "const": false
+    },
+    "autonomous_execution_allowed": {
+      "const": false
+    },
+    "risk_governor_required": {
+      "const": true
+    },
+    "operator_signoff_required": {
+      "const": true
+    },
+    "operator_signoff_complete": {
+      "const": false
+    },
+    "paper_only": {
+      "const": true
+    },
+    "reason_code": {
+      "const": "CONFIDENCE_GATES_DEFINED_BLOCKED"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

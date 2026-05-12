@@ -45,21 +45,31 @@ These phases wire in real Kalshi market data while keeping the paper-only, contr
 | 4M | Market Data Ingest & Fixture Format | Live market snapshots → canonical fixture format. Read-only, no order endpoints. | ✅ COMPLETE |
 | 4N | Strategy Signal Definition | Translate the research hypothesis into a typed signal schema. What market, what edge condition, what threshold. | ✅ COMPLETE |
 | 4O | Signal Evaluation Pass | Run signal rules against historical/live fixture data. No picks emitted yet — output is hit-rate stats and calibration data. | ✅ COMPLETE |
-| 4P | Paper Ledger Entry Contract | Record hypothetical economics for one contract unit from a signal evaluation. Non-actionable paper accounting — no execution, no emit. | 🔁 ACTIVE |
+| 4P | Paper Ledger Entry Contract | Record hypothetical economics for one contract unit from a signal evaluation. Non-actionable paper accounting — no execution, no emit. | ✅ COMPLETE |
 
 ---
 
 ## Phase 5 — Research Review & Confidence Gates
 
-Before any real position is considered, the research must clear explicit gates.
+Before any real position is considered, the research must clear explicit confidence gates. Phase 5A defines those gates. No gates pass in Phase 5A. All advanced/live permissions remain blocked by default.
+
+| Phase | Title | Status |
+|---|---|---|
+| 5A | Confidence Gate Contract | 🔁 ACTIVE |
+| 5B | Research Review Evidence Bundle | ⬜ LATER |
+| 5C | Gate Evaluation Summary | ⬜ LATER |
+| 5D | Operator Sign-off Contract | ⬜ LATER |
+| 5E | Phase 6 Readiness Lock | ⬜ LATER |
+
+### Required confidence gates
 
 | Gate | Requirement |
 |---|---|
 | Signal calibration | Brier score and log score evaluated over ≥ N samples |
-| Edge consistency | Positive net edge (fee-adjusted) across multiple market conditions |
-| Paper PnL | Positive paper PnL over meaningful sample size |
-| Risk governor review | Maximum position size, stop rules, and kill switch defined |
-| Operator sign-off | Manual review of evidence bundle before live mode is enabled |
+| Edge consistency | Fee-adjusted positive research result across multiple market conditions |
+| Paper PnL | Paper ledger evidence reviewed over meaningful sample size |
+| Risk governor review | Maximum position cap, kill switch, and loss limit defined and implemented |
+| Operator sign-off | Manual review of full evidence bundle before any advanced mode is enabled |
 
 ---
 

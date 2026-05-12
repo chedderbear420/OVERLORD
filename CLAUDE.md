@@ -24,15 +24,16 @@ Identify the current phase and the smallest package surface relevant to the task
 
 ---
 
-## Current phase (as of Phase 4P)
+## Current phase (as of Phase 5A)
 
 | Phase | Title | Status |
 |---|---|---|
 | 4M | Market Data Ingest & Fixture Format | complete |
 | 4N | Strategy Signal Definition | complete |
 | 4O | Signal Evaluation Pass | complete |
-| 4P | Paper Ledger Entry Contract | active — PR open |
-| Phase 5 | Research Review & Confidence Gates | next |
+| 4P | Paper Ledger Entry Contract | complete |
+| 5A | Confidence Gate Contract | active — PR open |
+| 5B | Research Review Evidence Bundle | next |
 
 ---
 
@@ -71,12 +72,13 @@ npm run validate:kalshi-market-snapshot
 npm run validate:kalshi-strategy-signal-definition
 npm run validate:kalshi-signal-evaluation-summary
 npm run validate:kalshi-paper-ledger-entry
+npm run validate:kalshi-confidence-gate-contract
 npm run validate:strategy-observation-processing-contract
 npm run validate:strategy-observation-processing-input-set
 npm run validate:strategy-observation-processing-artifact-manifest
 npm run validate:strategy-observation-processing-trace
 npm run validate:strategy-observation-processing-noop-summary
-npm run test:strategy-dsl              # ~335 tests (2 pre-existing CRLF failures on Windows)
+npm run test:strategy-dsl              # ~376 tests (2 pre-existing CRLF failures on Windows)
 
 # Run any other package
 npm run test:<package-name>
