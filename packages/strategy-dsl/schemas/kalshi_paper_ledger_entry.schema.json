@@ -166,8 +166,20 @@
       "const": "unsettled_fixture"
     },
     "research_notes": {
-      "type": "string",
-      "minLength": 1
+      "type": "object",
+      "required": ["source_evaluation_status", "ledger_entry_scope", "runtime_reference"],
+      "additionalProperties": false,
+      "properties": {
+        "source_evaluation_status": {
+          "const": "evaluated_non_actionable"
+        },
+        "ledger_entry_scope": {
+          "const": "paper_only_observation"
+        },
+        "runtime_reference": {
+          "const": "none"
+        }
+      }
     },
     "paper_only": {
       "const": true

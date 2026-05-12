@@ -103,6 +103,7 @@ const exemptFromStringValueScan = new Set([
   "condition_family",
   "paper_contract_side",
   "paper_settlement_status",
+  "research_notes",        // object — validated structurally; sub-keys are controlled consts
   "reason_code",
 ]);
 
@@ -400,8 +401,30 @@ function validatePaperEconomics(errors, entry) {
 }
 
 function validateResearchNotes(errors, entry) {
-  if (typeof entry.research_notes !== "string" || entry.research_notes.length === 0) {
-    errors.push("research_notes must be a non-empty string");
+  const rn = entry.research_notes;
+  if (!rn || typeof rn !== "object" || Array.isArray(rn)) {
+    errors.push("research_notes must be an object");
+    return;
+  }
+
+  // No extra keys allowed.
+  const approvedKeys = new Set(["source_evaluation_status", "ledger_entry_scope", "runtime_reference"]);
+  for (const key of Object.keys(rn)) {
+    if (!approvedKeys.has(key)) {
+      errors.push(`research_notes: unknown key "${key}"`);
+    }
+  }
+
+  if (rn.source_evaluation_status !== "evaluated_non_actionable") {
+    errors.push(
+      'research_notes.source_evaluation_status must be "evaluated_non_actionable"'
+    );
+  }
+  if (rn.ledger_entry_scope !== "paper_only_observation") {
+    errors.push('research_notes.ledger_entry_scope must be "paper_only_observation"');
+  }
+  if (rn.runtime_reference !== "none") {
+    errors.push('research_notes.runtime_reference must be "none"');
   }
 }
 

@@ -32,7 +32,7 @@ Identify the current phase and the smallest package surface relevant to the task
 | 4N | Strategy Signal Definition | complete |
 | 4O | Signal Evaluation Pass | complete |
 | 4P | Paper Ledger Entry Contract | active — PR open |
-| 4Q | Paper Ledger Aggregation | next |
+| Phase 5 | Research Review & Confidence Gates | next |
 
 ---
 
@@ -76,7 +76,7 @@ npm run validate:strategy-observation-processing-input-set
 npm run validate:strategy-observation-processing-artifact-manifest
 npm run validate:strategy-observation-processing-trace
 npm run validate:strategy-observation-processing-noop-summary
-npm run test:strategy-dsl              # ~317 tests (2 pre-existing CRLF failures on Windows)
+npm run test:strategy-dsl              # ~335 tests (2 pre-existing CRLF failures on Windows)
 
 # Run any other package
 npm run test:<package-name>

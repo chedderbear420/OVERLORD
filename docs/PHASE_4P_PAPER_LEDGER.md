@@ -45,7 +45,10 @@ KalshiPaperLedgerEntry
 ├── paper_fees_cents                             0 (default)
 ├── paper_net_pnl_cents                          unrealized − fees
 ├── paper_settlement_status                      "unsettled_fixture"
-├── research_notes                               free-text string observation note
+├── research_notes                               structured observation object
+│   ├── source_evaluation_status                 "evaluated_non_actionable"
+│   ├── ledger_entry_scope                       "paper_only_observation"
+│   └── runtime_reference                        "none"
 ├── paper_only                                   true  (hardcoded)
 ├── live_execution_allowed                       false (hardcoded)
 ├── order_placement_allowed                      false (hardcoded)
@@ -94,7 +97,7 @@ signalEvaluationSummaryId | marketSnapshotId | ledgerMode | schemaVersion | pape
 | `packages/strategy-dsl/schemas/kalshi_paper_ledger_entry.schema.json` | JSON Schema (draft 2020-12) |
 | `packages/strategy-dsl/fixtures/synthetic_kalshi_paper_ledger_entry.json` | Committed synthetic fixture |
 | `packages/strategy-dsl/tests/build-kalshi-paper-ledger-entry.test.js` | 14 builder tests |
-| `packages/strategy-dsl/tests/kalshi-paper-ledger-entry-validation.test.js` | 43 validation tests |
+| `packages/strategy-dsl/tests/kalshi-paper-ledger-entry-validation.test.js` | 48 validation tests |
 
 ---
 
@@ -135,6 +138,22 @@ Phase 4M  KalshiMarketSnapshot          ─────────────�
 
 ---
 
+## research_notes object shape
+
+```json
+{
+  "source_evaluation_status": "evaluated_non_actionable",
+  "ledger_entry_scope": "paper_only_observation",
+  "runtime_reference": "none"
+}
+```
+
+All three keys are const-constrained. `additionalProperties: false`. The validator rejects strings, missing keys, wrong values, and unknown keys.
+
+---
+
 ## Next phase
 
 **Phase 5 — Research Review & Confidence Gates**
+
+Phase 4P is the final planned Phase 4 sub-phase.

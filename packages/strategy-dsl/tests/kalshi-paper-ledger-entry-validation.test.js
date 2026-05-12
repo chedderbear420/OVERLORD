@@ -435,24 +435,83 @@ test("paper_realized_pnl_cents non-null fails for unsettled_fixture", async () =
 
 // ─── Group 8: Research notes ──────────────────────────────────────────────────
 
-// 39. Valid research_notes passes
-test("valid research_notes passes", async () => {
+// 39. Valid research_notes object passes
+test("valid research_notes object passes", async () => {
   const fixture = await loadFixture("synthetic_kalshi_paper_ledger_entry.json");
   const { ok } = validateKalshiPaperLedgerEntry(fixture);
   assert.equal(ok, true);
 });
 
-// 40. Empty research_notes fails
-test("empty research_notes fails", async () => {
+// 40. research_notes as a string fails
+test("research_notes as a string fails", async () => {
   const fixture = await loadFixture("synthetic_kalshi_paper_ledger_entry.json");
-  const { ok, errors } = validateKalshiPaperLedgerEntry({ ...fixture, research_notes: "" });
+  const { ok, errors } = validateKalshiPaperLedgerEntry({
+    ...fixture,
+    research_notes: "paper ledger observation",
+  });
+  assert.equal(ok, false);
+  assert.ok(errors.some((e) => e.includes("research_notes")));
+});
+
+// 41. Missing source_evaluation_status in research_notes fails
+test("missing research_notes.source_evaluation_status fails", async () => {
+  const fixture = await loadFixture("synthetic_kalshi_paper_ledger_entry.json");
+  const { source_evaluation_status: _, ...rn } = fixture.research_notes;
+  const { ok, errors } = validateKalshiPaperLedgerEntry({
+    ...fixture,
+    research_notes: rn,
+  });
+  assert.equal(ok, false);
+  assert.ok(errors.some((e) => e.includes("source_evaluation_status")));
+});
+
+// 42. Wrong source_evaluation_status fails
+test("wrong research_notes.source_evaluation_status fails", async () => {
+  const fixture = await loadFixture("synthetic_kalshi_paper_ledger_entry.json");
+  const { ok, errors } = validateKalshiPaperLedgerEntry({
+    ...fixture,
+    research_notes: { ...fixture.research_notes, source_evaluation_status: "actionable" },
+  });
+  assert.equal(ok, false);
+  assert.ok(errors.some((e) => e.includes("source_evaluation_status")));
+});
+
+// 43. Wrong ledger_entry_scope fails
+test("wrong research_notes.ledger_entry_scope fails", async () => {
+  const fixture = await loadFixture("synthetic_kalshi_paper_ledger_entry.json");
+  const { ok, errors } = validateKalshiPaperLedgerEntry({
+    ...fixture,
+    research_notes: { ...fixture.research_notes, ledger_entry_scope: "live_execution" },
+  });
+  assert.equal(ok, false);
+  assert.ok(errors.some((e) => e.includes("ledger_entry_scope")));
+});
+
+// 44. Wrong runtime_reference fails
+test("wrong research_notes.runtime_reference fails", async () => {
+  const fixture = await loadFixture("synthetic_kalshi_paper_ledger_entry.json");
+  const { ok, errors } = validateKalshiPaperLedgerEntry({
+    ...fixture,
+    research_notes: { ...fixture.research_notes, runtime_reference: "kalshi_api" },
+  });
+  assert.equal(ok, false);
+  assert.ok(errors.some((e) => e.includes("runtime_reference")));
+});
+
+// 45. Unknown key in research_notes rejected
+test("unknown key in research_notes is rejected", async () => {
+  const fixture = await loadFixture("synthetic_kalshi_paper_ledger_entry.json");
+  const { ok, errors } = validateKalshiPaperLedgerEntry({
+    ...fixture,
+    research_notes: { ...fixture.research_notes, extra_field: "unexpected" },
+  });
   assert.equal(ok, false);
   assert.ok(errors.some((e) => e.includes("research_notes")));
 });
 
 // ─── Group 9: Safe structural field names ────────────────────────────────────
 
-// 41. Approved structural paper_ field names do not false-positive on forbidden scanner
+// 46. Approved structural paper_ field names do not false-positive on forbidden scanner
 test("approved structural paper_ field names pass forbidden field scanner", async () => {
   const fixture = await loadFixture("synthetic_kalshi_paper_ledger_entry.json");
   const { ok, errors } = validateKalshiPaperLedgerEntry(fixture);
@@ -464,7 +523,7 @@ test("approved structural paper_ field names pass forbidden field scanner", asyn
 
 // ─── Group 10: Forbidden fields ──────────────────────────────────────────────
 
-// 42. Forbidden implementation field detected
+// 47. Forbidden implementation field detected
 test("forbidden implementation field is rejected", async () => {
   const fixture = await loadFixture("synthetic_kalshi_paper_ledger_entry.json");
   const { ok, errors } = validateKalshiPaperLedgerEntry({ ...fixture, order: "buy 1 contract" });
@@ -472,7 +531,7 @@ test("forbidden implementation field is rejected", async () => {
   assert.ok(errors.some((e) => e.includes("forbidden paper ledger entry field")));
 });
 
-// 43. Forbidden string value in reason is rejected
+// 48. Forbidden string value in reason is rejected
 test("forbidden string value in reason is rejected", async () => {
   const fixture = await loadFixture("synthetic_kalshi_paper_ledger_entry.json");
   const { ok, errors } = validateKalshiPaperLedgerEntry({

@@ -129,7 +129,11 @@ export function buildKalshiPaperLedgerEntry(
     paper_entry_status: "recorded_paper_observation",
     paper_outcome_status: "open_unsettled",
 
-    research_notes: "paper ledger observation recorded from local fixture evaluation",
+    research_notes: {
+      source_evaluation_status: "evaluated_non_actionable",
+      ledger_entry_scope: "paper_only_observation",
+      runtime_reference: "none",
+    },
 
     // Safety flags — hardcoded, never sourced from input.
     paper_only: true,
