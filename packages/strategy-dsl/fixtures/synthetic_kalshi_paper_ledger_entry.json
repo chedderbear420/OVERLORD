@@ -1,0 +1,54 @@
+{
+  "kalshi_paper_ledger_entry_id": "kple_a0c6fee03aa1fc7fc6bca2dbf9074dac",
+  "schema_version": "kalshi_paper_ledger_entry.v1",
+  "generated_at": "2026-05-11T00:00:00Z",
+  "source_phase": "Phase 4P",
+  "ledger_mode": "local_fixture_paper_only",
+  "paper_accounting_mode": "one_contract_unit_observation",
+  "paper_contract_side": "yes_contract",
+  "signal_evaluation_summary_id": "kses_a51a8e170085f9e894a0ca4f39080a4a",
+  "signal_evaluation_summary_schema_version": "kalshi_signal_evaluation_summary.v1",
+  "market_snapshot_id": "kms_a64e39e9a580e9065a5ecbef7baea712",
+  "market_snapshot_schema_version": "kalshi_market_snapshot.v1",
+  "input_artifact_refs": {
+    "signal_evaluation_summary": {
+      "artifact_id": "kses_a51a8e170085f9e894a0ca4f39080a4a",
+      "schema_version": "kalshi_signal_evaluation_summary.v1"
+    },
+    "market_snapshot": {
+      "artifact_id": "kms_a64e39e9a580e9065a5ecbef7baea712",
+      "schema_version": "kalshi_market_snapshot.v1"
+    }
+  },
+  "market_ticker": "NBAPLAY-25-GSW-LKR-Y",
+  "event_ticker": "NBAPLAY-25-GSW-LKR",
+  "condition_family": "descriptive_market_movement",
+  "paper_units": 1,
+  "paper_entry_price_cents": 53,
+  "paper_mark_price_cents": 53,
+  "paper_unrealized_pnl_cents": 0,
+  "paper_realized_pnl_cents": null,
+  "paper_fees_cents": 0,
+  "paper_net_pnl_cents": 0,
+  "paper_settlement_status": "unsettled_fixture",
+  "paper_entry_status": "recorded_paper_observation",
+  "paper_outcome_status": "open_unsettled",
+  "research_notes": {
+    "source_evaluation_status": "evaluated_non_actionable",
+    "ledger_entry_scope": "paper_only_observation",
+    "runtime_reference": "none"
+  },
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "credentials_used": false,
+  "network_request_used": false,
+  "emits_signal_events": false,
+  "emits_recommendations": false,
+  "emits_decisions": false,
+  "emits_orders": false,
+  "emits_live_positions": false,
+  "emits_paper_ledger_entries": false,
+  "reason_code": "PAPER_LEDGER_ENTRY_RECORDED",
+  "reason": "paper ledger entry recorded from local fixture"
+}

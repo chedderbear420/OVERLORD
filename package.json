@@ -56,6 +56,7 @@
     "validate:kalshi-market-snapshot": "node packages/strategy-dsl/src/validate-kalshi-market-snapshot.js",
     "validate:kalshi-strategy-signal-definition": "node packages/strategy-dsl/src/validate-kalshi-strategy-signal-definition.js",
     "validate:kalshi-signal-evaluation-summary": "node packages/strategy-dsl/src/validate-kalshi-signal-evaluation-summary.js",
+    "validate:kalshi-paper-ledger-entry": "node packages/strategy-dsl/src/validate-kalshi-paper-ledger-entry.js",
     "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js",
     "dashboard": "node -e \"import('child_process').then(m=>m.exec('start apps\\\\dashboard\\\\index.html'))\"",
     "test:dashboard": "node apps/dashboard/test-dashboard-safety.js",
