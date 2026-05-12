@@ -102,6 +102,42 @@ test("KalshiReadonlyAdapterContract validator rejects unknown fields", async () 
   assert.match(result.errors.join("\n"), /ERR_UNKNOWN_FIELD/);
 });
 
+test("KalshiReadonlyAdapterContract validator rejects forbidden string values in reason", async () => {
+  const contract = await loadContract();
+
+  // "orders" triggers the order pattern
+  const withOrders = validateKalshiReadonlyAdapterContract({ ...contract, reason: "ready to place orders later" });
+  assert.equal(withOrders.ok, false);
+  assert.match(withOrders.errors.join("\n"), /forbidden adapter contract string value/);
+
+  // "api key" triggers the api key pattern
+  const withApiKey = validateKalshiReadonlyAdapterContract({ ...contract, reason: "requires api key later" });
+  assert.equal(withApiKey.ok, false);
+  assert.match(withApiKey.errors.join("\n"), /forbidden adapter contract string value/);
+
+  // "trading signal" triggers two patterns — at least one fires
+  const withSignal = validateKalshiReadonlyAdapterContract({ ...contract, reason: "generates trading signal" });
+  assert.equal(withSignal.ok, false);
+  assert.match(withSignal.errors.join("\n"), /forbidden adapter contract string value/);
+
+  // safe phrase: no forbidden words
+  const safe = validateKalshiReadonlyAdapterContract({ ...contract, reason: "contract definition ready" });
+  assert.equal(safe.ok, true);
+  assert.deepEqual(safe.errors, []);
+});
+
+test("KalshiReadonlyAdapterContract validator rejects forbidden string values in other free-text fields", async () => {
+  const contract = await loadContract();
+
+  // adapter_version must include "contract-only" (core check) AND must not contain forbidden words
+  const withTradingVersion = validateKalshiReadonlyAdapterContract({
+    ...contract,
+    adapter_version: "0.1.0-contract-only-trading-edition"
+  });
+  assert.equal(withTradingVersion.ok, false);
+  assert.match(withTradingVersion.errors.join("\n"), /forbidden adapter contract string value/);
+});
+
 async function loadContract() {
   return JSON.parse(await readFile(fixturePath, "utf8"));
 }
