@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "overlord.kalshi_readonly_adapter_contract.schema.json",
+  "title": "KalshiReadonlyAdapterContract",
+  "description": "Contract defining permitted read-only Kalshi adapter operation categories for Phase 4L. No network client. No credentials. No execution. Contract-definition phase only — no HTTP client is implemented.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kalshi_readonly_adapter_contract_id",
+    "schema_version",
+    "generated_at",
+    "adapter_name",
+    "adapter_version",
+    "source_system",
+    "adapter_mode",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "credentials_allowed",
+    "network_client_allowed",
+    "allowed_operation_categories",
+    "forbidden_operation_categories",
+    "contract_scope",
+    "status",
+    "reason_code",
+    "reason"
+  ],
+  "properties": {
+    "kalshi_readonly_adapter_contract_id": {
+      "type": "string",
+      "pattern": "^krac_[a-f0-9]{32}$",
+      "description": "Deterministic SHA-256 derived ID for this adapter contract."
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "kalshi_readonly_adapter_contract.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "description": "ISO 8601 timestamp."
+    },
+    "adapter_name": {
+      "type": "string",
+      "const": "kalshi_readonly_adapter"
+    },
+    "adapter_version": {
+      "type": "string",
+      "description": "Semantic version with phase suffix, e.g. 0.1.0-contract-only."
+    },
+    "source_system": {
+      "type": "string",
+      "const": "kalshi"
+    },
+    "adapter_mode": {
+      "type": "string",
+      "const": "read_only_contract_only"
+    },
+    "paper_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "live_execution_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "order_placement_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "credentials_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "network_client_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "allowed_operation_categories": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["market_discovery", "market_metadata", "orderbook_snapshot_read"]
+      }
+    },
+    "forbidden_operation_categories": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "contract_scope": {
+      "type": "string",
+      "const": "contract_definition_only"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["kalshi_readonly_adapter_contract_ready", "kalshi_readonly_adapter_contract_rejected"]
+    },
+    "reason_code": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
