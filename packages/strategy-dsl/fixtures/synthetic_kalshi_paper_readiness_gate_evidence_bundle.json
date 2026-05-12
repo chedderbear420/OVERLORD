@@ -1,0 +1,95 @@
+{
+  "kalshi_paper_readiness_gate_evidence_bundle_id": "kprgeb_94e7954d365d17782ed327761cf2e261",
+  "schema_version": "kalshi_paper_readiness_gate_evidence_bundle.v1",
+  "generated_at": "2026-05-12T00:00:00Z",
+  "phase": "Phase 5C",
+  "bundle_status": "incomplete",
+  "upstream_evidence_bundle_ids": [
+    "kcgc_787dd9801f55fa3a73598d9f781a3f06",
+    "krreb_2d4bb748dc0130b2d91397a06cacde74"
+  ],
+  "upstream_bundle_count": 2,
+  "upstream_bundle_schema_versions": {
+    "confidence_gate_contract": "kalshi_confidence_gate_contract.v1",
+    "research_review_evidence_bundle": "kalshi_research_review_evidence_bundle.v1"
+  },
+  "reviewed_research_artifacts": [
+    "kses_a51a8e170085f9e894a0ca4f39080a4a",
+    "kssd_632d07fb70d0027b0656993db9586134"
+  ],
+  "reviewed_market_ingest_artifacts": [
+    "kms_a64e39e9a580e9065a5ecbef7baea712"
+  ],
+  "reviewed_signal_definition_artifacts": [
+    "kssd_632d07fb70d0027b0656993db9586134"
+  ],
+  "reviewed_paper_ledger_artifacts": [
+    "kple_a0c6fee03aa1fc7fc6bca2dbf9074dac"
+  ],
+  "reviewed_replay_artifacts": [],
+  "readiness_checks": {
+    "signal_calibration_evidence_present": true,
+    "edge_consistency_evidence_present": false,
+    "paper_pnl_evidence_present": true,
+    "replay_evidence_present": false,
+    "market_ingest_evidence_present": true
+  },
+  "missing_evidence": [
+    "risk_governor_review",
+    "operator_signoff",
+    "edge_consistency_evidence",
+    "replay_evidence"
+  ],
+  "blocking_issues": [
+    "risk_governor_not_reviewed",
+    "operator_signoff_not_complete"
+  ],
+  "non_blocking_notes": [
+    "signal_calibration_data_available_for_review",
+    "paper_pnl_data_available_for_review",
+    "market_ingest_data_available_for_review"
+  ],
+  "safety_flags": {
+    "paper_only": true,
+    "live_execution_allowed": false,
+    "live_mode_allowed": false,
+    "order_placement_allowed": false,
+    "credentials_allowed": false,
+    "credential_access_allowed": false,
+    "autonomous_execution_allowed": false,
+    "gate_evaluation_allowed": false,
+    "gates_passed": false,
+    "phase_6_ready": false,
+    "operator_signoff_complete": false
+  },
+  "forbidden_capabilities": [
+    "live_trading",
+    "live_kalshi_api_calls",
+    "order_placement",
+    "credential_access",
+    "api_keys",
+    "autonomous_execution",
+    "bankroll_sizing",
+    "recommendations",
+    "trading_decisions",
+    "actionable_signals",
+    "strategy_execution",
+    "live_market_execution",
+    "phase_6_readiness"
+  ],
+  "allowed_outputs": [
+    "evidence_index",
+    "readiness_metadata",
+    "offline_paper_observation_prep"
+  ],
+  "forbidden_outputs": [
+    "live_orders",
+    "trade_signals",
+    "bankroll_allocation",
+    "credentials",
+    "api_keys",
+    "execution_commands"
+  ],
+  "reason_code": "PAPER_READINESS_EVIDENCE_INDEXED_NOT_EVALUATED",
+  "reason": "paper readiness evidence indexed; gates not evaluated; paper mode remains blocked"
+}

@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kalshi_paper_readiness_gate_evidence_bundle.schema.json",
+  "title": "KalshiPaperReadinessGateEvidenceBundle",
+  "description": "Phase 5C — Paper readiness gate evidence bundle. Indexes upstream Phase 5A/5B evidence for future gate review. No gates evaluated. No live permissions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kalshi_paper_readiness_gate_evidence_bundle_id",
+    "schema_version",
+    "generated_at",
+    "phase",
+    "bundle_status",
+    "upstream_evidence_bundle_ids",
+    "upstream_bundle_count",
+    "upstream_bundle_schema_versions",
+    "reviewed_research_artifacts",
+    "reviewed_market_ingest_artifacts",
+    "reviewed_signal_definition_artifacts",
+    "reviewed_paper_ledger_artifacts",
+    "reviewed_replay_artifacts",
+    "readiness_checks",
+    "missing_evidence",
+    "blocking_issues",
+    "non_blocking_notes",
+    "safety_flags",
+    "forbidden_capabilities",
+    "allowed_outputs",
+    "forbidden_outputs",
+    "reason_code",
+    "reason"
+  ],
+  "properties": {
+    "kalshi_paper_readiness_gate_evidence_bundle_id": {
+      "type": "string",
+      "pattern": "^kprgeb_[a-f0-9]{32}$",
+      "description": "Deterministic SHA-256 content-addressed ID with kprgeb_ prefix"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "kalshi_paper_readiness_gate_evidence_bundle.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp"
+    },
+    "phase": {
+      "type": "string",
+      "const": "Phase 5C"
+    },
+    "bundle_status": {
+      "type": "string",
+      "enum": ["blocked", "incomplete", "not_ready"],
+      "description": "Readiness bundle status — never 'complete' or 'ready'"
+    },
+    "upstream_evidence_bundle_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "IDs of upstream Phase 5A/5B evidence bundles"
+    },
+    "upstream_bundle_count": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Must equal upstream_evidence_bundle_ids.length"
+    },
+    "upstream_bundle_schema_versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["confidence_gate_contract", "research_review_evidence_bundle"],
+      "properties": {
+        "confidence_gate_contract": {
+          "type": "string",
+          "const": "kalshi_confidence_gate_contract.v1"
+        },
+        "research_review_evidence_bundle": {
+          "type": "string",
+          "const": "kalshi_research_review_evidence_bundle.v1"
+        }
+      }
+    },
+    "reviewed_research_artifacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Sorted artifact IDs for signal evaluation and research artifacts"
+    },
+    "reviewed_market_ingest_artifacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Sorted artifact IDs for market snapshot fixtures"
+    },
+    "reviewed_signal_definition_artifacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Sorted artifact IDs for signal definition fixtures"
+    },
+    "reviewed_paper_ledger_artifacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Sorted artifact IDs for paper ledger entry fixtures"
+    },
+    "reviewed_replay_artifacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Sorted artifact IDs for replay artifacts (empty in Phase 5C)"
+    },
+    "readiness_checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signal_calibration_evidence_present",
+        "edge_consistency_evidence_present",
+        "paper_pnl_evidence_present",
+        "replay_evidence_present",
+        "market_ingest_evidence_present"
+      ],
+      "properties": {
+        "signal_calibration_evidence_present": { "type": "boolean" },
+        "edge_consistency_evidence_present": { "type": "boolean", "const": false },
+        "paper_pnl_evidence_present": { "type": "boolean" },
+        "replay_evidence_present": { "type": "boolean", "const": false },
+        "market_ingest_evidence_present": { "type": "boolean" }
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "List of evidence types not yet present"
+    },
+    "blocking_issues": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Issues that block phase progression"
+    },
+    "non_blocking_notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Informational notes — do not imply readiness"
+    },
+    "safety_flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Hardcoded safety flags — all live/advanced permissions blocked",
+      "required": [
+        "paper_only",
+        "live_execution_allowed",
+        "live_mode_allowed",
+        "order_placement_allowed",
+        "credentials_allowed",
+        "credential_access_allowed",
+        "autonomous_execution_allowed",
+        "gate_evaluation_allowed",
+        "gates_passed",
+        "phase_6_ready",
+        "operator_signoff_complete"
+      ],
+      "properties": {
+        "paper_only": { "type": "boolean", "const": true },
+        "live_execution_allowed": { "type": "boolean", "const": false },
+        "live_mode_allowed": { "type": "boolean", "const": false },
+        "order_placement_allowed": { "type": "boolean", "const": false },
+        "credentials_allowed": { "type": "boolean", "const": false },
+        "credential_access_allowed": { "type": "boolean", "const": false },
+        "autonomous_execution_allowed": { "type": "boolean", "const": false },
+        "gate_evaluation_allowed": { "type": "boolean", "const": false },
+        "gates_passed": { "type": "boolean", "const": false },
+        "phase_6_ready": { "type": "boolean", "const": false },
+        "operator_signoff_complete": { "type": "boolean", "const": false }
+      }
+    },
+    "forbidden_capabilities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Capabilities explicitly forbidden for this artifact"
+    },
+    "allowed_outputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Output types this artifact is permitted to produce"
+    },
+    "forbidden_outputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Output types explicitly forbidden for this artifact"
+    },
+    "reason_code": {
+      "type": "string",
+      "const": "PAPER_READINESS_EVIDENCE_INDEXED_NOT_EVALUATED"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable reason — must not imply gate passing or live readiness"
+    }
+  }
+}

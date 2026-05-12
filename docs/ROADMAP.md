@@ -56,10 +56,11 @@ Before any real position is considered, the research must clear explicit confide
 | Phase | Title | Status |
 |---|---|---|
 | 5A | Confidence Gate Contract | ✅ COMPLETE |
-| 5B | Research Review Evidence Bundle | 🔁 ACTIVE |
-| 5C | Gate Evaluation Summary | ⬜ LATER |
-| 5D | Operator Sign-off Contract | ⬜ LATER |
-| 5E | Phase 6 Readiness Lock | ⬜ LATER |
+| 5B | Research Review Evidence Bundle | ✅ COMPLETE |
+| 5C | Paper Readiness Gate Evidence Bundle | 🔁 ACTIVE |
+| 5D | Gate Evaluation Summary | ⬜ LATER |
+| 5E | Operator Sign-off Contract | ⬜ LATER |
+| 5F | Phase 6 Readiness Lock | ⬜ LATER |
 
 ### Required confidence gates
 
