@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kalshi_paper_ledger_entry.schema.json",
+  "title": "KalshiPaperLedgerEntry",
+  "description": "Phase 4P — Paper ledger entry recording hypothetical economics for one contract unit from a Phase 4O signal evaluation summary.",
+  "type": "object",
+  "required": [
+    "kalshi_paper_ledger_entry_id",
+    "schema_version",
+    "generated_at",
+    "source_phase",
+    "ledger_mode",
+    "paper_accounting_mode",
+    "paper_contract_side",
+    "signal_evaluation_summary_id",
+    "signal_evaluation_summary_schema_version",
+    "market_snapshot_id",
+    "market_snapshot_schema_version",
+    "input_artifact_refs",
+    "market_ticker",
+    "paper_entry_price_cents",
+    "paper_mark_price_cents",
+    "paper_unrealized_pnl_cents",
+    "paper_realized_pnl_cents",
+    "paper_fees_cents",
+    "paper_net_pnl_cents",
+    "paper_contract_quantity",
+    "paper_settlement_status",
+    "ledger_entry_status",
+    "data_quality_status",
+    "research_summary",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "credentials_used",
+    "network_request_used",
+    "emits_signal_events",
+    "emits_recommendations",
+    "emits_decisions",
+    "emits_orders",
+    "emits_paper_ledger_entries",
+    "reason_code",
+    "reason"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kalshi_paper_ledger_entry_id": {
+      "type": "string",
+      "pattern": "^kple_[a-f0-9]{32}$",
+      "description": "Deterministic content-addressed ID: kple_ + first 32 hex chars of SHA-256."
+    },
+    "schema_version": {
+      "const": "kalshi_paper_ledger_entry.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_phase": {
+      "const": "Phase 4P"
+    },
+    "ledger_mode": {
+      "const": "local_fixture_paper_only"
+    },
+    "paper_accounting_mode": {
+      "const": "one_contract_unit_observation"
+    },
+    "paper_contract_side": {
+      "enum": ["yes_contract"]
+    },
+    "signal_evaluation_summary_id": {
+      "type": "string",
+      "pattern": "^kses_[a-f0-9]{32}$"
+    },
+    "signal_evaluation_summary_schema_version": {
+      "const": "kalshi_signal_evaluation_summary.v1"
+    },
+    "market_snapshot_id": {
+      "type": "string",
+      "pattern": "^kms_[a-f0-9]{32}$"
+    },
+    "market_snapshot_schema_version": {
+      "const": "kalshi_market_snapshot.v1"
+    },
+    "input_artifact_refs": {
+      "type": "object",
+      "required": ["signal_evaluation_summary", "market_snapshot"],
+      "additionalProperties": false,
+      "properties": {
+        "signal_evaluation_summary": {
+          "type": "object",
+          "required": ["artifact_id", "schema_version"],
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": {
+              "type": "string",
+              "pattern": "^kses_[a-f0-9]{32}$"
+            },
+            "schema_version": {
+              "const": "kalshi_signal_evaluation_summary.v1"
+            }
+          }
+        },
+        "market_snapshot": {
+          "type": "object",
+          "required": ["artifact_id", "schema_version"],
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": {
+              "type": "string",
+              "pattern": "^kms_[a-f0-9]{32}$"
+            },
+            "schema_version": {
+              "const": "kalshi_market_snapshot.v1"
+            }
+          }
+        }
+      }
+    },
+    "market_ticker": {
+      "type": "string",
+      "minLength": 1
+    },
+    "paper_entry_price_cents": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "paper_mark_price_cents": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "paper_unrealized_pnl_cents": {
+      "type": "integer"
+    },
+    "paper_realized_pnl_cents": {
+      "type": ["integer", "null"]
+    },
+    "paper_fees_cents": {
+      "type": "integer"
+    },
+    "paper_net_pnl_cents": {
+      "type": "integer"
+    },
+    "paper_contract_quantity": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "paper_settlement_status": {
+      "enum": ["unsettled", "settled"]
+    },
+    "ledger_entry_status": {
+      "const": "recorded_non_actionable"
+    },
+    "data_quality_status": {
+      "const": "complete"
+    },
+    "research_summary": {
+      "type": "object",
+      "required": ["entry_recorded", "settlement_complete", "pnl_realized"],
+      "additionalProperties": false,
+      "properties": {
+        "entry_recorded": {
+          "const": true
+        },
+        "settlement_complete": {
+          "type": "boolean"
+        },
+        "pnl_realized": {
+          "type": "boolean"
+        }
+      }
+    },
+    "paper_only": {
+      "const": true
+    },
+    "live_execution_allowed": {
+      "const": false
+    },
+    "order_placement_allowed": {
+      "const": false
+    },
+    "credentials_used": {
+      "const": false
+    },
+    "network_request_used": {
+      "const": false
+    },
+    "emits_signal_events": {
+      "const": false
+    },
+    "emits_recommendations": {
+      "const": false
+    },
+    "emits_decisions": {
+      "const": false
+    },
+    "emits_orders": {
+      "const": false
+    },
+    "emits_paper_ledger_entries": {
+      "const": false
+    },
+    "reason_code": {
+      "const": "LEDGER_ENTRY_RECORDED_NON_ACTIONABLE"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
