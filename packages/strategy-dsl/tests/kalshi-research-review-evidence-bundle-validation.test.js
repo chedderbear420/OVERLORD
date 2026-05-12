@@ -2,7 +2,7 @@
  * kalshi-research-review-evidence-bundle-validation.test.js
  *
  * Phase 5B — Validation tests for KalshiResearchReviewEvidenceBundle.
- * 37 tests.
+ * 41 tests.
  */
 
 import { test } from "node:test";
