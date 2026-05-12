@@ -1,0 +1,111 @@
+{
+  "kalshi_confidence_gate_contract_id": "kcgc_787dd9801f55fa3a73598d9f781a3f06",
+  "schema_version": "kalshi_confidence_gate_contract.v1",
+  "generated_at": "2026-05-12T00:00:00Z",
+  "gate_contract_mode": "phase_5a_gate_contract_only",
+  "source_phase": "Phase 5A",
+  "required_source_artifacts": {
+    "market_snapshot": {
+      "schema_version": "kalshi_market_snapshot.v1",
+      "required": true
+    },
+    "strategy_signal_definition": {
+      "schema_version": "kalshi_strategy_signal_definition.v1",
+      "required": true
+    },
+    "signal_evaluation_summary": {
+      "schema_version": "kalshi_signal_evaluation_summary.v1",
+      "required": true
+    },
+    "paper_ledger_entry": {
+      "schema_version": "kalshi_paper_ledger_entry.v1",
+      "required": true
+    }
+  },
+  "gates": [
+    {
+      "gate_id": "signal_calibration",
+      "gate_name": "Signal Calibration Gate",
+      "gate_status": "requires_evidence",
+      "required_before_phase": "Phase 6",
+      "evidence_required": true,
+      "minimum_requirements": [
+        "minimum_sample_size",
+        "brier_score_required",
+        "log_score_required",
+        "calibration_curve_required"
+      ],
+      "current_evidence_status": "not_evaluated",
+      "blocking_reason": "calibration evidence not yet evaluated"
+    },
+    {
+      "gate_id": "edge_consistency",
+      "gate_name": "Edge Consistency Gate",
+      "gate_status": "requires_evidence",
+      "required_before_phase": "Phase 6",
+      "evidence_required": true,
+      "minimum_requirements": [
+        "fee_adjusted_positive_research_result_required",
+        "multiple_market_conditions_required",
+        "spread_liquidity_review_required"
+      ],
+      "current_evidence_status": "not_evaluated",
+      "blocking_reason": "fee adjusted research consistency not yet evaluated"
+    },
+    {
+      "gate_id": "paper_pnl",
+      "gate_name": "Paper PnL Gate",
+      "gate_status": "requires_evidence",
+      "required_before_phase": "Phase 6",
+      "evidence_required": true,
+      "minimum_requirements": [
+        "paper_ledger_sample_size_required",
+        "paper_net_result_review_required",
+        "drawdown_review_required"
+      ],
+      "current_evidence_status": "not_evaluated",
+      "blocking_reason": "paper ledger evidence sample is insufficient"
+    },
+    {
+      "gate_id": "risk_governor",
+      "gate_name": "Risk Governor Gate",
+      "gate_status": "blocked",
+      "required_before_phase": "Phase 6",
+      "evidence_required": true,
+      "minimum_requirements": [
+        "max_position_cap_required",
+        "kill_switch_required",
+        "loss_limit_required",
+        "manual_review_required"
+      ],
+      "current_evidence_status": "not_implemented",
+      "blocking_reason": "risk governor not implemented"
+    },
+    {
+      "gate_id": "operator_signoff",
+      "gate_name": "Operator Sign-off Gate",
+      "gate_status": "blocked",
+      "required_before_phase": "Phase 6",
+      "evidence_required": true,
+      "minimum_requirements": [
+        "operator_review_required",
+        "manual_approval_required",
+        "audit_bundle_required"
+      ],
+      "current_evidence_status": "not_completed",
+      "blocking_reason": "operator sign-off not completed"
+    }
+  ],
+  "overall_gate_status": "blocked",
+  "phase_6_ready": false,
+  "live_mode_allowed": false,
+  "credentials_allowed": false,
+  "order_placement_allowed": false,
+  "autonomous_execution_allowed": false,
+  "risk_governor_required": true,
+  "operator_signoff_required": true,
+  "operator_signoff_complete": false,
+  "paper_only": true,
+  "reason_code": "CONFIDENCE_GATES_DEFINED_BLOCKED",
+  "reason": "confidence gate contract defined; advanced mode remains blocked"
+}
