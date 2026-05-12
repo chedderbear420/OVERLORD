@@ -1,0 +1,82 @@
+{
+  "kalshi_strategy_signal_definition_id": "kssd_632d07fb70d0027b0656993db9586134",
+  "schema_version": "kalshi_strategy_signal_definition.v1",
+  "generated_at": "2026-05-11T00:00:00Z",
+  "definition_name": "market_snapshot_movement_condition_definition",
+  "definition_version": "0.1.0-definition-only",
+  "definition_mode": "definition_only",
+  "source_artifact_type": "kalshi_market_snapshot",
+  "source_schema_version": "kalshi_market_snapshot.v1",
+  "source_phase": "Phase 4M",
+  "allowed_input_fields": [
+    "market_ticker",
+    "event_ticker",
+    "market_status",
+    "yes_ask_cents",
+    "yes_bid_cents",
+    "no_ask_cents",
+    "no_bid_cents",
+    "last_price_cents",
+    "volume",
+    "open_interest",
+    "generated_at"
+  ],
+  "condition_family": "descriptive_market_movement",
+  "threshold_definitions": [
+    {
+      "threshold_name": "max_spread_cents",
+      "value_type": "integer",
+      "comparison": "lte",
+      "required_for_evaluation": true
+    },
+    {
+      "threshold_name": "min_volume",
+      "value_type": "integer",
+      "comparison": "gte",
+      "required_for_evaluation": true
+    },
+    {
+      "threshold_name": "min_open_interest",
+      "value_type": "integer",
+      "comparison": "gte",
+      "required_for_evaluation": false
+    },
+    {
+      "threshold_name": "max_snapshot_age_seconds",
+      "value_type": "number",
+      "comparison": "lte",
+      "required_for_evaluation": false
+    }
+  ],
+  "output_contract": {
+    "emits_signal_events": false,
+    "emits_recommendations": false,
+    "emits_decisions": false,
+    "emits_orders": false,
+    "emits_paper_ledger_entries": false,
+    "evaluation_phase_required": "Phase 4O"
+  },
+  "forbidden_outputs": [
+    "signal_event",
+    "pick",
+    "recommendation",
+    "decision",
+    "order",
+    "trade",
+    "execution",
+    "bankroll",
+    "position_size",
+    "expected_value",
+    "edge",
+    "pnl",
+    "paper_ledger_entry"
+  ],
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "credentials_used": false,
+  "network_request_used": false,
+  "evaluation_allowed": false,
+  "reason_code": "DEFINITION_CONTRACT_READY",
+  "reason": "definition contract ready"
+}
