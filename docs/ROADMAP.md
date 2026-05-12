@@ -31,7 +31,7 @@ This is the current development track. Phases 0–3 established the schema, repl
 | 4H | Artifact Manifest Update (SHA-256 output sealing) | ✅ COMPLETE |
 | 4I | Dashboard Processing Pipeline Panel | ✅ COMPLETE |
 | 4J | Dashboard Evidence Viewer Expansion | ✅ COMPLETE |
-| 4K | Dashboard Fixture Drift Guard | 🔁 ACTIVE |
+| 4K | Dashboard Fixture Drift Guard | ✅ COMPLETE |
 
 ---
 
@@ -41,7 +41,7 @@ These phases wire in real Kalshi market data while keeping the paper-only, contr
 
 | Phase | Title | Goal | Status |
 |---|---|---|---|
-| 4L | Kalshi Adapter Contract | Define permitted endpoints, response shapes, and forbidden actions. Schema + fixture only — no HTTP client yet. | 🔜 NEXT |
+| 4L | Kalshi Adapter Contract | Define permitted endpoints, response shapes, and forbidden actions. Schema + fixture only — no HTTP client yet. | 🔁 ACTIVE |
 | 4M | Market Data Ingest & Fixture Format | Live market snapshots → canonical fixture format. Read-only, no order endpoints. | ⬜ LATER |
 | 4N | Strategy Signal Definition | Translate the research hypothesis into a typed signal schema. What market, what edge condition, what threshold. | ⬜ LATER |
 | 4O | Signal Evaluation Pass | Run signal rules against historical/live fixture data. No picks emitted yet — output is hit-rate stats and calibration data. | ⬜ LATER |

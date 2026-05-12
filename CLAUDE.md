@@ -24,17 +24,16 @@ Identify the current phase and the smallest package surface relevant to the task
 
 ---
 
-## Current phase (as of Phase 4K)
+## Current phase (as of Phase 4L)
 
 | Phase | Title | Status |
 |---|---|---|
-| 4F | No-op Observation Processing Trace Shell | complete |
-| 4G | Processing Noop Summary | complete |
 | 4H | Artifact Manifest Update | complete |
 | 4I | Dashboard Processing Pipeline Panel | complete |
 | 4J | Dashboard Evidence Viewer Expansion | complete |
-| 4K | Dashboard Fixture Drift Guard | active — PR open |
-| 4L | Kalshi Adapter Contract | next |
+| 4K | Dashboard Fixture Drift Guard | complete |
+| 4L | Kalshi Adapter Contract | active — PR open |
+| 4M | Market Data Ingest & Fixture Format | next |
 
 ---
 
@@ -73,7 +72,7 @@ npm run validate:strategy-observation-processing-input-set
 npm run validate:strategy-observation-processing-artifact-manifest
 npm run validate:strategy-observation-processing-trace
 npm run validate:strategy-observation-processing-noop-summary
-npm run test:strategy-dsl              # 153 tests
+npm run test:strategy-dsl              # 153 tests (2 pre-existing CRLF failures on Windows)
 
 # Run any other package
 npm run test:<package-name>
