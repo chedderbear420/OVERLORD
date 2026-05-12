@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kalshi_market_snapshot.schema.json",
+  "title": "KalshiMarketSnapshot",
+  "description": "Canonical Overlord market snapshot ingested from a local Kalshi-like raw fixture. No live network, no credentials, no execution data.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kalshi_market_snapshot_id",
+    "schema_version",
+    "generated_at",
+    "source_system",
+    "source_fixture_path",
+    "adapter_contract_id",
+    "ingest_mode",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "credentials_used",
+    "authenticated_request_used",
+    "network_request_used",
+    "market_ticker",
+    "event_ticker",
+    "title",
+    "market_status",
+    "yes_ask_cents",
+    "yes_bid_cents",
+    "no_ask_cents",
+    "no_bid_cents",
+    "last_price_cents",
+    "volume",
+    "open_interest",
+    "expiration_time",
+    "close_time",
+    "result",
+    "can_close_early",
+    "data_quality_status",
+    "ingest_warnings",
+    "reason_code",
+    "reason"
+  ],
+  "properties": {
+    "kalshi_market_snapshot_id": {
+      "type": "string",
+      "pattern": "^kms_[a-f0-9]{32}$",
+      "description": "Deterministic SHA-256 ID. Prefix kms_."
+    },
+    "schema_version": {
+      "const": "kalshi_market_snapshot.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_system": {
+      "const": "kalshi"
+    },
+    "source_fixture_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adapter_contract_id": {
+      "const": "krac_8e72c258a5e00a78b7e45b50a8e4f47f",
+      "description": "Must reference the Phase 4L governing adapter contract."
+    },
+    "ingest_mode": {
+      "const": "local_fixture_only",
+      "description": "Phase 4M only supports local fixture ingest. No live network."
+    },
+    "paper_only": {
+      "const": true
+    },
+    "live_execution_allowed": {
+      "const": false
+    },
+    "order_placement_allowed": {
+      "const": false
+    },
+    "credentials_used": {
+      "const": false
+    },
+    "authenticated_request_used": {
+      "const": false
+    },
+    "network_request_used": {
+      "const": false
+    },
+    "market_ticker": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_ticker": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "market_status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "yes_ask_cents": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99
+    },
+    "yes_bid_cents": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99
+    },
+    "no_ask_cents": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99
+    },
+    "no_bid_cents": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99
+    },
+    "last_price_cents": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99
+    },
+    "volume": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "open_interest": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "expiration_time": {
+      "type": ["string", "null"]
+    },
+    "close_time": {
+      "type": ["string", "null"]
+    },
+    "result": {
+      "type": ["string", "null"]
+    },
+    "can_close_early": {
+      "type": "boolean"
+    },
+    "data_quality_status": {
+      "type": "string",
+      "enum": ["complete", "partial", "missing"]
+    },
+    "ingest_warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "reason_code": {
+      "const": "INGEST_COMPLETE"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
