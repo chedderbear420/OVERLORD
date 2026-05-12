@@ -16,8 +16,11 @@ const repoRoot = join(__dir, '..', '..');
 const fixtureDir = join(repoRoot, 'packages', 'strategy-dsl', 'fixtures');
 const src = readFileSync(join(__dir, 'index.html'), 'utf8');
 
+// Normalize CRLF → LF before hashing so Windows checkouts produce the same
+// hash as Linux/WSL (git core.autocrlf converts line endings on checkout).
 function sha256File(filePath) {
-  return 'sha256:' + createHash('sha256').update(readFileSync(filePath)).digest('hex');
+  const content = readFileSync(filePath, 'utf8').replace(/\r\n/g, '\n');
+  return 'sha256:' + createHash('sha256').update(content).digest('hex');
 }
 
 // Load fixtures
