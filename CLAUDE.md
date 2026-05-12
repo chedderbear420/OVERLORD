@@ -24,16 +24,14 @@ Identify the current phase and the smallest package surface relevant to the task
 
 ---
 
-## Current phase (as of Phase 5A)
+## Current phase (as of Phase 5B)
 
 | Phase | Title | Status |
 |---|---|---|
-| 4M | Market Data Ingest & Fixture Format | complete |
-| 4N | Strategy Signal Definition | complete |
-| 4O | Signal Evaluation Pass | complete |
 | 4P | Paper Ledger Entry Contract | complete |
-| 5A | Confidence Gate Contract | active — PR open |
-| 5B | Research Review Evidence Bundle | next |
+| 5A | Confidence Gate Contract | complete |
+| 5B | Research Review Evidence Bundle | active — PR open |
+| 5C | Gate Evaluation Summary | next |
 
 ---
 
@@ -73,6 +71,7 @@ npm run validate:kalshi-strategy-signal-definition
 npm run validate:kalshi-signal-evaluation-summary
 npm run validate:kalshi-paper-ledger-entry
 npm run validate:kalshi-confidence-gate-contract
+npm run validate:kalshi-research-review-evidence-bundle
 npm run validate:strategy-observation-processing-contract
 npm run validate:strategy-observation-processing-input-set
 npm run validate:strategy-observation-processing-artifact-manifest
