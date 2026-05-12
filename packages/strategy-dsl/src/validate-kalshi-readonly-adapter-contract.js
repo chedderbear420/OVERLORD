@@ -45,6 +45,60 @@ const allowedStatuses = new Set([
 const allowedOperationSet = new Set(allowedOperationCategories);
 const requiredForbiddenSet = new Set(forbiddenOperationCategories);
 
+// Top-level field paths whose string values contain expected forbidden terminology
+// by design (enum-constrained or validated by dedicated checks). Excluded from the
+// free-text string-value scanner to prevent false positives.
+const exemptFromStringValueScan = new Set([
+  "forbidden_operation_categories", // contains "signals", "picks", "deposit", etc. by design
+  "allowed_operation_categories",   // contains operation category names
+  "kalshi_readonly_adapter_contract_id", // deterministic SHA-256 hash
+  "schema_version",   // const: kalshi_readonly_adapter_contract.v1
+  "adapter_mode",     // const: read_only_contract_only
+  "contract_scope",   // const: contract_definition_only
+  "adapter_name",     // const: kalshi_readonly_adapter
+  "source_system",    // const: kalshi
+  "status",           // enum: kalshi_readonly_adapter_contract_ready / _rejected
+  "reason_code",      // const: VALIDATION_PASSED
+  "generated_at",     // ISO 8601 timestamp
+]);
+
+// Forbidden patterns for free-text string values. These detect smuggled unsafe
+// language in fields like `reason` or `adapter_version`.
+const forbiddenStringValuePatterns = [
+  { pattern: /\bcredentials?\b/iu, label: "credential" },
+  { pattern: /\bapi[\s_]key\b/iu, label: "api key" },
+  { pattern: /\btoken\b/iu, label: "token" },
+  { pattern: /\bbearer\b/iu, label: "bearer" },
+  { pattern: /\bsecret\b/iu, label: "secret" },
+  { pattern: /\bprivate[\s_]key\b/iu, label: "private key" },
+  { pattern: /\bfetch\b/iu, label: "fetch" },
+  { pattern: /\baxios\b/iu, label: "axios" },
+  { pattern: /\bwebsockets?\b/iu, label: "websocket" },
+  { pattern: /\bsockets?\b/iu, label: "socket" },
+  { pattern: /\bpolling\b/iu, label: "polling" },
+  { pattern: /\bcron\b/iu, label: "cron" },
+  { pattern: /\btimers?\b/iu, label: "timer" },
+  { pattern: /\binterval\b/iu, label: "interval" },
+  { pattern: /\borders?(?:ing|ed)?\b/iu, label: "order" },
+  { pattern: /\btrades?\b|\btrading\b/iu, label: "trade" },
+  { pattern: /\bexecut(?:e|ion|ing)\b/iu, label: "execution" },
+  { pattern: /\bpositions?\b/iu, label: "position" },
+  { pattern: /\bportfolio\b/iu, label: "portfolio" },
+  { pattern: /\bbalance\b/iu, label: "balance" },
+  { pattern: /\baccount\b/iu, label: "account" },
+  { pattern: /\bdeposit\b/iu, label: "deposit" },
+  { pattern: /\bwithdrawals?\b|\bwithdraw\b/iu, label: "withdrawal" },
+  { pattern: /\bsignals?\b/iu, label: "signal" },
+  { pattern: /\brecommendations?\b/iu, label: "recommendation" },
+  { pattern: /\bpicks?\b/iu, label: "pick" },
+  { pattern: /\bdecisions?\b/iu, label: "decision" },
+  { pattern: /\bbankroll\b/iu, label: "bankroll" },
+  { pattern: /\bposition[\s_]size\b/iu, label: "position size" },
+  { pattern: /\bkelly\b/iu, label: "kelly" },
+  { pattern: /\bexpected[\s_]value\b/iu, label: "expected value" },
+  { pattern: /\bedge\b/iu, label: "edge" },
+];
+
 // Fields that indicate a live network client, credential store, or execution
 // implementation has been smuggled into the contract object.
 const forbiddenImplementationFields = new Set([
@@ -116,6 +170,7 @@ export function validateKalshiReadonlyAdapterContract(contract) {
   validateOperationCategories(errors, contract);
   validateStatusAndReason(errors, contract);
   validateForbiddenImplementationFields(errors, contract);
+  validateForbiddenStringValues(errors, contract);
 
   return { ok: errors.length === 0, errors };
 }
@@ -244,6 +299,33 @@ function validateForbiddenImplementationFields(errors, contract, pathParts = [])
       errors.push(`forbidden adapter implementation field detected: ${fieldPath}`);
     }
     validateForbiddenImplementationFields(errors, nested, [...pathParts, key]);
+  }
+}
+
+// Recursively scans string VALUES for forbidden language that could indicate
+// smuggled unsafe intent (e.g. in free-text fields like `reason`).
+// Top-level keys listed in exemptFromStringValueScan are skipped — they contain
+// expected forbidden terminology by design and are validated elsewhere.
+function validateForbiddenStringValues(errors, value, pathParts = []) {
+  // Skip entire subtrees rooted at exempt top-level fields
+  if (pathParts.length > 0 && exemptFromStringValueScan.has(pathParts[0])) return;
+
+  if (typeof value === "string") {
+    const fieldPath = pathParts.join(".") || "<root>";
+    for (const { pattern, label } of forbiddenStringValuePatterns) {
+      if (pattern.test(value)) {
+        errors.push(`forbidden adapter contract string value detected at ${fieldPath}: contains "${label}"`);
+        break; // one error per string to avoid redundant noise
+      }
+    }
+  } else if (Array.isArray(value)) {
+    value.forEach((item, i) =>
+      validateForbiddenStringValues(errors, item, [...pathParts, String(i)])
+    );
+  } else if (value && typeof value === "object") {
+    for (const [key, nested] of Object.entries(value)) {
+      validateForbiddenStringValues(errors, nested, [...pathParts, key]);
+    }
   }
 }
 
