@@ -2,63 +2,83 @@
   "kalshi_signal_evaluation_summary_id": "kses_a51a8e170085f9e894a0ca4f39080a4a",
   "schema_version": "kalshi_signal_evaluation_summary.v1",
   "generated_at": "2026-05-11T00:00:00Z",
-  "signal_definition_id": "kssd_632d07fb70d0027b0656993db9586134",
-  "market_snapshot_id": "kms_a64e39e9a580e9065a5ecbef7baea712",
   "evaluation_mode": "local_fixture_evaluation_only",
-  "evaluation_phase": "Phase 4O",
+  "source_phase": "Phase 4O",
+  "signal_definition_id": "kssd_632d07fb70d0027b0656993db9586134",
+  "signal_definition_schema_version": "kalshi_strategy_signal_definition.v1",
+  "market_snapshot_id": "kms_a64e39e9a580e9065a5ecbef7baea712",
+  "market_snapshot_schema_version": "kalshi_market_snapshot.v1",
   "condition_family": "descriptive_market_movement",
+  "input_artifact_refs": {
+    "signal_definition": {
+      "artifact_id": "kssd_632d07fb70d0027b0656993db9586134",
+      "schema_version": "kalshi_strategy_signal_definition.v1"
+    },
+    "market_snapshot": {
+      "artifact_id": "kms_a64e39e9a580e9065a5ecbef7baea712",
+      "schema_version": "kalshi_market_snapshot.v1"
+    }
+  },
   "evaluated_thresholds": [
     {
       "threshold_name": "max_spread_cents",
       "threshold_value": 5,
       "comparison": "lte",
-      "input_field": "spread_cents",
+      "data_source_field": "yes_ask_cents_minus_yes_bid_cents",
       "observed_value": 2,
       "required_for_evaluation": true,
+      "status": "evaluated",
       "passed": true
     },
     {
       "threshold_name": "min_volume",
       "threshold_value": 1000,
       "comparison": "gte",
-      "input_field": "volume",
+      "data_source_field": "volume",
       "observed_value": 18420,
       "required_for_evaluation": true,
+      "status": "evaluated",
       "passed": true
     },
     {
       "threshold_name": "min_open_interest",
       "threshold_value": 500,
       "comparison": "gte",
-      "input_field": "open_interest",
+      "data_source_field": "open_interest",
       "observed_value": 9870,
       "required_for_evaluation": false,
+      "status": "evaluated",
       "passed": true
     },
     {
       "threshold_name": "max_snapshot_age_seconds",
       "threshold_value": 300,
       "comparison": "lte",
-      "input_field": "snapshot_age_seconds",
+      "data_source_field": "generated_at",
       "observed_value": 0,
       "required_for_evaluation": false,
+      "status": "evaluated",
       "passed": true
     }
   ],
+  "evaluation_status": "evaluated_non_actionable",
+  "data_quality_status": "complete",
   "research_summary": {
     "thresholds_evaluated_count": 4,
     "thresholds_passed_count": 4,
     "thresholds_failed_count": 0,
     "evaluation_complete": true
   },
-  "evaluation_status": "evaluated_non_actionable",
   "paper_only": true,
   "live_execution_allowed": false,
   "order_placement_allowed": false,
   "credentials_used": false,
   "network_request_used": false,
-  "actionable": false,
-  "signal_emitted": false,
+  "emits_signal_events": false,
+  "emits_recommendations": false,
+  "emits_decisions": false,
+  "emits_orders": false,
+  "emits_paper_ledger_entries": false,
   "reason_code": "EVALUATION_COMPLETE_NON_ACTIONABLE",
   "reason": "thresholds evaluated non-actionably"
 }

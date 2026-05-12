@@ -3,7 +3,11 @@ import { fileURLToPath } from "node:url";
 import { readFile } from "node:fs/promises";
 import { validateNoUnknownFields } from "./strategy-observation-boundary-guard.js";
 import { kalshiSignalEvaluationSummaryId } from "./kalshi-signal-evaluation-summary-id.js";
-import { APPROVED_CONDITION_FAMILIES } from "./build-kalshi-signal-evaluation-summary.js";
+import {
+  APPROVED_CONDITION_FAMILIES,
+  APPROVED_DATA_SOURCE_FIELDS,
+  APPROVED_THRESHOLD_STATUSES,
+} from "./build-kalshi-signal-evaluation-summary.js";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const defaultFixturePath = path.join(
@@ -18,26 +22,35 @@ const requiredFields = [
   "kalshi_signal_evaluation_summary_id",
   "schema_version",
   "generated_at",
-  "signal_definition_id",
-  "market_snapshot_id",
   "evaluation_mode",
-  "evaluation_phase",
+  "source_phase",
+  "signal_definition_id",
+  "signal_definition_schema_version",
+  "market_snapshot_id",
+  "market_snapshot_schema_version",
   "condition_family",
+  "input_artifact_refs",
   "evaluated_thresholds",
-  "research_summary",
   "evaluation_status",
+  "data_quality_status",
+  "research_summary",
   "paper_only",
   "live_execution_allowed",
   "order_placement_allowed",
   "credentials_used",
   "network_request_used",
-  "actionable",
-  "signal_emitted",
+  "emits_signal_events",
+  "emits_recommendations",
+  "emits_decisions",
+  "emits_orders",
+  "emits_paper_ledger_entries",
   "reason_code",
   "reason",
 ];
 
 // Field names that must never appear at any depth.
+// NOTE: "signal_definition_id", "signal_definition_schema_version", and
+// "emits_signal_events" are structural field names and are NOT in this set.
 const forbiddenImplementationFields = new Set([
   "signal", "signal_event",
   "pick", "recommendation", "decision",
@@ -48,19 +61,23 @@ const forbiddenImplementationFields = new Set([
   "fetch", "axios", "websocket", "polling", "cron",
 ]);
 
-// Top-level keys exempt from free-text string scanning (structural / ID fields).
+// Top-level keys exempt from free-text string scanning (structural / ID / const fields).
 const exemptFromStringValueScan = new Set([
   "kalshi_signal_evaluation_summary_id",
   "schema_version",
   "generated_at",
-  "signal_definition_id",
-  "market_snapshot_id",
   "evaluation_mode",
-  "evaluation_phase",
+  "source_phase",
+  "signal_definition_id",
+  "signal_definition_schema_version",
+  "market_snapshot_id",
+  "market_snapshot_schema_version",
   "condition_family",
-  "evaluated_thresholds",   // array — validated structurally by validateEvaluatedThresholds
-  "research_summary",       // object — validated structurally
+  "input_artifact_refs",       // object — validated structurally
+  "evaluated_thresholds",      // array — validated structurally
   "evaluation_status",
+  "data_quality_status",
+  "research_summary",          // object — validated structurally
   "reason_code",
 ]);
 
@@ -125,6 +142,7 @@ export function validateKalshiSignalEvaluationSummary(summary) {
   validateCoreFields(errors, summary);
   validateSafetyFlags(errors, summary);
   validateDeterministicId(errors, summary);
+  validateInputArtifactRefs(errors, summary);
   validateEvaluatedThresholds(errors, summary);
   validateResearchSummary(errors, summary);
   validateForbiddenImplementationFields(errors, summary);
@@ -153,23 +171,32 @@ function validateCoreFields(errors, summary) {
   if (!summary.generated_at || Number.isNaN(Date.parse(summary.generated_at))) {
     errors.push("generated_at must be a valid ISO 8601 timestamp");
   }
+  if (summary.evaluation_mode !== "local_fixture_evaluation_only") {
+    errors.push("evaluation_mode must be local_fixture_evaluation_only");
+  }
+  if (summary.source_phase !== "Phase 4O") {
+    errors.push("source_phase must be Phase 4O");
+  }
   if (typeof summary.signal_definition_id !== "string" || !/^kssd_[a-f0-9]{32}$/.test(summary.signal_definition_id)) {
     errors.push("signal_definition_id must be a kssd_-prefixed 32-hex-char ID");
+  }
+  if (summary.signal_definition_schema_version !== "kalshi_strategy_signal_definition.v1") {
+    errors.push("signal_definition_schema_version must be kalshi_strategy_signal_definition.v1");
   }
   if (typeof summary.market_snapshot_id !== "string" || !/^kms_[a-f0-9]{32}$/.test(summary.market_snapshot_id)) {
     errors.push("market_snapshot_id must be a kms_-prefixed 32-hex-char ID");
   }
-  if (summary.evaluation_mode !== "local_fixture_evaluation_only") {
-    errors.push("evaluation_mode must be local_fixture_evaluation_only");
-  }
-  if (summary.evaluation_phase !== "Phase 4O") {
-    errors.push("evaluation_phase must be Phase 4O");
+  if (summary.market_snapshot_schema_version !== "kalshi_market_snapshot.v1") {
+    errors.push("market_snapshot_schema_version must be kalshi_market_snapshot.v1");
   }
   if (!APPROVED_CONDITION_FAMILIES.has(summary.condition_family)) {
     errors.push(`condition_family must be one of: ${[...APPROVED_CONDITION_FAMILIES].join(", ")}`);
   }
   if (summary.evaluation_status !== "evaluated_non_actionable") {
     errors.push("evaluation_status must be evaluated_non_actionable");
+  }
+  if (summary.data_quality_status !== "complete") {
+    errors.push("data_quality_status must be complete");
   }
   if (summary.reason_code !== "EVALUATION_COMPLETE_NON_ACTIONABLE") {
     errors.push("reason_code must be EVALUATION_COMPLETE_NON_ACTIONABLE");
@@ -185,11 +212,20 @@ function validateSafetyFlags(errors, summary) {
   if (summary.order_placement_allowed !== false) errors.push("order_placement_allowed must be false");
   if (summary.credentials_used !== false) errors.push("credentials_used must be false");
   if (summary.network_request_used !== false) errors.push("network_request_used must be false");
-  if (summary.actionable !== false) {
-    errors.push("actionable must be false — Phase 4O evaluation results are never actionable");
+  if (summary.emits_signal_events !== false) {
+    errors.push("emits_signal_events must be false — Phase 4O does not emit signal events");
   }
-  if (summary.signal_emitted !== false) {
-    errors.push("signal_emitted must be false — Phase 4O does not emit signals");
+  if (summary.emits_recommendations !== false) {
+    errors.push("emits_recommendations must be false — Phase 4O does not emit recommendations");
+  }
+  if (summary.emits_decisions !== false) {
+    errors.push("emits_decisions must be false — Phase 4O does not emit decisions");
+  }
+  if (summary.emits_orders !== false) {
+    errors.push("emits_orders must be false — Phase 4O does not emit orders");
+  }
+  if (summary.emits_paper_ledger_entries !== false) {
+    errors.push("emits_paper_ledger_entries must be false — Phase 4O does not emit paper ledger entries");
   }
 }
 
@@ -215,6 +251,48 @@ function validateDeterministicId(errors, summary) {
   }
 }
 
+function validateInputArtifactRefs(errors, summary) {
+  const refs = summary.input_artifact_refs;
+  if (!refs || typeof refs !== "object" || Array.isArray(refs)) {
+    errors.push("input_artifact_refs must be an object");
+    return;
+  }
+
+  // signal_definition ref
+  const sigRef = refs.signal_definition;
+  if (!sigRef || typeof sigRef !== "object" || Array.isArray(sigRef)) {
+    errors.push("input_artifact_refs.signal_definition must be an object");
+  } else {
+    if (sigRef.artifact_id !== summary.signal_definition_id) {
+      errors.push(
+        "input_artifact_refs.signal_definition.artifact_id must match signal_definition_id"
+      );
+    }
+    if (sigRef.schema_version !== "kalshi_strategy_signal_definition.v1") {
+      errors.push(
+        "input_artifact_refs.signal_definition.schema_version must be kalshi_strategy_signal_definition.v1"
+      );
+    }
+  }
+
+  // market_snapshot ref
+  const snapRef = refs.market_snapshot;
+  if (!snapRef || typeof snapRef !== "object" || Array.isArray(snapRef)) {
+    errors.push("input_artifact_refs.market_snapshot must be an object");
+  } else {
+    if (snapRef.artifact_id !== summary.market_snapshot_id) {
+      errors.push(
+        "input_artifact_refs.market_snapshot.artifact_id must match market_snapshot_id"
+      );
+    }
+    if (snapRef.schema_version !== "kalshi_market_snapshot.v1") {
+      errors.push(
+        "input_artifact_refs.market_snapshot.schema_version must be kalshi_market_snapshot.v1"
+      );
+    }
+  }
+}
+
 function validateEvaluatedThresholds(errors, summary) {
   if (!Array.isArray(summary.evaluated_thresholds)) {
     errors.push("evaluated_thresholds must be an array");
@@ -228,9 +306,10 @@ function validateEvaluatedThresholds(errors, summary) {
     "threshold_name",
     "threshold_value",
     "comparison",
-    "input_field",
+    "data_source_field",
     "observed_value",
     "required_for_evaluation",
+    "status",
     "passed",
   ];
   for (let i = 0; i < summary.evaluated_thresholds.length; i++) {
@@ -253,14 +332,21 @@ function validateEvaluatedThresholds(errors, summary) {
     if (t.comparison !== "lte" && t.comparison !== "gte") {
       errors.push(`evaluated_thresholds[${i}].comparison must be "lte" or "gte"`);
     }
-    if (typeof t.input_field !== "string" || t.input_field.length === 0) {
-      errors.push(`evaluated_thresholds[${i}].input_field must be a non-empty string`);
+    if (!APPROVED_DATA_SOURCE_FIELDS.has(t.data_source_field)) {
+      errors.push(
+        `evaluated_thresholds[${i}].data_source_field "${t.data_source_field}" is not an approved data_source_field`
+      );
     }
     if (typeof t.observed_value !== "number") {
       errors.push(`evaluated_thresholds[${i}].observed_value must be a number`);
     }
     if (typeof t.required_for_evaluation !== "boolean") {
       errors.push(`evaluated_thresholds[${i}].required_for_evaluation must be a boolean`);
+    }
+    if (!APPROVED_THRESHOLD_STATUSES.has(t.status)) {
+      errors.push(
+        `evaluated_thresholds[${i}].status must be "evaluated" (got "${t.status}")`
+      );
     }
     if (typeof t.passed !== "boolean") {
       errors.push(`evaluated_thresholds[${i}].passed must be a boolean`);

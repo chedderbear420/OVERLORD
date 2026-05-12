@@ -42,8 +42,8 @@ test("builder ID matches kalshiSignalEvaluationSummaryId for given inputs", asyn
   assert.match(built.kalshi_signal_evaluation_summary_id, /^kses_[a-f0-9]{32}$/u);
 });
 
-// 3. Builder computes spread_cents correctly from snapshot
-test("builder computes spread_cents from yes_ask_cents minus yes_bid_cents", async () => {
+// 3. Builder computes spread from yes_ask_cents minus yes_bid_cents
+test("builder computes yes_ask_cents_minus_yes_bid_cents from snapshot", async () => {
   const defFixture = await loadFixture("synthetic_kalshi_strategy_signal_definition.json");
   const snapFixture = await loadFixture("synthetic_kalshi_market_snapshot.json");
 
@@ -51,7 +51,8 @@ test("builder computes spread_cents from yes_ask_cents minus yes_bid_cents", asy
   const spreadEntry = built.evaluated_thresholds.find((t) => t.threshold_name === "max_spread_cents");
   assert.ok(spreadEntry, "max_spread_cents entry must exist");
   assert.equal(spreadEntry.observed_value, snapFixture.yes_ask_cents - snapFixture.yes_bid_cents);
-  assert.equal(spreadEntry.input_field, "spread_cents");
+  assert.equal(spreadEntry.data_source_field, "yes_ask_cents_minus_yes_bid_cents");
+  assert.equal(spreadEntry.status, "evaluated");
 });
 
 // 4. Builder snapshot_age_seconds = 0 when evaluationTimestamp equals snapshot generated_at
@@ -63,18 +64,20 @@ test("builder computes snapshot_age_seconds = 0 when timestamps match", async ()
   const ageEntry = built.evaluated_thresholds.find((t) => t.threshold_name === "max_snapshot_age_seconds");
   assert.ok(ageEntry, "max_snapshot_age_seconds entry must exist");
   assert.equal(ageEntry.observed_value, 0);
+  assert.equal(ageEntry.data_source_field, "generated_at");
+  assert.equal(ageEntry.status, "evaluated");
 });
 
 // 5. Builder with spread exceeding threshold produces passed=false
 test("builder marks max_spread_cents as failed when observed spread exceeds threshold", async () => {
   const defFixture = await loadFixture("synthetic_kalshi_strategy_signal_definition.json");
-  const tightSnap = {
+  const wideSnap = {
     ...await loadFixture("synthetic_kalshi_market_snapshot.json"),
     yes_ask_cents: 60,
     yes_bid_cents: 40,   // spread = 20 > threshold 5
   };
 
-  const built = buildKalshiSignalEvaluationSummary(defFixture, tightSnap, {
+  const built = buildKalshiSignalEvaluationSummary(defFixture, wideSnap, {
     thresholdValues: { max_spread_cents: 5 },
   });
   const spreadEntry = built.evaluated_thresholds.find((t) => t.threshold_name === "max_spread_cents");
@@ -98,22 +101,50 @@ test("builder research_summary counts match evaluated_thresholds", async () => {
   assert.equal(evaluation_complete, thresholds_failed_count === 0);
 });
 
-// 7. Builder safety flags are hardcoded regardless of input
-test("builder safety flags are hardcoded and cannot be overridden by opts", async () => {
+// 7. Builder safety and emit flags are hardcoded regardless of opts
+test("builder safety and emit flags are hardcoded and cannot be overridden by opts", async () => {
   const defFixture = await loadFixture("synthetic_kalshi_strategy_signal_definition.json");
   const snapFixture = await loadFixture("synthetic_kalshi_market_snapshot.json");
 
   const built = buildKalshiSignalEvaluationSummary(defFixture, snapFixture, {
     paper_only: false,
-    actionable: true,
-    signal_emitted: true,
+    emits_signal_events: true,
+    emits_orders: true,
   });
   assert.equal(built.paper_only, true);
   assert.equal(built.live_execution_allowed, false);
   assert.equal(built.order_placement_allowed, false);
   assert.equal(built.credentials_used, false);
   assert.equal(built.network_request_used, false);
-  assert.equal(built.actionable, false);
-  assert.equal(built.signal_emitted, false);
+  assert.equal(built.emits_signal_events, false);
+  assert.equal(built.emits_recommendations, false);
+  assert.equal(built.emits_decisions, false);
+  assert.equal(built.emits_orders, false);
+  assert.equal(built.emits_paper_ledger_entries, false);
   assert.equal(built.evaluation_status, "evaluated_non_actionable");
+  assert.equal(built.source_phase, "Phase 4O");
+});
+
+// 8. Builder input_artifact_refs references both source artifacts
+test("builder input_artifact_refs references signal_definition and market_snapshot correctly", async () => {
+  const defFixture = await loadFixture("synthetic_kalshi_strategy_signal_definition.json");
+  const snapFixture = await loadFixture("synthetic_kalshi_market_snapshot.json");
+
+  const built = buildKalshiSignalEvaluationSummary(defFixture, snapFixture);
+  assert.equal(
+    built.input_artifact_refs.signal_definition.artifact_id,
+    defFixture.kalshi_strategy_signal_definition_id
+  );
+  assert.equal(
+    built.input_artifact_refs.signal_definition.schema_version,
+    "kalshi_strategy_signal_definition.v1"
+  );
+  assert.equal(
+    built.input_artifact_refs.market_snapshot.artifact_id,
+    snapFixture.kalshi_market_snapshot_id
+  );
+  assert.equal(
+    built.input_artifact_refs.market_snapshot.schema_version,
+    "kalshi_market_snapshot.v1"
+  );
 });

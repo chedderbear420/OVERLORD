@@ -2,28 +2,35 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "kalshi_signal_evaluation_summary.schema.json",
   "title": "KalshiSignalEvaluationSummary",
-  "description": "A non-actionable evaluation of whether a Phase 4M market snapshot satisfies Phase 4N signal definition thresholds. Phase 4O only. Emits nothing. No signals, recommendations, decisions, or orders.",
+  "description": "A non-actionable evaluation of whether a Phase 4M market snapshot satisfies Phase 4N signal definition thresholds. Phase 4O only. Emits nothing. No signals, recommendations, decisions, orders, or paper ledger entries.",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "kalshi_signal_evaluation_summary_id",
     "schema_version",
     "generated_at",
-    "signal_definition_id",
-    "market_snapshot_id",
     "evaluation_mode",
-    "evaluation_phase",
+    "source_phase",
+    "signal_definition_id",
+    "signal_definition_schema_version",
+    "market_snapshot_id",
+    "market_snapshot_schema_version",
     "condition_family",
+    "input_artifact_refs",
     "evaluated_thresholds",
-    "research_summary",
     "evaluation_status",
+    "data_quality_status",
+    "research_summary",
     "paper_only",
     "live_execution_allowed",
     "order_placement_allowed",
     "credentials_used",
     "network_request_used",
-    "actionable",
-    "signal_emitted",
+    "emits_signal_events",
+    "emits_recommendations",
+    "emits_decisions",
+    "emits_orders",
+    "emits_paper_ledger_entries",
     "reason_code",
     "reason"
   ],
@@ -40,26 +47,67 @@
       "type": "string",
       "format": "date-time"
     },
+    "evaluation_mode": {
+      "const": "local_fixture_evaluation_only",
+      "description": "Phase 4O only supports local fixture evaluation. No live data."
+    },
+    "source_phase": {
+      "const": "Phase 4O"
+    },
     "signal_definition_id": {
       "type": "string",
       "pattern": "^kssd_[a-f0-9]{32}$",
       "description": "References the Phase 4N KalshiStrategySignalDefinition."
+    },
+    "signal_definition_schema_version": {
+      "const": "kalshi_strategy_signal_definition.v1"
     },
     "market_snapshot_id": {
       "type": "string",
       "pattern": "^kms_[a-f0-9]{32}$",
       "description": "References the Phase 4M KalshiMarketSnapshot."
     },
-    "evaluation_mode": {
-      "const": "local_fixture_evaluation_only",
-      "description": "Phase 4O only supports local fixture evaluation. No live data."
-    },
-    "evaluation_phase": {
-      "const": "Phase 4O"
+    "market_snapshot_schema_version": {
+      "const": "kalshi_market_snapshot.v1"
     },
     "condition_family": {
       "const": "descriptive_market_movement",
       "description": "Phase 4O only supports the descriptive_market_movement condition family."
+    },
+    "input_artifact_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signal_definition", "market_snapshot"],
+      "properties": {
+        "signal_definition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_id", "schema_version"],
+          "properties": {
+            "artifact_id": {
+              "type": "string",
+              "pattern": "^kssd_[a-f0-9]{32}$"
+            },
+            "schema_version": {
+              "const": "kalshi_strategy_signal_definition.v1"
+            }
+          }
+        },
+        "market_snapshot": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_id", "schema_version"],
+          "properties": {
+            "artifact_id": {
+              "type": "string",
+              "pattern": "^kms_[a-f0-9]{32}$"
+            },
+            "schema_version": {
+              "const": "kalshi_market_snapshot.v1"
+            }
+          }
+        }
+      }
     },
     "evaluated_thresholds": {
       "type": "array",
@@ -71,21 +119,38 @@
           "threshold_name",
           "threshold_value",
           "comparison",
-          "input_field",
+          "data_source_field",
           "observed_value",
           "required_for_evaluation",
+          "status",
           "passed"
         ],
         "properties": {
           "threshold_name": { "type": "string", "minLength": 1 },
           "threshold_value": { "type": "number" },
           "comparison": { "type": "string", "enum": ["lte", "gte"] },
-          "input_field": { "type": "string", "minLength": 1 },
+          "data_source_field": {
+            "type": "string",
+            "enum": [
+              "yes_ask_cents_minus_yes_bid_cents",
+              "volume",
+              "open_interest",
+              "generated_at"
+            ]
+          },
           "observed_value": { "type": "number" },
           "required_for_evaluation": { "type": "boolean" },
+          "status": { "const": "evaluated" },
           "passed": { "type": "boolean" }
         }
       }
+    },
+    "evaluation_status": {
+      "const": "evaluated_non_actionable",
+      "description": "Phase 4O results are always non-actionable. No downstream execution permitted."
+    },
+    "data_quality_status": {
+      "const": "complete"
     },
     "research_summary": {
       "type": "object",
@@ -103,22 +168,30 @@
         "evaluation_complete": { "type": "boolean" }
       }
     },
-    "evaluation_status": {
-      "const": "evaluated_non_actionable",
-      "description": "Phase 4O results are always non-actionable. No downstream execution permitted."
-    },
     "paper_only": { "const": true },
     "live_execution_allowed": { "const": false },
     "order_placement_allowed": { "const": false },
     "credentials_used": { "const": false },
     "network_request_used": { "const": false },
-    "actionable": {
+    "emits_signal_events": {
       "const": false,
-      "description": "Evaluation summaries are never actionable. Downstream execution is forbidden."
+      "description": "Phase 4O does not emit signal events."
     },
-    "signal_emitted": {
+    "emits_recommendations": {
       "const": false,
-      "description": "Phase 4O does not emit signals."
+      "description": "Phase 4O does not emit recommendations."
+    },
+    "emits_decisions": {
+      "const": false,
+      "description": "Phase 4O does not emit decisions."
+    },
+    "emits_orders": {
+      "const": false,
+      "description": "Phase 4O does not emit orders."
+    },
+    "emits_paper_ledger_entries": {
+      "const": false,
+      "description": "Phase 4O does not emit paper ledger entries."
     },
     "reason_code": {
       "const": "EVALUATION_COMPLETE_NON_ACTIONABLE"

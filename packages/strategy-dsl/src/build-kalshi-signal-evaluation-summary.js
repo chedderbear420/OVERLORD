@@ -3,10 +3,20 @@ import { kalshiSignalEvaluationSummaryId } from "./kalshi-signal-evaluation-summ
 // Approved condition families for Phase 4O.
 export const APPROVED_CONDITION_FAMILIES = new Set(["descriptive_market_movement"]);
 
+// Approved data_source_field values for evaluated threshold items.
+export const APPROVED_DATA_SOURCE_FIELDS = new Set([
+  "yes_ask_cents_minus_yes_bid_cents",
+  "volume",
+  "open_interest",
+  "generated_at",
+]);
+
+// Approved status values for evaluated threshold items.
+export const APPROVED_THRESHOLD_STATUSES = new Set(["evaluated"]);
+
 // Default options used when building the synthetic fixture.
 export const defaultEvaluationOptions = {
   evaluationMode: "local_fixture_evaluation_only",
-  evaluationPhase: "Phase 4O",
   generatedAt: "2026-05-11T00:00:00Z",
   evaluationTimestamp: "2026-05-11T00:00:00Z",
   thresholdValues: {
@@ -19,24 +29,24 @@ export const defaultEvaluationOptions = {
 
 /**
  * Maps each approved threshold_name to:
- *   - input_field: the derived field name recorded in evaluated_thresholds
+ *   - data_source_field: the approved field label recorded in evaluated_thresholds
  *   - derive(snap, opts): produces the observed numeric value from the snapshot
  */
 const observedFieldMap = {
   max_spread_cents: {
-    input_field: "spread_cents",
+    data_source_field: "yes_ask_cents_minus_yes_bid_cents",
     derive: (snap) => snap.yes_ask_cents - snap.yes_bid_cents,
   },
   min_volume: {
-    input_field: "volume",
+    data_source_field: "volume",
     derive: (snap) => snap.volume,
   },
   min_open_interest: {
-    input_field: "open_interest",
+    data_source_field: "open_interest",
     derive: (snap) => snap.open_interest,
   },
   max_snapshot_age_seconds: {
-    input_field: "snapshot_age_seconds",
+    data_source_field: "generated_at",
     derive: (snap, opts) => {
       const snapshotMs = Date.parse(snap.generated_at);
       const evalMs = Date.parse(opts.evaluationTimestamp);
@@ -60,7 +70,8 @@ function applyComparison(observedValue, comparison, thresholdValue) {
  * - No environment variables.
  * - No credentials.
  * - All safety flags hardcoded.
- * - Non-actionable: does not emit signals, recommendations, decisions, or orders.
+ * - Non-actionable: does not emit signals, recommendations, decisions, orders,
+ *   or paper ledger entries.
  * - Evaluation is descriptive only — result cannot trigger any execution path.
  *
  * @param {object} signalDefinitionFixture  A KalshiStrategySignalDefinition object (Phase 4N).
@@ -101,9 +112,10 @@ export function buildKalshiSignalEvaluationSummary(
       threshold_name,
       threshold_value,
       comparison,
-      input_field: mapping.input_field,
+      data_source_field: mapping.data_source_field,
       observed_value,
       required_for_evaluation,
+      status: "evaluated",
       passed,
     });
   }
@@ -113,17 +125,37 @@ export function buildKalshiSignalEvaluationSummary(
   const thresholds_failed_count = evaluatedThresholds.filter((t) => !t.passed).length;
   const evaluation_complete = thresholds_failed_count === 0;
 
+  const signalDefinitionId = signalDefinitionFixture.kalshi_strategy_signal_definition_id;
+  const marketSnapshotId = marketSnapshotFixture.kalshi_market_snapshot_id;
+
   return {
     kalshi_signal_evaluation_summary_id: id,
     schema_version: "kalshi_signal_evaluation_summary.v1",
     generated_at: options.generatedAt,
-    signal_definition_id: signalDefinitionFixture.kalshi_strategy_signal_definition_id,
-    market_snapshot_id: marketSnapshotFixture.kalshi_market_snapshot_id,
     evaluation_mode: options.evaluationMode,
-    evaluation_phase: options.evaluationPhase,
+
+    // Source lineage — hardcoded phase and schema versions.
+    source_phase: "Phase 4O",
+    signal_definition_id: signalDefinitionId,
+    signal_definition_schema_version: "kalshi_strategy_signal_definition.v1",
+    market_snapshot_id: marketSnapshotId,
+    market_snapshot_schema_version: "kalshi_market_snapshot.v1",
     condition_family: signalDefinitionFixture.condition_family,
 
+    input_artifact_refs: {
+      signal_definition: {
+        artifact_id: signalDefinitionId,
+        schema_version: "kalshi_strategy_signal_definition.v1",
+      },
+      market_snapshot: {
+        artifact_id: marketSnapshotId,
+        schema_version: "kalshi_market_snapshot.v1",
+      },
+    },
+
     evaluated_thresholds: evaluatedThresholds,
+    evaluation_status: "evaluated_non_actionable",
+    data_quality_status: "complete",
 
     research_summary: {
       thresholds_evaluated_count,
@@ -132,16 +164,19 @@ export function buildKalshiSignalEvaluationSummary(
       evaluation_complete,
     },
 
-    evaluation_status: "evaluated_non_actionable",
-
     // Safety flags — hardcoded, never sourced from input.
     paper_only: true,
     live_execution_allowed: false,
     order_placement_allowed: false,
     credentials_used: false,
     network_request_used: false,
-    actionable: false,
-    signal_emitted: false,
+
+    // Emit flags — all false. Phase 4O emits nothing.
+    emits_signal_events: false,
+    emits_recommendations: false,
+    emits_decisions: false,
+    emits_orders: false,
+    emits_paper_ledger_entries: false,
 
     reason_code: "EVALUATION_COMPLETE_NON_ACTIONABLE",
     reason: "thresholds evaluated non-actionably",
