@@ -24,16 +24,15 @@ Identify the current phase and the smallest package surface relevant to the task
 
 ---
 
-## Current phase (as of Phase 4L)
+## Current phase (as of Phase 4N)
 
 | Phase | Title | Status |
 |---|---|---|
-| 4H | Artifact Manifest Update | complete |
-| 4I | Dashboard Processing Pipeline Panel | complete |
-| 4J | Dashboard Evidence Viewer Expansion | complete |
 | 4K | Dashboard Fixture Drift Guard | complete |
-| 4L | Kalshi Adapter Contract | active — PR open |
-| 4M | Market Data Ingest & Fixture Format | next |
+| 4L | Kalshi Adapter Contract | complete |
+| 4M | Market Data Ingest & Fixture Format | complete |
+| 4N | Strategy Signal Definition | active — PR open |
+| 4O | Signal Evaluation Pass | next |
 
 ---
 
@@ -67,12 +66,15 @@ npm run test:dashboard                 # 39-check static safety scan
 npm run test:dashboard-drift           # 19-check fixture drift guard
 
 # Strategy DSL validators
+npm run validate:kalshi-readonly-adapter-contract
+npm run validate:kalshi-market-snapshot
+npm run validate:kalshi-strategy-signal-definition
 npm run validate:strategy-observation-processing-contract
 npm run validate:strategy-observation-processing-input-set
 npm run validate:strategy-observation-processing-artifact-manifest
 npm run validate:strategy-observation-processing-trace
 npm run validate:strategy-observation-processing-noop-summary
-npm run test:strategy-dsl              # 153 tests (2 pre-existing CRLF failures on Windows)
+npm run test:strategy-dsl              # ~196+ tests (2 pre-existing CRLF failures on Windows)
 
 # Run any other package
 npm run test:<package-name>

@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kalshi_strategy_signal_definition.schema.json",
+  "title": "KalshiStrategySignalDefinition",
+  "description": "A contract definition for what a future Kalshi signal definition is permitted to look like. Phase 4N only. Emits nothing. Evaluates nothing.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kalshi_strategy_signal_definition_id",
+    "schema_version",
+    "generated_at",
+    "definition_name",
+    "definition_version",
+    "definition_mode",
+    "source_artifact_type",
+    "source_schema_version",
+    "source_phase",
+    "allowed_input_fields",
+    "condition_family",
+    "threshold_definitions",
+    "output_contract",
+    "forbidden_outputs",
+    "paper_only",
+    "live_execution_allowed",
+    "order_placement_allowed",
+    "credentials_used",
+    "network_request_used",
+    "evaluation_allowed",
+    "reason_code",
+    "reason"
+  ],
+  "properties": {
+    "kalshi_strategy_signal_definition_id": {
+      "type": "string",
+      "pattern": "^kssd_[a-f0-9]{32}$",
+      "description": "Deterministic SHA-256 ID. Prefix kssd_."
+    },
+    "schema_version": {
+      "const": "kalshi_strategy_signal_definition.v1"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "definition_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "definition_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "definition_mode": {
+      "const": "definition_only",
+      "description": "Phase 4N only supports definition_only mode. No evaluation."
+    },
+    "source_artifact_type": {
+      "const": "kalshi_market_snapshot"
+    },
+    "source_schema_version": {
+      "const": "kalshi_market_snapshot.v1"
+    },
+    "source_phase": {
+      "const": "Phase 4M"
+    },
+    "allowed_input_fields": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "condition_family": {
+      "type": "string",
+      "minLength": 1
+    },
+    "threshold_definitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["threshold_name", "value_type", "comparison", "required_for_evaluation"],
+        "properties": {
+          "threshold_name": { "type": "string", "minLength": 1 },
+          "value_type": { "type": "string", "enum": ["integer", "number"] },
+          "comparison": { "type": "string", "enum": ["lte", "gte"] },
+          "required_for_evaluation": { "type": "boolean" }
+        }
+      }
+    },
+    "output_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "emits_signal_events",
+        "emits_recommendations",
+        "emits_decisions",
+        "emits_orders",
+        "emits_paper_ledger_entries",
+        "evaluation_phase_required"
+      ],
+      "properties": {
+        "emits_signal_events": { "const": false },
+        "emits_recommendations": { "const": false },
+        "emits_decisions": { "const": false },
+        "emits_orders": { "const": false },
+        "emits_paper_ledger_entries": { "const": false },
+        "evaluation_phase_required": { "const": "Phase 4O" }
+      }
+    },
+    "forbidden_outputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "paper_only": { "const": true },
+    "live_execution_allowed": { "const": false },
+    "order_placement_allowed": { "const": false },
+    "credentials_used": { "const": false },
+    "network_request_used": { "const": false },
+    "evaluation_allowed": {
+      "const": false,
+      "description": "Evaluation requires Phase 4O. Phase 4N is definition-only."
+    },
+    "reason_code": {
+      "const": "DEFINITION_CONTRACT_READY"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

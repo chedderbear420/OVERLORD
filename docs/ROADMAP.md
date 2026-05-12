@@ -41,9 +41,9 @@ These phases wire in real Kalshi market data while keeping the paper-only, contr
 
 | Phase | Title | Goal | Status |
 |---|---|---|---|
-| 4L | Kalshi Adapter Contract | Define permitted endpoints, response shapes, and forbidden actions. Schema + fixture only — no HTTP client yet. | 🔁 ACTIVE |
-| 4M | Market Data Ingest & Fixture Format | Live market snapshots → canonical fixture format. Read-only, no order endpoints. | ⬜ LATER |
-| 4N | Strategy Signal Definition | Translate the research hypothesis into a typed signal schema. What market, what edge condition, what threshold. | ⬜ LATER |
+| 4L | Kalshi Adapter Contract | Define permitted endpoints, response shapes, and forbidden actions. Schema + fixture only — no HTTP client yet. | ✅ COMPLETE |
+| 4M | Market Data Ingest & Fixture Format | Live market snapshots → canonical fixture format. Read-only, no order endpoints. | ✅ COMPLETE |
+| 4N | Strategy Signal Definition | Translate the research hypothesis into a typed signal schema. What market, what edge condition, what threshold. | 🔁 ACTIVE |
 | 4O | Signal Evaluation Pass | Run signal rules against historical/live fixture data. No picks emitted yet — output is hit-rate stats and calibration data. | ⬜ LATER |
 | 4P | Paper Ledger | Track signal-triggered paper picks without real money. PnL, win rate, edge, calibration scores. | ⬜ LATER |
 
