@@ -21,21 +21,19 @@
     }
   },
   "market_ticker": "NBAPLAY-25-GSW-LKR-Y",
+  "event_ticker": "NBAPLAY-25-GSW-LKR",
+  "condition_family": "descriptive_market_movement",
+  "paper_units": 1,
   "paper_entry_price_cents": 53,
   "paper_mark_price_cents": 53,
   "paper_unrealized_pnl_cents": 0,
   "paper_realized_pnl_cents": null,
   "paper_fees_cents": 0,
   "paper_net_pnl_cents": 0,
-  "paper_contract_quantity": 1,
-  "paper_settlement_status": "unsettled",
-  "ledger_entry_status": "recorded_non_actionable",
-  "data_quality_status": "complete",
-  "research_summary": {
-    "entry_recorded": true,
-    "settlement_complete": false,
-    "pnl_realized": false
-  },
+  "paper_settlement_status": "unsettled_fixture",
+  "paper_entry_status": "recorded_paper_observation",
+  "paper_outcome_status": "open_unsettled",
+  "research_notes": "paper ledger observation recorded from local fixture evaluation",
   "paper_only": true,
   "live_execution_allowed": false,
   "order_placement_allowed": false,
@@ -45,7 +43,8 @@
   "emits_recommendations": false,
   "emits_decisions": false,
   "emits_orders": false,
+  "emits_live_positions": false,
   "emits_paper_ledger_entries": false,
-  "reason_code": "LEDGER_ENTRY_RECORDED_NON_ACTIONABLE",
-  "reason": "paper ledger entry recorded non-actionably"
+  "reason_code": "PAPER_LEDGER_ENTRY_RECORDED",
+  "reason": "paper ledger entry recorded from local fixture"
 }

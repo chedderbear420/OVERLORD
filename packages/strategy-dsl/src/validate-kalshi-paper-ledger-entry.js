@@ -8,6 +8,9 @@ import {
   APPROVED_PAPER_ACCOUNTING_MODES,
   APPROVED_PAPER_CONTRACT_SIDES,
   APPROVED_PAPER_SETTLEMENT_STATUSES,
+  APPROVED_PAPER_ENTRY_STATUSES,
+  APPROVED_PAPER_OUTCOME_STATUSES,
+  APPROVED_CONDITION_FAMILIES,
 } from "./build-kalshi-paper-ledger-entry.js";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
@@ -19,31 +22,34 @@ const defaultFixturePath = path.join(
   "synthetic_kalshi_paper_ledger_entry.json"
 );
 
+// Approved required fields in the contract order.
 const requiredFields = [
   "kalshi_paper_ledger_entry_id",
   "schema_version",
   "generated_at",
-  "source_phase",
   "ledger_mode",
-  "paper_accounting_mode",
-  "paper_contract_side",
+  "source_phase",
   "signal_evaluation_summary_id",
   "signal_evaluation_summary_schema_version",
   "market_snapshot_id",
   "market_snapshot_schema_version",
   "input_artifact_refs",
+  "paper_accounting_mode",
+  "paper_entry_status",
+  "paper_outcome_status",
   "market_ticker",
+  "event_ticker",
+  "condition_family",
+  "paper_contract_side",
+  "paper_units",
   "paper_entry_price_cents",
   "paper_mark_price_cents",
   "paper_unrealized_pnl_cents",
   "paper_realized_pnl_cents",
   "paper_fees_cents",
   "paper_net_pnl_cents",
-  "paper_contract_quantity",
   "paper_settlement_status",
-  "ledger_entry_status",
-  "data_quality_status",
-  "research_summary",
+  "research_notes",
   "paper_only",
   "live_execution_allowed",
   "order_placement_allowed",
@@ -53,14 +59,20 @@ const requiredFields = [
   "emits_recommendations",
   "emits_decisions",
   "emits_orders",
+  "emits_live_positions",
   "emits_paper_ledger_entries",
   "reason_code",
   "reason",
 ];
 
 // Field names that must never appear at any depth.
-// NOTE: "signal_evaluation_summary_id", "signal_evaluation_summary_schema_version",
-// "emits_signal_events", and "paper_*" are structural field names and are NOT in this set.
+// NOTE: Approved structural field names below are NOT in this set:
+//   kalshi_paper_ledger_entry_id, paper_accounting_mode, paper_entry_status,
+//   paper_outcome_status, paper_contract_side, paper_units,
+//   paper_entry_price_cents, paper_mark_price_cents, paper_unrealized_pnl_cents,
+//   paper_realized_pnl_cents, paper_fees_cents, paper_net_pnl_cents,
+//   paper_settlement_status, emits_live_positions — all use exact-key matching
+//   and none collide with this set.
 const forbiddenImplementationFields = new Set([
   "signal", "signal_event",
   "pick", "recommendation", "decision",
@@ -76,20 +88,21 @@ const exemptFromStringValueScan = new Set([
   "kalshi_paper_ledger_entry_id",
   "schema_version",
   "generated_at",
-  "source_phase",
   "ledger_mode",
-  "paper_accounting_mode",
-  "paper_contract_side",
+  "source_phase",
   "signal_evaluation_summary_id",
   "signal_evaluation_summary_schema_version",
   "market_snapshot_id",
   "market_snapshot_schema_version",
   "input_artifact_refs",     // object — validated structurally
+  "paper_accounting_mode",
+  "paper_entry_status",
+  "paper_outcome_status",
   "market_ticker",
+  "event_ticker",
+  "condition_family",
+  "paper_contract_side",
   "paper_settlement_status",
-  "ledger_entry_status",
-  "data_quality_status",
-  "research_summary",        // object — validated structurally
   "reason_code",
 ]);
 
@@ -154,7 +167,7 @@ export function validateKalshiPaperLedgerEntry(entry) {
   validateDeterministicId(errors, entry);
   validateInputArtifactRefs(errors, entry);
   validatePaperEconomics(errors, entry);
-  validateResearchSummary(errors, entry);
+  validateResearchNotes(errors, entry);
   validateForbiddenImplementationFields(errors, entry);
   validateForbiddenStringValues(errors, entry);
 
@@ -192,9 +205,24 @@ function validateCoreFields(errors, entry) {
       `paper_accounting_mode must be one of: ${[...APPROVED_PAPER_ACCOUNTING_MODES].join(", ")}`
     );
   }
+  if (!APPROVED_PAPER_ENTRY_STATUSES.has(entry.paper_entry_status)) {
+    errors.push(
+      `paper_entry_status must be one of: ${[...APPROVED_PAPER_ENTRY_STATUSES].join(", ")}`
+    );
+  }
+  if (!APPROVED_PAPER_OUTCOME_STATUSES.has(entry.paper_outcome_status)) {
+    errors.push(
+      `paper_outcome_status must be one of: ${[...APPROVED_PAPER_OUTCOME_STATUSES].join(", ")}`
+    );
+  }
   if (!APPROVED_PAPER_CONTRACT_SIDES.has(entry.paper_contract_side)) {
     errors.push(
       `paper_contract_side must be one of: ${[...APPROVED_PAPER_CONTRACT_SIDES].join(", ")}`
+    );
+  }
+  if (!APPROVED_CONDITION_FAMILIES.has(entry.condition_family)) {
+    errors.push(
+      `condition_family must be one of: ${[...APPROVED_CONDITION_FAMILIES].join(", ")}`
     );
   }
   if (
@@ -220,19 +248,19 @@ function validateCoreFields(errors, entry) {
   if (typeof entry.market_ticker !== "string" || entry.market_ticker.length === 0) {
     errors.push("market_ticker must be a non-empty string");
   }
+  if (typeof entry.event_ticker !== "string" || entry.event_ticker.length === 0) {
+    errors.push("event_ticker must be a non-empty string");
+  }
+  if (entry.paper_units !== 1) {
+    errors.push("paper_units must be 1");
+  }
   if (!APPROVED_PAPER_SETTLEMENT_STATUSES.has(entry.paper_settlement_status)) {
     errors.push(
       `paper_settlement_status must be one of: ${[...APPROVED_PAPER_SETTLEMENT_STATUSES].join(", ")}`
     );
   }
-  if (entry.ledger_entry_status !== "recorded_non_actionable") {
-    errors.push("ledger_entry_status must be recorded_non_actionable");
-  }
-  if (entry.data_quality_status !== "complete") {
-    errors.push("data_quality_status must be complete");
-  }
-  if (entry.reason_code !== "LEDGER_ENTRY_RECORDED_NON_ACTIONABLE") {
-    errors.push("reason_code must be LEDGER_ENTRY_RECORDED_NON_ACTIONABLE");
+  if (entry.reason_code !== "PAPER_LEDGER_ENTRY_RECORDED") {
+    errors.push("reason_code must be PAPER_LEDGER_ENTRY_RECORDED");
   }
   if (typeof entry.reason !== "string" || entry.reason.length === 0) {
     errors.push("reason must be a non-empty string");
@@ -256,6 +284,9 @@ function validateSafetyFlags(errors, entry) {
   }
   if (entry.emits_orders !== false) {
     errors.push("emits_orders must be false — Phase 4P does not emit orders");
+  }
+  if (entry.emits_live_positions !== false) {
+    errors.push("emits_live_positions must be false — Phase 4P does not emit live positions");
   }
   if (entry.emits_paper_ledger_entries !== false) {
     errors.push(
@@ -341,8 +372,10 @@ function validatePaperEconomics(errors, entry) {
   if (!Number.isInteger(entry.paper_unrealized_pnl_cents)) {
     errors.push("paper_unrealized_pnl_cents must be an integer");
   }
-  if (entry.paper_realized_pnl_cents !== null && !Number.isInteger(entry.paper_realized_pnl_cents)) {
-    errors.push("paper_realized_pnl_cents must be an integer or null");
+  if (entry.paper_realized_pnl_cents !== null) {
+    errors.push(
+      "paper_realized_pnl_cents must be null for unsettled_fixture paper ledger entries"
+    );
   }
   if (!Number.isInteger(entry.paper_fees_cents)) {
     errors.push("paper_fees_cents must be an integer");
@@ -350,69 +383,25 @@ function validatePaperEconomics(errors, entry) {
   if (!Number.isInteger(entry.paper_net_pnl_cents)) {
     errors.push("paper_net_pnl_cents must be an integer");
   }
-  if (!Number.isInteger(entry.paper_contract_quantity) || entry.paper_contract_quantity < 1) {
-    errors.push("paper_contract_quantity must be a positive integer");
-  }
 
-  // Phase 4P: paper_settlement_status must be unsettled, so paper_realized_pnl_cents must be null.
-  if (
-    APPROVED_PAPER_SETTLEMENT_STATUSES.has(entry.paper_settlement_status) &&
-    entry.paper_settlement_status === "unsettled" &&
-    entry.paper_realized_pnl_cents !== null
-  ) {
-    errors.push(
-      "paper_realized_pnl_cents must be null when paper_settlement_status is unsettled"
-    );
-  }
-
-  // paper_net_pnl_cents must equal paper_unrealized_pnl_cents + paper_fees_cents (when unsettled).
+  // paper_net_pnl_cents must equal paper_unrealized_pnl_cents - paper_fees_cents.
   if (
     Number.isInteger(entry.paper_unrealized_pnl_cents) &&
     Number.isInteger(entry.paper_fees_cents) &&
-    Number.isInteger(entry.paper_net_pnl_cents) &&
-    entry.paper_settlement_status === "unsettled"
+    Number.isInteger(entry.paper_net_pnl_cents)
   ) {
-    const expectedNet = entry.paper_unrealized_pnl_cents + entry.paper_fees_cents;
+    const expectedNet = entry.paper_unrealized_pnl_cents - entry.paper_fees_cents;
     if (entry.paper_net_pnl_cents !== expectedNet) {
       errors.push(
-        `paper_net_pnl_cents must equal paper_unrealized_pnl_cents + paper_fees_cents (expected ${expectedNet}, got ${entry.paper_net_pnl_cents})`
+        `paper_net_pnl_cents must equal paper_unrealized_pnl_cents - paper_fees_cents (expected ${expectedNet}, got ${entry.paper_net_pnl_cents})`
       );
     }
   }
 }
 
-function validateResearchSummary(errors, entry) {
-  const rs = entry.research_summary;
-  if (!rs || typeof rs !== "object" || Array.isArray(rs)) {
-    errors.push("research_summary must be an object");
-    return;
-  }
-  const required = ["entry_recorded", "settlement_complete", "pnl_realized"];
-  for (const field of required) {
-    if (!Object.hasOwn(rs, field)) errors.push(`research_summary.${field} is required`);
-  }
-
-  if (rs.entry_recorded !== true) {
-    errors.push("research_summary.entry_recorded must be true");
-  }
-
-  // settlement_complete must match paper_settlement_status
-  const expectedSettlementComplete = entry.paper_settlement_status === "settled";
-  if (
-    APPROVED_PAPER_SETTLEMENT_STATUSES.has(entry.paper_settlement_status) &&
-    rs.settlement_complete !== expectedSettlementComplete
-  ) {
-    errors.push(
-      `research_summary.settlement_complete must be ${expectedSettlementComplete} when paper_settlement_status is "${entry.paper_settlement_status}"`
-    );
-  }
-
-  // pnl_realized must match paper_realized_pnl_cents
-  const expectedPnlRealized = entry.paper_realized_pnl_cents !== null;
-  if (rs.pnl_realized !== expectedPnlRealized) {
-    errors.push(
-      `research_summary.pnl_realized must be ${expectedPnlRealized} when paper_realized_pnl_cents is ${entry.paper_realized_pnl_cents}`
-    );
+function validateResearchNotes(errors, entry) {
+  if (typeof entry.research_notes !== "string" || entry.research_notes.length === 0) {
+    errors.push("research_notes must be a non-empty string");
   }
 }
 

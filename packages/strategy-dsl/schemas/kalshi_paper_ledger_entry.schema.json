@@ -2,33 +2,35 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "kalshi_paper_ledger_entry.schema.json",
   "title": "KalshiPaperLedgerEntry",
-  "description": "Phase 4P — Paper ledger entry recording hypothetical economics for one contract unit from a Phase 4O signal evaluation summary.",
+  "description": "Phase 4P — Paper ledger entry recording hypothetical economics for one contract unit from a Phase 4O signal evaluation summary. Non-actionable, offline-safe, unsettled fixture observation.",
   "type": "object",
   "required": [
     "kalshi_paper_ledger_entry_id",
     "schema_version",
     "generated_at",
-    "source_phase",
     "ledger_mode",
-    "paper_accounting_mode",
-    "paper_contract_side",
+    "source_phase",
     "signal_evaluation_summary_id",
     "signal_evaluation_summary_schema_version",
     "market_snapshot_id",
     "market_snapshot_schema_version",
     "input_artifact_refs",
+    "paper_accounting_mode",
+    "paper_entry_status",
+    "paper_outcome_status",
     "market_ticker",
+    "event_ticker",
+    "condition_family",
+    "paper_contract_side",
+    "paper_units",
     "paper_entry_price_cents",
     "paper_mark_price_cents",
     "paper_unrealized_pnl_cents",
     "paper_realized_pnl_cents",
     "paper_fees_cents",
     "paper_net_pnl_cents",
-    "paper_contract_quantity",
     "paper_settlement_status",
-    "ledger_entry_status",
-    "data_quality_status",
-    "research_summary",
+    "research_notes",
     "paper_only",
     "live_execution_allowed",
     "order_placement_allowed",
@@ -38,6 +40,7 @@
     "emits_recommendations",
     "emits_decisions",
     "emits_orders",
+    "emits_live_positions",
     "emits_paper_ledger_entries",
     "reason_code",
     "reason"
@@ -56,17 +59,11 @@
       "type": "string",
       "format": "date-time"
     },
-    "source_phase": {
-      "const": "Phase 4P"
-    },
     "ledger_mode": {
       "const": "local_fixture_paper_only"
     },
-    "paper_accounting_mode": {
-      "const": "one_contract_unit_observation"
-    },
-    "paper_contract_side": {
-      "enum": ["yes_contract"]
+    "source_phase": {
+      "const": "Phase 4P"
     },
     "signal_evaluation_summary_id": {
       "type": "string",
@@ -117,25 +114,47 @@
         }
       }
     },
+    "paper_accounting_mode": {
+      "const": "one_contract_unit_observation"
+    },
+    "paper_entry_status": {
+      "const": "recorded_paper_observation"
+    },
+    "paper_outcome_status": {
+      "const": "open_unsettled"
+    },
     "market_ticker": {
       "type": "string",
       "minLength": 1
     },
+    "event_ticker": {
+      "type": "string",
+      "minLength": 1
+    },
+    "condition_family": {
+      "const": "descriptive_market_movement"
+    },
+    "paper_contract_side": {
+      "enum": ["yes_contract"]
+    },
+    "paper_units": {
+      "const": 1
+    },
     "paper_entry_price_cents": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 100
+      "maximum": 99
     },
     "paper_mark_price_cents": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 100
+      "maximum": 99
     },
     "paper_unrealized_pnl_cents": {
       "type": "integer"
     },
     "paper_realized_pnl_cents": {
-      "type": ["integer", "null"]
+      "type": "null"
     },
     "paper_fees_cents": {
       "type": "integer"
@@ -143,34 +162,12 @@
     "paper_net_pnl_cents": {
       "type": "integer"
     },
-    "paper_contract_quantity": {
-      "type": "integer",
-      "minimum": 1
-    },
     "paper_settlement_status": {
-      "enum": ["unsettled", "settled"]
+      "const": "unsettled_fixture"
     },
-    "ledger_entry_status": {
-      "const": "recorded_non_actionable"
-    },
-    "data_quality_status": {
-      "const": "complete"
-    },
-    "research_summary": {
-      "type": "object",
-      "required": ["entry_recorded", "settlement_complete", "pnl_realized"],
-      "additionalProperties": false,
-      "properties": {
-        "entry_recorded": {
-          "const": true
-        },
-        "settlement_complete": {
-          "type": "boolean"
-        },
-        "pnl_realized": {
-          "type": "boolean"
-        }
-      }
+    "research_notes": {
+      "type": "string",
+      "minLength": 1
     },
     "paper_only": {
       "const": true
@@ -199,11 +196,14 @@
     "emits_orders": {
       "const": false
     },
+    "emits_live_positions": {
+      "const": false
+    },
     "emits_paper_ledger_entries": {
       "const": false
     },
     "reason_code": {
-      "const": "LEDGER_ENTRY_RECORDED_NON_ACTIONABLE"
+      "const": "PAPER_LEDGER_ENTRY_RECORDED"
     },
     "reason": {
       "type": "string",
