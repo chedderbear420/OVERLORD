@@ -24,15 +24,16 @@ Identify the current phase and the smallest package surface relevant to the task
 
 ---
 
-## Current phase (as of Phase 4E)
+## Current phase (as of Phase 4L)
 
 | Phase | Title | Status |
 |---|---|---|
-| 4B | Observation Boundary Schema Lockdown | complete |
-| 4C | Offline Operator Dashboard | complete — PR open |
-| 4D | Agent Operating Standard | complete |
-| 4E | Agent Skill Entrypoint / Repo Bootstrap | this phase |
-| 4F | No-op Observation Processing Trace Shell | next |
+| 4H | Artifact Manifest Update | complete |
+| 4I | Dashboard Processing Pipeline Panel | complete |
+| 4J | Dashboard Evidence Viewer Expansion | complete |
+| 4K | Dashboard Fixture Drift Guard | complete |
+| 4L | Kalshi Adapter Contract | active — PR open |
+| 4M | Market Data Ingest & Fixture Format | next |
 
 ---
 
@@ -48,9 +49,10 @@ packages/strategy-dsl/                 active development package
   fixtures/                            synthetic fixtures (read-only)
   schemas/                             JSON schemas
   tests/                               node:test suite
-apps/dashboard/                        Phase 4C offline read-only dashboard
+apps/dashboard/                        offline read-only dashboard (Phase 4J)
   index.html                           open directly in browser — no build step
-  test-dashboard-safety.js             static safety scan (21 checks)
+  test-dashboard-safety.js             static safety scan (39 checks)
+  test-dashboard-fixture-drift.js      fixture drift guard (19 checks)
 .agents/skills/                        domain-specific Codex skills (15 total)
 ```
 
@@ -59,15 +61,18 @@ apps/dashboard/                        Phase 4C offline read-only dashboard
 ## Key commands
 
 ```bash
-# Phase 4C dashboard
+# Dashboard
 npm run dashboard                      # open dashboard in browser (Windows)
-npm run test:dashboard                 # 21-check safety scan
+npm run test:dashboard                 # 39-check static safety scan
+npm run test:dashboard-drift           # 19-check fixture drift guard
 
-# Strategy DSL — Phase 4B/4C validators
+# Strategy DSL validators
 npm run validate:strategy-observation-processing-contract
 npm run validate:strategy-observation-processing-input-set
 npm run validate:strategy-observation-processing-artifact-manifest
-npm run test:strategy-dsl              # 138 tests
+npm run validate:strategy-observation-processing-trace
+npm run validate:strategy-observation-processing-noop-summary
+npm run test:strategy-dsl              # 153 tests (2 pre-existing CRLF failures on Windows)
 
 # Run any other package
 npm run test:<package-name>
