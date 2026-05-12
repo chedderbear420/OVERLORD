@@ -1,0 +1,41 @@
+{
+  "kalshi_readonly_adapter_contract_id": "krac_8e72c258a5e00a78b7e45b50a8e4f47f",
+  "schema_version": "kalshi_readonly_adapter_contract.v1",
+  "generated_at": "2026-05-11T00:00:00Z",
+  "adapter_name": "kalshi_readonly_adapter",
+  "adapter_version": "0.1.0-contract-only",
+  "source_system": "kalshi",
+  "adapter_mode": "read_only_contract_only",
+  "paper_only": true,
+  "live_execution_allowed": false,
+  "order_placement_allowed": false,
+  "credentials_allowed": false,
+  "network_client_allowed": false,
+  "allowed_operation_categories": [
+    "market_discovery",
+    "market_metadata",
+    "orderbook_snapshot_read"
+  ],
+  "forbidden_operation_categories": [
+    "order_placement",
+    "order_cancellation",
+    "position_management",
+    "portfolio_access",
+    "balance_access",
+    "account_access",
+    "credential_handling",
+    "authenticated_trading",
+    "deposit",
+    "withdrawal",
+    "recommendations",
+    "picks",
+    "signals",
+    "decisions",
+    "bankroll_sizing",
+    "live_execution"
+  ],
+  "contract_scope": "contract_definition_only",
+  "status": "kalshi_readonly_adapter_contract_ready",
+  "reason_code": "VALIDATION_PASSED",
+  "reason": "read-only adapter contract ready"
+}

@@ -52,6 +52,7 @@
     "validate:strategy-observation-processing-artifact-manifest": "node packages/strategy-dsl/src/validate-strategy-observation-processing-artifact-manifest.js",
     "validate:strategy-observation-processing-trace": "node packages/strategy-dsl/src/validate-strategy-observation-processing-trace.js",
     "validate:strategy-observation-processing-noop-summary": "node packages/strategy-dsl/src/validate-strategy-observation-processing-noop-summary.js",
+    "validate:kalshi-readonly-adapter-contract": "node packages/strategy-dsl/src/validate-kalshi-readonly-adapter-contract.js",
     "test:strategy-dsl": "node --test packages/strategy-dsl/tests/*.test.js",
     "dashboard": "node -e \"import('child_process').then(m=>m.exec('start apps\\\\dashboard\\\\index.html'))\"",
     "test:dashboard": "node apps/dashboard/test-dashboard-safety.js",
