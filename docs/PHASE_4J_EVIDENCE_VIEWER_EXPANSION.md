@@ -11,15 +11,16 @@ Extend the static offline operator dashboard with a 5-step evidence chain viewer
 `apps/dashboard/index.html`
 
 Added:
-- **Evidence Chain panel** (`id="evidence-chain"`): 5-step vertical stepper, each step showing fixture filename, artifact ID, status chip, and key metadata
+- **Evidence Chain panel** (`id="evidence-chain"`): 5-step vertical stepper, each step showing fixture filename, artifact ID, status chips, and key metadata
   - Step 1 — Processing Contract: `sopc_d5f85d3ac42b6ade0754837ea0354a77`, VALIDATION_PASSED
   - Step 2 — Processing Input Set: `sopis_e375ea353c05147738b963a553f0e776`, 7 artifacts, all read_only
   - Step 3 — Processing Trace: 9 records JSONL, `noop_processing_completed`, `sha256:46ebe409…`
   - Step 4 — Processing Noop Summary: `sopns_eb0a5457434b46ab04693890fa87ba42`, `processing_noop_summary_ready`, `sha256:bcfb57e7…`
   - Step 5 — Artifact Manifest: `sopam_f925d406b96cad22874fe8dbf9f1541a`, `artifact_manifest_ready`, 7 inputs + 2 outputs hashed
 - **Safety Guarantee Block** (`id="safety-guarantee-block"`): 8 `locked` badges (No Live API, No Credentials, No Orders, No Bankroll Actions, No Network Calls, No Signals, No Recommendations, No Decisions) + 6 `safe` badges (`paper_only: true`, `live_execution_allowed: false`, `order_placement_allowed: false`, `credentials_allowed: false`, `network_allowed: false`, `replay_mode: offline_fixture_replay`)
-- Updated phase badge, status cards (4I complete, 4J active), footer (Phase 4J, 4B–4I enforced)
-- Added `.ec-chain`, `.ec-step`, `.ec-spine`, `.ec-node`, `.ec-line`, `.ec-body`, `.ec-label`, `.ec-fixture`, `.ec-id`, `.ec-status-line`, `.ec-desc`, `.ec-meta`, `.ec-chip`, `.safety-block`, `.safety-badges`, `.safety-badge.locked`, `.safety-badge.safe` CSS classes; no JS added
+- Updated phase badge (`PHASE 4J :: EVIDENCE VIEWER EXPANSION ACTIVE`), status cards (4I complete, 4J active), roadmap (4I complete, 4J active, 4K later), footer (Phase 4J, 4B–4I enforced)
+- Added drift guard to validation command panel
+- Added `.ec-chain`, `.ec-step`, `.ec-spine`, `.ec-node.sealed`, `.ec-line`, `.ec-body`, `.ec-label`, `.ec-fixture`, `.ec-id`, `.ec-status-line`, `.ec-chip`, `.ec-desc`, `.ec-meta`, `.safety-block`, `.safety-badges`, `.safety-badge.locked`, `.safety-badge.safe`, `.safety-footer-note` CSS classes; no JS added
 
 ### Safety Test Update
 
@@ -53,9 +54,10 @@ Result: **39 passed, 0 failed** (up from 30).
 
 | Check | Result |
 |---|---|
-| Phase 4I dashboard panel (lifecycle bar, stat cards, noop summary KV, output hash table) | yes |
-| Phase 4H manifest `sopam_f925…` with 7 input + 2 output artifacts | yes |
+| Phase 4I processing pipeline panel present | yes |
+| Phase 4K drift guard present and passing (19/19) | yes |
 | `npm run test:dashboard` — 39 passed, 0 failed | yes |
+| `npm run test:dashboard-drift` — 19 passed, 0 failed | yes |
 | `npm run test:strategy-dsl` — 153 passed, 0 failed | yes |
 
 ## Completion rule
@@ -63,13 +65,14 @@ Result: **39 passed, 0 failed** (up from 30).
 Phase 4J is complete when:
 
 1. `node apps/dashboard/test-dashboard-safety.js` → 39 passed, 0 failed
-2. `npm run test:strategy-dsl` → 153 tests, all pass (no regressions)
-3. Evidence chain panel visible in browser with correct 5-step artifact chain
-4. Safety guarantee block visible with all locked/safe badges
-5. No forbidden code pattern introduced
+2. `node apps/dashboard/test-dashboard-fixture-drift.js` → 19 passed, 0 failed
+3. `npm run test:strategy-dsl` → 153 tests, all pass (no regressions)
+4. Evidence chain panel visible in browser with correct 5-step artifact chain
+5. Safety guarantee block visible with all locked/safe badges
+6. No forbidden code pattern introduced
 
 ## Recommended next phase
 
-**Phase 4K: TBD**
+**Phase 4L: TBD**
 
 Options: Kalshi adapter contract definition (read-only, no network calls); market data fixture schema; or evidence bundle diff viewer. Maintains offline-safe posture.
