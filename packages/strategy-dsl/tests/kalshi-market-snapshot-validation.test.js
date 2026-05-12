@@ -142,6 +142,30 @@ test("KalshiMarketSnapshot validator rejects forbidden string values in free-tex
   assert.equal(safeResult.ok, true);
 });
 
+test("KalshiMarketSnapshot validator rejects forbidden string values in ingest_warnings", async () => {
+  const snap = await loadSnapshot();
+
+  // Order language in a warning
+  const withOrderWarning = validateKalshiMarketSnapshot({
+    ...snap,
+    ingest_warnings: ["ready to place orders later"],
+  });
+  assert.equal(withOrderWarning.ok, false);
+  assert.match(withOrderWarning.errors.join("\n"), /forbidden market snapshot string value/);
+
+  // Signal language in a warning
+  const withSignalWarning = validateKalshiMarketSnapshot({
+    ...snap,
+    ingest_warnings: ["trading signal detected"],
+  });
+  assert.equal(withSignalWarning.ok, false);
+  assert.match(withSignalWarning.errors.join("\n"), /forbidden market snapshot string value/);
+
+  // Safe empty array passes
+  const withEmptyWarnings = validateKalshiMarketSnapshot({ ...snap, ingest_warnings: [] });
+  assert.equal(withEmptyWarnings.ok, true);
+});
+
 test("KalshiMarketSnapshot validator rejects non-deterministic ID", async () => {
   const snap = await loadSnapshot();
   const result = validateKalshiMarketSnapshot({

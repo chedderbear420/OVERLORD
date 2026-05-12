@@ -41,8 +41,8 @@ Establish a local-only Kalshi market data ingest pipeline. No HTTP client, no cr
 | File | Tests | Result |
 |------|-------|--------|
 | `packages/strategy-dsl/tests/build-kalshi-market-snapshot.test.js` | 5 | PASS |
-| `packages/strategy-dsl/tests/ingest-kalshi-market-snapshot.test.js` | 10 | PASS |
-| `packages/strategy-dsl/tests/kalshi-market-snapshot-validation.test.js` | 10 | PASS |
+| `packages/strategy-dsl/tests/ingest-kalshi-market-snapshot.test.js` | 14 | PASS |
+| `packages/strategy-dsl/tests/kalshi-market-snapshot-validation.test.js` | 11 | PASS |
 
 ### package.json scripts added
 
@@ -62,8 +62,8 @@ validate:kalshi-market-snapshot
 - `network_request_used: false` — hardcoded in builder, rejected as true by validator
 - `ingest_mode: "local_fixture_only"` — const in schema, rejected if absent or wrong
 - `adapter_contract_id: "krac_8e72c258a5e00a78b7e45b50a8e4f47f"` — must reference Phase 4L contract
-- Forbidden field names blocked: `signal`, `recommendation`, `pick`, `edge`, `bankroll`, `kelly_fraction`, `order`, `trade`, `execution`, `balance`, `portfolio`, `position`, `api_key`, `token`, `credential`, `fetch`, `axios`, `websocket` and ~15 others
-- Forbidden string values blocked in free-text fields (`title`, `reason`, `market_status`): patterns including `place order`, `live execution`, `trading signal`, `api key`, `edge calculation`, and others
+- Forbidden field names blocked (recursively, at any depth): `signal`, `signals`, `recommendation`, `recommendations`, `pick`, `picks`, `decision`, `decisions`, `edge`, `bankroll`, `kelly_fraction`, `order`, `orders`, `trade`, `trades`, `trading`, `execution`, `balance`, `portfolio`, `position`, `positions`, `account`, `accounts`, `api_key`, `token`, `credential`, `credentials`, `secret`, `fetch`, `axios`, `websocket`, `polling`, `cron` and others — full path reported (e.g. `metadata.api_key`)
+- Forbidden string values blocked in all free-text fields (`title`, `reason`, `market_status`, `ingest_warnings` items): patterns including `place order`, `live execution`, `trading signal`, `api key`, `edge calculation`, and others
 - No HTTP client imports in any 4M source file (enforced by static import test)
 - `additionalProperties: false` — unknown fields rejected with `ERR_UNKNOWN_FIELD`
 
@@ -74,10 +74,10 @@ validate:kalshi-market-snapshot
 ```
 validate:kalshi-readonly-adapter-contract  PASS  0 errors
 validate:kalshi-market-snapshot            PASS  0 errors
-Phase 4M tests (3 files)                  25/25 PASS
+Phase 4M tests (3 files)                  30/30 PASS
 test:dashboard                            39/39 PASS
 test:dashboard-drift                      19/19 PASS
-test:strategy-dsl                         PASS  (2 pre-existing CRLF failures unrelated to 4M)
+test:strategy-dsl                         194/196, with 2 known pre-existing Windows CRLF artifact-manifest hash failures unrelated to Phase 4M
 ```
 
 ### Pre-existing failures (not introduced by Phase 4M)
@@ -101,4 +101,4 @@ These failures exist on `main` before this branch and are unrelated to Phase 4M 
 
 ## Next phase
 
-**Phase 4N** (planned): Strategy Observation + Market Snapshot Correlation — link `KalshiMarketSnapshot` records to `StrategyObservationProcessingTrace` records for evidence-chain traceability.
+**Phase 4N — Strategy Signal Definition**

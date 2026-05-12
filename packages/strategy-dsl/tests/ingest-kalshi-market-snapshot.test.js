@@ -78,6 +78,43 @@ test("ingest rejects non-object raw input", () => {
   assert.match(result.errors.join("\n"), /raw fixture must be a JSON object/);
 });
 
+test("ingest recursively rejects nested forbidden field: metadata.api_key", () => {
+  const result = ingestKalshiMarketSnapshot({
+    ...defaultRawFixture,
+    metadata: { api_key: "sk_live_abc123" },
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.errors.join("\n"), /forbidden field in raw Kalshi fixture: metadata\.api_key/);
+  assert.equal(result.snapshot, null);
+});
+
+test("ingest recursively rejects nested forbidden field: metadata.order", () => {
+  const result = ingestKalshiMarketSnapshot({
+    ...defaultRawFixture,
+    metadata: { order: { side: "yes", size: 10 } },
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.errors.join("\n"), /forbidden field in raw Kalshi fixture: metadata\.order/);
+});
+
+test("ingest recursively rejects nested forbidden field: metadata.signal", () => {
+  const result = ingestKalshiMarketSnapshot({
+    ...defaultRawFixture,
+    metadata: { signal: "strong_yes" },
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.errors.join("\n"), /forbidden field in raw Kalshi fixture: metadata\.signal/);
+});
+
+test("ingest recursively rejects forbidden field nested inside array", () => {
+  const result = ingestKalshiMarketSnapshot({
+    ...defaultRawFixture,
+    context: [{ api_key: "secret" }],
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.errors.join("\n"), /forbidden field in raw Kalshi fixture: context\.0\.api_key/);
+});
+
 test("4M source files contain no network/HTTP client imports", async () => {
   const filesToCheck = [
     "packages/strategy-dsl/src/kalshi-market-snapshot-id.js",

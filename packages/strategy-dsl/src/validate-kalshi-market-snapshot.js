@@ -64,7 +64,8 @@ const forbiddenImplementationFields = new Set([
   "execution", "fill",
 ]);
 
-// Enum-constrained or structured fields — exempt from free-text string-value scan.
+// Enum-constrained or ID fields — exempt from free-text string-value scan.
+// NOTE: ingest_warnings is intentionally NOT exempt — it is free-text and must be scanned.
 const exemptFromStringValueScan = new Set([
   "kalshi_market_snapshot_id",
   "schema_version",
@@ -80,7 +81,6 @@ const exemptFromStringValueScan = new Set([
   "expiration_time",
   "close_time",
   "result",
-  "ingest_warnings",
 ]);
 
 // Word-boundary-aware patterns for forbidden language in free-text string values.

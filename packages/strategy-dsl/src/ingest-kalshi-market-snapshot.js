@@ -1,23 +1,49 @@
 import { buildKalshiMarketSnapshot } from "./build-kalshi-market-snapshot.js";
 
-// Fields that must never appear in a raw Kalshi fixture passed to this ingest pipeline.
-// Their presence indicates execution data, credentials, or forbidden concepts.
+// Fields that must never appear anywhere in a raw Kalshi fixture passed to this ingest pipeline.
+// Their presence (at any depth) indicates execution data, credentials, or forbidden concepts.
 const forbiddenRawFields = new Set([
   // Credentials / auth
-  "api_key", "api_secret", "token", "bearer", "secret", "auth_token",
+  "api_key", "api key", "api_secret", "token", "bearer", "secret", "auth_token",
   "private_key", "password", "credential", "credentials",
   // Account / financial state
-  "account_id", "account_balance", "balance", "portfolio",
+  "account", "accounts", "account_id", "account_balance", "balance", "portfolio",
   "position", "positions",
   // Order / execution
   "order", "orders", "order_id", "order_request", "trade_request",
+  "trade", "trades", "trading",
   "execution", "fill", "fills",
   // Signal / decision
-  "signal", "recommendation", "pick", "decision",
-  "edge", "expected_value", "bankroll", "kelly_fraction", "position_size",
+  "signal", "signals",
+  "recommendation", "recommendations",
+  "pick", "picks",
+  "decision", "decisions",
+  "edge", "expected_value", "expected value", "bankroll", "kelly_fraction", "position_size",
   // Network / client implementation
-  "fetch", "axios", "http_client", "websocket", "base_url", "endpoint_url",
+  "fetch", "axios", "http_client", "websocket", "polling", "cron",
+  "base_url", "endpoint_url",
 ]);
+
+/**
+ * Recursively scan a value for any key in forbiddenRawFields.
+ * Reports the full dot-path of any offending key.
+ */
+function scanForbiddenRawFields(errors, value, pathParts = []) {
+  if (!value || typeof value !== "object") return;
+  if (Array.isArray(value)) {
+    value.forEach((item, i) =>
+      scanForbiddenRawFields(errors, item, [...pathParts, String(i)])
+    );
+    return;
+  }
+  for (const [key, nested] of Object.entries(value)) {
+    if (forbiddenRawFields.has(key)) {
+      const fieldPath = pathParts.length > 0 ? `${pathParts.join(".")}.${key}` : key;
+      errors.push(`forbidden field in raw Kalshi fixture: ${fieldPath}`);
+    }
+    scanForbiddenRawFields(errors, nested, [...pathParts, key]);
+  }
+}
 
 /**
  * Ingest a raw Kalshi-like market fixture object into a canonical snapshot.
@@ -26,7 +52,7 @@ const forbiddenRawFields = new Set([
  * - No network requests made.
  * - No environment variables read.
  * - No credentials accepted or forwarded.
- * - Raw input validated for forbidden fields before mapping.
+ * - Raw input validated recursively for forbidden fields before mapping.
  *
  * @param {object} rawFixture  Raw Kalshi-like market data object.
  * @param {object} options     Forwarded to buildKalshiMarketSnapshot: { generatedAt, sourceFixturePath }
@@ -39,12 +65,8 @@ export function ingestKalshiMarketSnapshot(rawFixture, options = {}) {
 
   const errors = [];
 
-  // Reject any forbidden field present in the raw input
-  for (const key of Object.keys(rawFixture)) {
-    if (forbiddenRawFields.has(key)) {
-      errors.push(`forbidden field in raw Kalshi fixture: ${key}`);
-    }
-  }
+  // Recursively reject any forbidden field at any depth of the raw input
+  scanForbiddenRawFields(errors, rawFixture);
 
   if (errors.length > 0) {
     return { ok: false, errors, snapshot: null };
