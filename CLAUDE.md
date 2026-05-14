@@ -31,7 +31,7 @@ Identify the current phase and the smallest package surface relevant to the task
 | 5A | Confidence Gate Contract | complete |
 | 5B | Research Review Evidence Bundle | complete |
 | 5C | Paper Readiness Gate Evidence Bundle | complete |
-| 5D | Gate Evaluation Summary | active — PR open |
+| 5D | Gate Evaluation Summary | complete |
 
 ---
 
@@ -112,3 +112,6 @@ See the compact template in `docs/agent-operating-standard.md`. Use it at the en
 ## Full rules
 
 `AGENTS.md` is the authoritative rule source. Read it at session start. This file is the Claude Code entrypoint; `AGENTS.md` has the complete picture.
+
+| 5E | Operator Sign-off Contract | complete |
+| 5F | Phase 6 Readiness Lock | active — PR open |

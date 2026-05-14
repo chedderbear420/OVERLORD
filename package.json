@@ -65,6 +65,7 @@
     "test:dashboard": "node apps/dashboard/test-dashboard-safety.js",
     "test:dashboard-drift": "node apps/dashboard/test-dashboard-fixture-drift.js",
     "validate:kalshi-gate-evaluation-summary": "node packages/strategy-dsl/src/validate-kalshi-gate-evaluation-summary.js",
-    "validate:kalshi-operator-signoff-contract": "node packages/strategy-dsl/src/validate-kalshi-operator-signoff-contract.js"
+    "validate:kalshi-operator-signoff-contract": "node packages/strategy-dsl/src/validate-kalshi-operator-signoff-contract.js",
+    "validate:kalshi-phase6-readiness-lock": "node packages/strategy-dsl/src/validate-kalshi-phase6-readiness-lock.js"
   }
 }
