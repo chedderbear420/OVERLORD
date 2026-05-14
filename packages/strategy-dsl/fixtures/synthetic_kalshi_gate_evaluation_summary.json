@@ -1,0 +1,102 @@
+{
+  "kalshi_gate_evaluation_summary_id": "kges_84961e1b07a49fcb94abbf0993e569cd",
+  "schema_version": "kalshi_gate_evaluation_summary.v1",
+  "generated_at": "2026-05-14T00:00:00Z",
+  "phase": "Phase 5D",
+  "evaluation_status": "evaluated_blocked",
+  "upstream_evidence_bundle_id": "kprgeb_94e7954d365d17782ed327761cf2e261",
+  "upstream_bundle_schema_version": "kalshi_paper_readiness_gate_evidence_bundle.v1",
+  "gates_evaluated": [
+    "signal_calibration",
+    "edge_consistency",
+    "paper_pnl",
+    "risk_governor",
+    "operator_signoff"
+  ],
+  "gates_passed_count": 0,
+  "gates_failed_count": 3,
+  "gates_blocked_count": 2,
+  "gate_results": [
+    {
+      "gate_id": "signal_calibration",
+      "gate_name": "Signal Calibration Gate",
+      "evaluation_result": "insufficient_evidence",
+      "pass": false,
+      "blocking_reason": "minimum sample size not met; calibration metrics incomplete"
+    },
+    {
+      "gate_id": "edge_consistency",
+      "gate_name": "Edge Consistency Gate",
+      "evaluation_result": "failed",
+      "pass": false,
+      "blocking_reason": "multi-market edge consistency evidence not available"
+    },
+    {
+      "gate_id": "paper_pnl",
+      "gate_name": "Paper PnL Gate",
+      "evaluation_result": "insufficient_evidence",
+      "pass": false,
+      "blocking_reason": "paper ledger sample size insufficient for confidence"
+    },
+    {
+      "gate_id": "risk_governor",
+      "gate_name": "Risk Governor Gate",
+      "evaluation_result": "blocked",
+      "pass": false,
+      "blocking_reason": "risk governor not implemented"
+    },
+    {
+      "gate_id": "operator_signoff",
+      "gate_name": "Operator Sign-off Gate",
+      "evaluation_result": "blocked",
+      "pass": false,
+      "blocking_reason": "operator sign-off not completed"
+    }
+  ],
+  "overall_gate_decision": "all_gates_blocked",
+  "safety_flags": {
+    "paper_only": true,
+    "gate_evaluation_allowed": true,
+    "gates_passed": false,
+    "phase_6_ready": false,
+    "live_mode_allowed": false,
+    "live_execution_allowed": false,
+    "order_placement_allowed": false,
+    "credentials_allowed": false,
+    "credential_access_allowed": false,
+    "autonomous_execution_allowed": false,
+    "operator_signoff_complete": false
+  },
+  "forbidden_capabilities": [
+    "live_trading",
+    "live_kalshi_api_calls",
+    "order_placement",
+    "credential_access",
+    "api_keys",
+    "autonomous_execution",
+    "bankroll_sizing",
+    "recommendations",
+    "trading_decisions",
+    "actionable_signals",
+    "strategy_execution",
+    "live_market_execution",
+    "phase_6_readiness",
+    "gate_override"
+  ],
+  "allowed_outputs": [
+    "gate_evaluation_report",
+    "blocking_reasons",
+    "evidence_review_metadata"
+  ],
+  "forbidden_outputs": [
+    "live_orders",
+    "trade_signals",
+    "bankroll_allocation",
+    "credentials",
+    "api_keys",
+    "execution_commands",
+    "gate_pass_approval"
+  ],
+  "reason_code": "GATES_EVALUATED_ALL_BLOCKED",
+  "reason": "gates evaluated; all gates blocked; paper mode remains blocked"
+}

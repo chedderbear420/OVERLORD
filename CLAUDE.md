@@ -30,8 +30,8 @@ Identify the current phase and the smallest package surface relevant to the task
 |---|---|---|
 | 5A | Confidence Gate Contract | complete |
 | 5B | Research Review Evidence Bundle | complete |
-| 5C | Paper Readiness Gate Evidence Bundle | active — PR open |
-| 5D | Gate Evaluation Summary | next |
+| 5C | Paper Readiness Gate Evidence Bundle | complete |
+| 5D | Gate Evaluation Summary | active — PR open |
 
 ---
 
