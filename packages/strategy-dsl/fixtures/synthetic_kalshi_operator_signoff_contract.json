@@ -1,0 +1,44 @@
+{
+  "kalshi_operator_signoff_contract_id": "kosc_653100807ed68b607437bd2f9ce33aea",
+  "schema_version": "kalshi_operator_signoff_contract.v1",
+  "generated_at": "2026-05-14T00:00:00Z",
+  "phase": "Phase 5E",
+  "signoff_status": "not_complete",
+  "upstream_gate_evaluation_summary_id": "kges_84961e1b07a49fcb94abbf0993e569cd",
+  "upstream_summary_schema_version": "kalshi_gate_evaluation_summary.v1",
+  "operator_signoff_complete": false,
+  "manual_review_required": true,
+  "operator_review_required": true,
+  "safety_flags": {
+    "paper_only": true,
+    "phase_6_ready": false,
+    "live_mode_allowed": false,
+    "order_placement_allowed": false,
+    "credentials_allowed": false,
+    "autonomous_execution_allowed": false,
+    "operator_signoff_complete": false
+  },
+  "forbidden_capabilities": [
+    "live_trading",
+    "order_placement",
+    "credentials",
+    "api_keys",
+    "autonomous_execution",
+    "approval_token",
+    "signature_secret",
+    "phase_6_unlock"
+  ],
+  "allowed_outputs": [
+    "signoff_status_report",
+    "review_request_metadata"
+  ],
+  "forbidden_outputs": [
+    "approval_token",
+    "signature",
+    "credentials",
+    "live_orders",
+    "phase_6_approval"
+  ],
+  "reason_code": "OPERATOR_SIGNOFF_NOT_COMPLETE",
+  "reason": "operator signoff not complete; manual review required; paper mode remains blocked"
+}

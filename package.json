@@ -64,6 +64,7 @@
     "dashboard": "node -e \"import('child_process').then(m=>m.exec('start apps\\\\dashboard\\\\index.html'))\"",
     "test:dashboard": "node apps/dashboard/test-dashboard-safety.js",
     "test:dashboard-drift": "node apps/dashboard/test-dashboard-fixture-drift.js",
-    "validate:kalshi-gate-evaluation-summary": "node packages/strategy-dsl/src/validate-kalshi-gate-evaluation-summary.js"
+    "validate:kalshi-gate-evaluation-summary": "node packages/strategy-dsl/src/validate-kalshi-gate-evaluation-summary.js",
+    "validate:kalshi-operator-signoff-contract": "node packages/strategy-dsl/src/validate-kalshi-operator-signoff-contract.js"
   }
 }
